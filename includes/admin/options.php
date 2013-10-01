@@ -207,7 +207,6 @@ function gpi_render_options_page() {
 
                 <label for="recheck_interval"><?php _e('Report Expiration', 'gpagespeedi'); ?>:</label>                    
                 <select name="recheck_interval" id="recheck_interval">
-                    <option value="<?php echo 300;?>" <?php if($options['recheck_interval'] == 300) {echo 'selected="selected"';} ?>><?php _e('debug', 'gpagespeedi'); ?></option>
                     <option value="<?php echo 86400;?>" <?php if($options['recheck_interval'] == 86400) {echo 'selected="selected"';} ?>><?php _e('1 Day', 'gpagespeedi'); ?></option>
                     <option value="<?php echo 7*86400;?>" <?php if($options['recheck_interval'] == 7*86400) {echo 'selected="selected"';} ?>><?php _e('7 Days', 'gpagespeedi'); ?></option>
                     <option value="<?php echo 15*86400;?>" <?php if($options['recheck_interval'] == 15*86400) {echo 'selected="selected"';} ?>><?php _e('15 Days', 'gpagespeedi'); ?></option>
