@@ -16,7 +16,7 @@ Through the addition of advanced data visualization, tagging, filtering, and sna
 
 = Premium Version =
 
-Check out the [Premium Edition](https://mattkeys.me/products/google-pagespeed-insights/) to add even more powerful functionality including:
+Check out the [Premium Edition](http://mattkeys.me/products/google-pagespeed-insights/) to add even more powerful functionality including:
 
 * Report Snapshots
 * Snapshot Comparison Tool
