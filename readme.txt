@@ -20,10 +20,10 @@ Through the addition of advanced data visualization, tagging, filtering, and sna
 
 Check out the [Premium Edition](http://mattkeys.me/products/google-pagespeed-insights/) to add even more powerful functionality including:
 
-* [Report Snapshots](http://mattkeys.me/products/google-pagespeed-insights/#report_snapshots))
-* [Snapshot Comparison Tool](http://mattkeys.me/products/google-pagespeed-insights/#snapshot_comparison))
-* [Add/Import Custom URLs](http://mattkeys.me/products/google-pagespeed-insights/#custom_urls))
-* [Scheduled Report Checks](http://mattkeys.me/products/google-pagespeed-insights/#scheduled_checks))
+* [Report Snapshots](http://mattkeys.me/products/google-pagespeed-insights/#report_snapshots)
+* [Snapshot Comparison Tool](http://mattkeys.me/products/google-pagespeed-insights/#snapshot_comparison)
+* [Add/Import Custom URLs](http://mattkeys.me/products/google-pagespeed-insights/#custom_urls)
+* [Scheduled Report Checks](http://mattkeys.me/products/google-pagespeed-insights/#scheduled_checks)
 
 [Compare the Free and Premium versions](http://mattkeys.me/products/google-pagespeed-insights/#compare_table)
 
