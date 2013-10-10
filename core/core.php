@@ -77,9 +77,13 @@ if (!class_exists('googlePagespeedInsights')) {
 			//Set last run finished to false, we will change this to true if this process finishes before max execution time.
 			$this->google_pagespeed_insights_Update_Options('last_run_finished',false,'gpagespeedi_options');
 
-			//Include Google API + Start new Instance
-			require_once GPI_DIRECTORY.'/google-api/src/Google_Client.php';
-			require_once GPI_DIRECTORY.'/google-api/src/contrib/Google_PagespeedonlineService.php';
+			//Include Google API + Start new Instance. Check first to make sure they arent already included by another plugin!
+			if(!class_exists('Google_Client')) {
+				require_once GPI_DIRECTORY.'/google-api/src/Google_Client.php';
+			}
+			if(!class_exists('Google_PagespeedonlineService')) {
+				require_once GPI_DIRECTORY.'/google-api/src/contrib/Google_PagespeedonlineService.php';
+			}
 
 			$client = new Google_Client();
 			$client->setApplicationName("Google_Pagespeed_Insights");

@@ -1,14 +1,12 @@
 === Google Pagespeed Insights for Wordpress ===
 Contributors: mattkeys
 Donate link: http://mattkeys.me/
-Tags: SEO, seo, performance, speed, google, search engine optimization, pagespeed, google page speed, page speed, pagespeed insights, google pagespeed insights
+Tags: SEO, seo, performance, speed, google, search engine optimization
 Requires at least: 3.3
 Tested up to: 3.6.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-
-Use Google Pagespeed Insights to increase your sites performance, your search engine ranking, and your visitors browsing experience.
 
 == Description ==
 
@@ -20,10 +18,12 @@ Through the addition of advanced data visualization, tagging, filtering, and sna
 
 Check out the [Premium Edition](http://mattkeys.me/products/google-pagespeed-insights/) to add even more powerful functionality including:
 
-* Report Snapshots
-* Snapshot Comparison Tool
-* Add/Import Custom URLs
-* Scheduled Report Checks
+* [Report Snapshots](http://mattkeys.me/products/google-pagespeed-insights/#report_snapshots))
+* [Snapshot Comparison Tool](http://mattkeys.me/products/google-pagespeed-insights/#snapshot_comparison))
+* [Add/Import Custom URLs](http://mattkeys.me/products/google-pagespeed-insights/#custom_urls))
+* [Scheduled Report Checks](http://mattkeys.me/products/google-pagespeed-insights/#scheduled_checks))
+
+[Compare the Free and Premium versions](http://mattkeys.me/products/google-pagespeed-insights/#compare_table)
 
 = Detailed Page Reporting =
 
@@ -129,4 +129,15 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 == Changelog ==
 
-1.0.0 Initial Release
+= 1.0.1 =
+* Fixed a potential conflict with other plugins that also utilize the Google API PHP library. The API is now only included if the Google_Client class does not already exist.
+* Added additional checking during plugin activation to fail fast if the server does not meet the minimum plugin requirements.
+
+= 1.0.0 =
+* Initial Release
+
+== Upgrade Notice ==
+
+= 1.0.1 =
+This version fixes a potential conflict with other Wordpress plugins that are also using the Google API PHP library.
+

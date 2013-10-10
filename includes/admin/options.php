@@ -100,7 +100,7 @@ function gpi_render_options_page() {
                 <?php if($options['alt_pagespeed_scan']) { ?>                
                     <p><?php _e('Settings Saved. Google Pagespeed Insights will now begin generating page reports. This page may appear to still be loading, however report generation will continue when you navigate away.', 'gpagespeedi'); ?></p>
                 <?php } else { ?>
-                    <p><?php _e('Settings Saved. Google Pagespeed Insights will now begin generating page reports.', 'gpagespeedi'); ?></p>
+                    <p><?php _e('Settings Saved. Google Pagespeed Insights will now begin generating page reports. Click the "Report List" tab to watch the progress', 'gpagespeedi'); ?></p>
                 <?php } ?>
             </div>
             <?php

@@ -10,10 +10,31 @@ if ( defined('GPI_ACTIVE') ){
 define('GPI_ACTIVE', true);
 
 //Fail fast if the WP version is unsupported. The $wp_version variable may be obfuscated by other
-//plugins, so use function detection to determine the version. get_post_stati was introduced in WP 3.0.0
+//plugins, so use function detection to determine the version. wp_editor was introduced in WP 3.3
 if ( !function_exists('wp_editor') ){
 	trigger_error(
-		__('This version of Google PageSpeed Insights requires WordPress 3.3 or later!', 'gpagespeedi'),
+		__('Google PageSpeed Insights requires WordPress 3.3 or later!', 'gpagespeedi'),
+		E_USER_ERROR
+	);
+}
+
+if ( !function_exists('curl_init') ) {
+	trigger_error(
+		__('Google Pagespeed Insights requires the CURL PHP extension', 'gpagespeedi'),
+		E_USER_ERROR
+	);
+}
+
+if ( !function_exists('json_decode') ) {
+	trigger_error(
+		__('Google Pagespeed Insights requires the JSON PHP extension', 'gpagespeedi'),
+		E_USER_ERROR
+	);
+}
+
+if ( !function_exists('http_build_query') ) {
+	trigger_error(
+		__('Google Pagespeed Insights requires http_build_query()', 'gpagespeedi'),
 		E_USER_ERROR
 	);
 }
