@@ -14,6 +14,8 @@
 	background-image: url(../images/button_icons.png);
 	background-position: 9px 2px;
 	background-repeat: no-repeat;
+	transition: none;
+	-webkit-transition: none;
 }
 .button-gpi.view:hover {
 	background-position: -174px 2px;
@@ -117,6 +119,7 @@ p.submit input[type="submit"] {
 	color: #454547;
 	font-size: 14px;
 	font-family: Arial, sans-serif;
+	background: #ffffff;
 }
 
 .toolbar {

@@ -3,7 +3,7 @@ Contributors: mattkeys
 Donate link: http://mattkeys.me/
 Tags: SEO, seo, performance, speed, google, search engine optimization, pagespeed, google page speed, page speed, pagespeed insights, google pagespeed insights
 Requires at least: 3.3
-Tested up to: 3.6.1
+Tested up to: 3.8
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -131,6 +131,13 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 == Changelog ==
 
+= 1.0.2 =
+* Tweaked styles to look better in the new WordPress 3.8 admin theme.
+* Fixed accidental use of some php shorttags (<? instead of <?php) that was causing activation errors for some. (Thank you bekar09 for first finding this error)
+* Tweaked ajax.js for better performance (Thanks to Pippin for the suggestion)
+* Tweaked use of get_pages() for better performance (Thanks to Pippin for the suggestion)
+* Fixed a number of php notices
+
 = 1.0.1 =
 * Fixed a potential conflict with other plugins that also utilize the Google API PHP library. The API is now only included if the Google_Client class does not already exist.
 * Added additional checking during plugin activation to fail fast if the server does not meet the minimum plugin requirements.
@@ -139,6 +146,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 * Initial Release
 
 == Upgrade Notice ==
+
+= 1.0.2 =
+Added better style support for Wordpress 3.8. Fixed a handful of bugs that were creating PHP notices and in some cases preventing activation.
 
 = 1.0.1 =
 This version fixes a potential conflict with other Wordpress plugins that are also using the Google API PHP library.

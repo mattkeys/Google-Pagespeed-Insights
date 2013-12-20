@@ -15,7 +15,7 @@ function gpi_render_details_page($default_strategy, $page_id){
 
     $gpi_options = $GPI_ListTable->getOptions();
 
-    $strategy = ($_GET['strategy']) ? $_GET['strategy'] : $default_strategy ;
+    $strategy = ( isset($_GET['strategy']) ) ? $_GET['strategy'] : $default_strategy ;
     $page_stats_column = $strategy . '_page_stats';
     $score_column = $strategy . '_score';
     $last_checked_column = $strategy . '_last_modified';
@@ -56,7 +56,7 @@ function gpi_render_details_page($default_strategy, $page_id){
 
         $gpi_page_reports = $wpdb->base_prefix . 'gpi_page_reports';
         $query2 = "
-            SELECT rule_key, rule_name, rule_score, rule_impact, rule_blocks
+            SELECT rule_key, rule_name, rule_impact, rule_blocks
             FROM $gpi_page_reports
             WHERE page_id = $page_id
             AND strategy = '$strategy'
@@ -82,8 +82,10 @@ function gpi_render_details_page($default_strategy, $page_id){
                         }
                     }
                     $report['rule_blocks'][$rule_key]['description'] = $report['rule_blocks'][$rule_key]['header']['format'];
-                    $report['rule_blocks'][$rule_key]['hyperlink']['url'] = $report['rule_blocks'][$rule_key]['header']['hyperlink'];
-                    $report['rule_blocks'][$rule_key]['hyperlink']['name'] = $report['rule_name'];
+                    if( isset( $report['rule_blocks'][$rule_key]['header']['hyperlink'] ) ) {
+                        $report['rule_blocks'][$rule_key]['hyperlink']['url'] = $report['rule_blocks'][$rule_key]['header']['hyperlink'];
+                        $report['rule_blocks'][$rule_key]['hyperlink']['name'] = $report['rule_name'];
+                    }
                     unset($report['rule_blocks'][$rule_key]['header']);
 
                     //Format description for each instance of broken rule
@@ -175,7 +177,8 @@ function gpi_render_details_page($default_strategy, $page_id){
                     'legend': 'none',
                     'tooltip': {trigger:'none'},
                     'backgroundColor':'transparent',
-                    'colors': ["#3366cc","#dc3912","#ff9900","#109618","#990099","#0099c6","#dd4477","#66aa00","#b82e2e","#316395","#994499","#22aa99","#aaaa11","#6633cc","#e67300","#8b0707","#651067","#329262","#5574a6","#3b3eac","#b77322","#16d620","#b91383","#f4359e","#9c5935","#a9c413","#2a778d","#668d1c","#bea413","#0c5922","#743411"]
+                    'colors': ["#3366cc","#dc3912","#ff9900","#109618","#990099","#0099c6","#dd4477","#66aa00","#b82e2e","#316395","#994499","#22aa99","#aaaa11","#6633cc","#e67300","#8b0707","#651067","#329262","#5574a6","#3b3eac","#b77322","#16d620","#b91383","#f4359e","#9c5935","#a9c413","#2a778d","#668d1c","#bea413","#0c5922","#743411"],
+                    'pieSliceTextStyle': {color: 'black', fontSize: 14}
                 };
 
                 // Instantiate and draw our chart, passing in some options.
@@ -248,7 +251,7 @@ function gpi_render_details_page($default_strategy, $page_id){
                             }
                             html = html + '</ul>';
                         }
-                        if(rule_blocks[i].hyperlink.url != null) {
+                        if(typeof rule_blocks[i].hyperlink != 'undefined') {
                             html = html + '<a class="rule_docs" href="' + rule_blocks[i].hyperlink.url + '" target="_blank" alt="<?php _e("Read Documentation", "gpagespeedi"); ?>" ><?php _e("Read Documentation", "gpagespeedi"); ?></a>';
                         }
                     }

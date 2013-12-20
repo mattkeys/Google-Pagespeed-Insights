@@ -15,7 +15,7 @@ function gpi_render_list_page(){
     $GPI_ListTable = new GPI_List_Table();
     $gpi_options = $GPI_ListTable->getOptions();
 
-    $post_per_page = ($_GET['post-per-page']) ? $_GET['post-per-page'] : 25 ;
+    $post_per_page = ( isset($_GET['post-per-page']) ) ? $_GET['post-per-page'] : 25 ;
 
     $GPI_ListTable->prepare_items(false, $report_filter, $post_per_page);
 
