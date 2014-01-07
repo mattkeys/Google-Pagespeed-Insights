@@ -16,7 +16,7 @@ function gpi_render_summary_page($default_strategy) {
     $gpi_options = $GPI_ListTable->getOptions();
 
     // Mobile or Desktop reports?
-    $strategy = ($_GET['strategy']) ? $_GET['strategy'] : $default_strategy;
+    $strategy = ( isset($_GET['strategy']) ) ? $_GET['strategy'] : $default_strategy;
     $score_column = $strategy . '_score';
     $page_stats_column = $strategy . '_page_stats';
 
@@ -50,11 +50,7 @@ function gpi_render_summary_page($default_strategy) {
     // Page Reports Query
     $reports_typestocheck = $GPI_ListTable->getTypesToCheck($filter);
     $gpi_page_reports = $wpdb->base_prefix . 'gpi_page_reports';
-    $reportsquery = "
-        SELECT r.rule_key, r.rule_name, r.rule_impact
-        FROM $gpi_page_stats as d, $gpi_page_reports as r 
-        WHERE $reports_typestocheck
-    ";
+
     if(!empty($reports_typestocheck)) {
 
         $allpagereports =   $wpdb->get_results(

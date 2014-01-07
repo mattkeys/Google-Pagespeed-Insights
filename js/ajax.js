@@ -1,7 +1,9 @@
 (function($) {
   $(document).ready(function(){
 
-  	if($('#gpi_status_ajax').length > 0) {
+	var gpi_check_status = $('#gpi_status_ajax');
+
+	if(gpi_check_status.length > 0) {
 		$.fn.gpiCheckStatus = function() {
 			$.post(
 				GPI_Ajax.ajaxurl,
@@ -17,18 +19,18 @@
 						return;
 					}
 					if(response == 'done') {
-						$('#gpi_status_ajax').hide();
+						gpi_check_status.hide();
 						$('#gpi_status_finished').show();
 						clearInterval(gpi_interval_id);
 					} else {
-						$('#gpi_status_ajax').html('<div class="loading_bar_shell"><div class="reportscore_outter_bar"><div class="reportscore_inner_bar" style="width:' + response + '%;"></div></div><span>' + response + '%</span></div>');
+						gpi_check_status.html('<div class="loading_bar_shell"><div class="reportscore_outter_bar"><div class="reportscore_inner_bar" style="width:' + response + '%;"></div></div><span>' + response + '%</span></div>');
 					}
 				}
 			);
 			return false;
-		}
+		};
 		var gpi_interval_id = setInterval(function() {
-			$('#gpi_status_ajax').gpiCheckStatus();
+			gpi_check_status.gpiCheckStatus();
 		}, 2000);
 	}
 

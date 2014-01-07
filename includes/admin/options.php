@@ -64,7 +64,8 @@ function gpi_render_options_page() {
                 'bad_api_key'               => false,
                 'pagespeed_disabled'        => false,
                 'new_ignored_items'         => false,
-                'backend_error'             => false
+                'backend_error'             => false,
+                'new_activation_message'    => false
             );
             update_option( 'gpagespeedi_options', $new_values );
 
@@ -94,10 +95,10 @@ function gpi_render_options_page() {
         $cpt_whitelist_arr = unserialize($options['cpt_whitelist']);
     ?>
     <?php if($_POST) { 
-        if(!$options['first_run_complete'] || $_POST['check_new_pages'] || $_POST['recheck_all_pages']) {
+        if(!$options['first_run_complete'] || isset($_POST['check_new_pages']) || isset($_POST['recheck_all_pages']) ) {
             ?>
             <div id="message" class="updated">
-                <?php if($options['alt_pagespeed_scan']) { ?>                
+                <?php if($options['scan_method'] == "session_flush") { ?>                
                     <p><?php _e('Settings Saved. Google Pagespeed Insights will now begin generating page reports. This page may appear to still be loading, however report generation will continue when you navigate away.', 'gpagespeedi'); ?></p>
                 <?php } else { ?>
                     <p><?php _e('Settings Saved. Google Pagespeed Insights will now begin generating page reports. Click the "Report List" tab to watch the progress', 'gpagespeedi'); ?></p>
@@ -139,7 +140,7 @@ function gpi_render_options_page() {
             </div>
             <div class="padded">
                 <p><?php _e('Google API Key:', 'gpagespeedi'); ?></p>
-                <input type="text" name="google_developer_key" id="google_developer_key" value="<?=$options['google_developer_key'];?>" class="googleapi code" />
+                <input type="text" name="google_developer_key" id="google_developer_key" value="<?php echo $options['google_developer_key'];?>" class="googleapi code" />
                 <p class="description"><span style="color:red;"><?php _e('This is required', 'gpagespeedi'); ?></span>: <?php _e('if you do not have an API key you can create a new one for free from', 'gpagespeedi'); ?>: <a href="https://code.google.com/apis/console" target="_blank">https://code.google.com/apis/console</a></p>
 
                 <p><?php _e('Google Response Language:', 'gpagespeedi'); ?></p>

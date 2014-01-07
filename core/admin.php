@@ -13,7 +13,7 @@ if(!class_exists('WP_List_Table')){
 class GPI_List_Table extends WP_List_Table {
     
     function __construct(){
-        global $status, $page;
+        global $status, $page, $hook_suffix;
                 
         //Set parent defaults
         parent::__construct( array(
@@ -141,6 +141,7 @@ class GPI_List_Table extends WP_List_Table {
         }
 
         if(!empty($typestocheck)) {
+            $types[0] = '';
             foreach($typestocheck as $type)
             {
                 if(!is_array($type)) {
@@ -271,7 +272,7 @@ class GPI_List_Table extends WP_List_Table {
     }
     
     // Setup available column types
-    function get_columns($ignored = false, $strategy){
+    function gpi_get_columns($ignored = false, $strategy){
         if($ignored) {
             $columns = array(
                 'cb'            => '<input type="checkbox" />', //Render a checkbox instead of text
@@ -368,24 +369,24 @@ class GPI_List_Table extends WP_List_Table {
         // Custom URLs Filter
         global $wpdb;
 
-        $post_per_page = ($_GET['post-per-page']) ? $_GET['post-per-page'] : 25 ;
+        $post_per_page = ( isset($_GET['post-per-page']) ) ? $_GET['post-per-page'] : 25 ;
 
         if ( 'top' == $which ) {
         ?>
 
             <div class="alignleft actions">
-                <?php if($_GET['render'] == "list" || $_GET['render'] == "summary") { ?>
+                <?php if( isset( $_GET['render'] ) && ( $_GET['render'] == "list" || $_GET['render'] == "summary") ) { ?>
                 <select name="filter" id="filter">
                     <option value="all"><?php _e('All Reports', 'gpagespeedi'); ?></option>
                     <?php if($gpi_options['check_pages']) { ?>
                         <option <?php if($report_filter == 'pages') { echo 'selected="selected"'; } ?> value="pages"><?php _e('Pages', 'gpagespeedi'); ?></option>
-                    <? } ?>
+                    <?php } ?>
                     <?php if($gpi_options['check_posts']) { ?>
                         <option <?php if($report_filter == 'posts') { echo 'selected="selected"'; } ?> value="posts"><?php _e('Posts', 'gpagespeedi'); ?></option>
-                    <? } ?>
+                    <?php } ?>
                     <?php if($gpi_options['check_categories']) { ?>
                         <option <?php if($report_filter == 'categories') { echo 'selected="selected"'; } ?> value="categories"><?php _e('Categories', 'gpagespeedi'); ?></option>
-                    <? } ?>
+                    <?php } ?>
                     <?php if($gpi_options['cpt_whitelist']) {
 
                         $cpt_whitelist_arr = false;
@@ -414,7 +415,7 @@ class GPI_List_Table extends WP_List_Table {
                     } ?>
                 </select>
                 <?php } ?>
-                <?php if($_GET['render'] != "summary") { ?>
+                <?php if( isset( $_GET['render'] ) && $_GET['render'] != "summary") { ?>
                 <select name="post-per-page" id="post-per-page">
                     <option value="25" <?php if($post_per_page == 25) {echo 'selected="selected"';} ?>><?php _e('25 Results/Page', 'gpagespeedi'); ?></option>
                     <option value="50" <?php if($post_per_page == 50) {echo 'selected="selected"';} ?>><?php _e('50 Results/Page', 'gpagespeedi'); ?></option>
@@ -439,7 +440,7 @@ class GPI_List_Table extends WP_List_Table {
         $gpi_options = $this->getOptions();
 
         // Setup Columns
-        $columns = $this->get_columns($ignored_query, $gpi_options['strategy']);
+        $columns = $this->gpi_get_columns($ignored_query, $gpi_options['strategy']);
         $hidden = array();
         $sortable = $this->get_sortable_columns($ignored_query);
         $this->_column_headers = array($columns, $hidden, $sortable);       
@@ -554,7 +555,7 @@ class GPI_List_Table extends WP_List_Table {
 
 function do_gpi_actions() {
 
-    if($_GET['page'] != 'google-pagespeed-insights') {
+    if(!isset($_GET['page']) || $_GET['page'] != 'google-pagespeed-insights') {
         return;
     }
 
@@ -616,7 +617,7 @@ function do_gpi_actions() {
         }
     }
 
-    $default_strategy = $_GET['strategy'];
+    $default_strategy = ( isset($_GET['strategy']) ) ? $_GET['strategy'] : false;
     if(!empty($default_strategy)) {
         if($default_strategy == 'mobile' || $default_strategy == 'desktop') {
             require_once GPI_DIRECTORY . '/core/core.php';

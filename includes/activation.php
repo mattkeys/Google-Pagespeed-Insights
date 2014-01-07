@@ -74,7 +74,6 @@ function gpi_setup_db(){
 	  strategy varchar(20) NOT NULL,
 	  rule_key varchar(200) NOT NULL,
 	  rule_name varchar(200) DEFAULT NULL,
-	  rule_score decimal(5,2) DEFAULT NULL,
 	  rule_impact decimal(5,2) DEFAULT NULL,
 	  rule_blocks longtext,
 	  PRIMARY KEY  (ID),

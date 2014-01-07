@@ -158,7 +158,10 @@ if (!class_exists('googlePagespeedInsights')) {
 						WHERE $where_column = $object_id
 					");
 					if($strategy == "desktop" || $strategy == "both") {
-						if((!empty($desktop_existing_url_info->desktop_last_modified) && ($time - $desktop_existing_url_info->desktop_last_modified) > $recheck_interval) || (empty($desktop_existing_url_info->desktop_last_modified) && (!empty($desktop_existing_url_info)) ) || !empty($urls_to_recheck) || $desktop_existing_url_info->force_recheck == 1 ) {
+						if((!empty($desktop_existing_url_info->desktop_last_modified) && ($time - $desktop_existing_url_info->desktop_last_modified) > $recheck_interval)
+							|| (empty($desktop_existing_url_info->desktop_last_modified) && (!empty($desktop_existing_url_info)) )
+							|| !empty($urls_to_recheck)
+							|| (!empty($desktop_existing_url_info->force_recheck) && $desktop_existing_url_info->force_recheck == 1 ) ) {
 							try{
 								$result = $service->pagespeedapi->runpagespeed($object_url, array('locale' => $this->gpi_options['response_language'], 'strategy' => 'desktop'));
 								if(!empty($result)) {
@@ -168,7 +171,6 @@ if (!class_exists('googlePagespeedInsights')) {
 										$result['type'] = $url_group_type;
 										$result[$where_column] = $object_id;
 										$result['last_modified'] = $time;
-										$result['force_recheck'] = 0;
 										$this->google_pagespeed_insights_Save_Values($result, $where_column, $object_id, $object_url, true, 'desktop');
 									}
 								}
@@ -199,7 +201,10 @@ if (!class_exists('googlePagespeedInsights')) {
 						WHERE $where_column = $object_id
 					");
 					if($strategy == "mobile" || $strategy == "both") {
-						if((!empty($mobile_existing_url_info->mobile_last_modified) && ($time - $mobile_existing_url_info->mobile_last_modified) > $recheck_interval) || (empty($mobile_existing_url_info->mobile_last_modified) && (!empty($mobile_existing_url_info)) ) || !empty($urls_to_recheck) || $mobile_existing_url_info->force_recheck == 1 ) {
+						if((!empty($mobile_existing_url_info->mobile_last_modified) && ($time - $mobile_existing_url_info->mobile_last_modified) > $recheck_interval)
+							|| (empty($mobile_existing_url_info->mobile_last_modified) && (!empty($mobile_existing_url_info)) )
+							|| !empty($urls_to_recheck)
+							|| (!empty($mobile_existing_url_info->force_recheck) && $mobile_existing_url_info->force_recheck == 1 ) ) {
 							try{
 								$result = $service->pagespeedapi->runpagespeed($object_url, array('locale' => $this->gpi_options['response_language'], 'strategy' => 'mobile'));
 								if(!empty($result)) {
@@ -209,7 +214,6 @@ if (!class_exists('googlePagespeedInsights')) {
 										$result['type'] = $url_group_type;
 										$result[$where_column] = $object_id;
 										$result['last_modified'] = $time;
-										$result['force_recheck'] = 0;
 										$this->google_pagespeed_insights_Save_Values($result, $where_column, $object_id, $object_url, true, 'mobile');
 									}
 								}
@@ -263,7 +267,7 @@ if (!class_exists('googlePagespeedInsights')) {
 			$gpi_page_stats_values[$where_column] = $result[$where_column];
 			$last_modified_column = $strategy . '_last_modified';
 			$gpi_page_stats_values[$last_modified_column] = $result['last_modified'];
-			$gpi_page_stats_values['force_recheck'] = $result['force_recheck'];
+			$gpi_page_stats_values['force_recheck'] = 0;
 			//Store Score, Response Code, and Page Statistics
 			if(isset($result['score'])) {
 				$score_column = $strategy . '_score';
@@ -300,7 +304,6 @@ if (!class_exists('googlePagespeedInsights')) {
 				$gpi_page_reports_values['strategy'] = $strategy;
 				$gpi_page_reports_values['rule_key'] = $rulename;
 				$gpi_page_reports_values['rule_name'] = $ruleset['localizedRuleName'];
-				$gpi_page_reports_values['rule_score'] = $ruleset['ruleScore'];
 				$gpi_page_reports_values['rule_impact'] = $ruleset['ruleImpact'];
 				if(isset($ruleset['urlBlocks'])) {
 					$gpi_page_reports_values['rule_blocks'] = serialize($ruleset['urlBlocks']);
@@ -389,13 +392,13 @@ if (!class_exists('googlePagespeedInsights')) {
 
 					if($cpt_whitelist_arr && in_array($custom_post_type, $cpt_whitelist_arr)) {
 						$x=0;
-						$custom_posts_array = get_posts( array('post_status' => 'publish', 'post_type' => $custom_post_type, 'posts_per_page' => -1) );
+						$custom_posts_array = get_posts( array('post_status' => 'publish', 'post_type' => $custom_post_type, 'posts_per_page' => -1, 'fields' => 'ids') );
 						foreach($custom_posts_array as $custom_post) {
-							$url = get_permalink($custom_post->ID);
+							$url = get_permalink($custom_post);
 							$blacklisted = $this->google_pagespeed_insights_Check_Blacklist($url, $blacklist_urls);
 							if(!$blacklisted) {
 								$urls_to_check[$custom_post_type][$x]['url'] = $url;
-								$urls_to_check[$custom_post_type][$x]['objectid'] = $custom_post->ID;
+								$urls_to_check[$custom_post_type][$x]['objectid'] = $custom_post;
 								$x++;
 							}
 						}
@@ -408,13 +411,13 @@ if (!class_exists('googlePagespeedInsights')) {
 			if($this->gpi_options['check_posts']) {
 			
 				$x=0;
-				$builtin_posts_array = get_posts( array('post_status' => 'publish', 'post_type' => 'post', 'posts_per_page' => -1) );
+				$builtin_posts_array = get_posts( array('post_status' => 'publish', 'post_type' => 'post', 'posts_per_page' => -1, 'fields' => 'ids') );
 				foreach($builtin_posts_array as $standard_post) {
-					$url = get_permalink($standard_post->ID);
+					$url = get_permalink($standard_post);
 					$blacklisted = $this->google_pagespeed_insights_Check_Blacklist($url, $blacklist_urls);
 					if(!$blacklisted) {
 						$urls_to_check['post'][$x]['url'] = $url;
-						$urls_to_check['post'][$x]['objectid'] = $standard_post->ID;
+						$urls_to_check['post'][$x]['objectid'] = $standard_post;
 						$x++;
 					}
 				}

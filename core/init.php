@@ -81,7 +81,7 @@ function gpi_register_languages_dir() {
  
     $lang_dir = GPI_DIRECTORY . '/languages';
      
-    load_plugin_textdomain('gpagespeedi', $lang_dir);
+    load_plugin_textdomain('gpagespeedi', '', $lang_dir);
  
 }
 add_action('plugins_loaded', 'gpi_register_languages_dir');
@@ -109,7 +109,7 @@ function gpi_admin_notice(){
 
 	global $gpi_options;
 
-	if(!$gpi_options['new_activation_message'])
+	if($gpi_options['new_activation_message'] == false)
 		return;
 	?>
     <div id="message" class="updated">
