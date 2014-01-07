@@ -6,9 +6,9 @@ if(!defined('GPI_DIRECTORY')) {
 
 function gpi_action_ignore_page($page_id, $page_report){
     global $wpdb;
-    $gpi_page_stats = $wpdb->base_prefix . 'gpi_page_stats';
-    $gpi_page_reports = $wpdb->base_prefix . 'gpi_page_reports';
-    $gpi_page_blacklist = $wpdb->base_prefix . 'gpi_page_blacklist';
+    $gpi_page_stats = $wpdb->prefix . 'gpi_page_stats';
+    $gpi_page_reports = $wpdb->prefix . 'gpi_page_reports';
+    $gpi_page_blacklist = $wpdb->prefix . 'gpi_page_blacklist';
 
     if(is_array($page_report) && !empty($page_report)) {
         // Build our where clauses for selecting and deleting URLs

@@ -7,7 +7,7 @@ if(!defined('GPI_DIRECTORY')) {
 function gpi_action_activate_page($page_id, $page_report){
 
     global $wpdb;
-    $gpi_page_blacklist = $wpdb->base_prefix . 'gpi_page_blacklist';
+    $gpi_page_blacklist = $wpdb->prefix . 'gpi_page_blacklist';
 
     if(is_array($page_report) && !empty($page_report)) {
 

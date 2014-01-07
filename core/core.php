@@ -352,7 +352,7 @@ if (!class_exists('googlePagespeedInsights')) {
 
 			global $wpdb;
 
-    		$gpi_page_blacklist = $wpdb->base_prefix . 'gpi_page_blacklist';
+    		$gpi_page_blacklist = $wpdb->prefix . 'gpi_page_blacklist';
 			$query = "
 				SELECT URL
 				FROM $gpi_page_blacklist

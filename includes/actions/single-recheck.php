@@ -10,7 +10,7 @@ function gpi_action_single_recheck_page($page_id){
 
     // If we are going to recheck this data, now is the time to do it
     if(!empty($page_id)) {
-        $gpi_page_stats = $wpdb->base_prefix . 'gpi_page_stats';
+        $gpi_page_stats = $wpdb->prefix . 'gpi_page_stats';
         $query = "
             SELECT URL, type, object_id, term_id
             FROM $gpi_page_stats

@@ -131,6 +131,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 == Changelog ==
 
+= 1.0.3 =
+* Tweaked interactions with WPDB so that it will properly get the table prefix for WordPress multisite installations.
+
 = 1.0.2 =
 * Tweaked styles to look better in the new WordPress 3.8 admin theme.
 * Fixed accidental use of some php shorttags (<? instead of <?php) that was causing activation errors for some. (Thank you bekar09 for first finding this error)
@@ -146,6 +149,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 * Initial Release
 
 == Upgrade Notice ==
+
+= 1.0.3 =
+Adding Support for WordPress Multisite
 
 = 1.0.2 =
 Added better style support for Wordpress 3.8. Fixed a handful of bugs that were creating PHP notices and in some cases preventing activation.

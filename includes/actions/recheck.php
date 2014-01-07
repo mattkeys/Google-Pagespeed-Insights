@@ -7,7 +7,7 @@ if(!defined('GPI_DIRECTORY')) {
 function gpi_action_recheck_page($page_id, $page_report){
 
     global $wpdb;
-    $gpi_page_stats = $wpdb->base_prefix . 'gpi_page_stats';
+    $gpi_page_stats = $wpdb->prefix . 'gpi_page_stats';
 
     if(is_array($page_report) && !empty($page_report)) {
 

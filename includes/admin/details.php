@@ -21,7 +21,7 @@ function gpi_render_details_page($default_strategy, $page_id){
     $last_checked_column = $strategy . '_last_modified';
 
     if(!empty($page_id)) {
-        $gpi_page_stats = $wpdb->base_prefix . 'gpi_page_stats';
+        $gpi_page_stats = $wpdb->prefix . 'gpi_page_stats';
         $query = "
             SELECT *
             FROM $gpi_page_stats
@@ -54,7 +54,7 @@ function gpi_render_details_page($default_strategy, $page_id){
             }
         }
 
-        $gpi_page_reports = $wpdb->base_prefix . 'gpi_page_reports';
+        $gpi_page_reports = $wpdb->prefix . 'gpi_page_reports';
         $query2 = "
             SELECT rule_key, rule_name, rule_impact, rule_blocks
             FROM $gpi_page_reports

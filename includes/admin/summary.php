@@ -31,7 +31,7 @@ function gpi_render_summary_page($default_strategy) {
 
     // Page Data Query
     $data_typestocheck = $GPI_ListTable->getTypesToCheck($filter);
-    $gpi_page_stats = $wpdb->base_prefix . 'gpi_page_stats';
+    $gpi_page_stats = $wpdb->prefix . 'gpi_page_stats';
     if(!empty($data_typestocheck)) {
 
         $allpagedata =  $wpdb->get_results(
@@ -49,7 +49,7 @@ function gpi_render_summary_page($default_strategy) {
 
     // Page Reports Query
     $reports_typestocheck = $GPI_ListTable->getTypesToCheck($filter);
-    $gpi_page_reports = $wpdb->base_prefix . 'gpi_page_reports';
+    $gpi_page_reports = $wpdb->prefix . 'gpi_page_reports';
 
     if(!empty($reports_typestocheck)) {
 
