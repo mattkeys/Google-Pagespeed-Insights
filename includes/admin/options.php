@@ -142,6 +142,7 @@ function gpi_render_options_page() {
                 <p><?php _e('Google API Key:', 'gpagespeedi'); ?></p>
                 <input type="text" name="google_developer_key" id="google_developer_key" value="<?php echo $options['google_developer_key'];?>" class="googleapi code" />
                 <p class="description"><span style="color:red;"><?php _e('This is required', 'gpagespeedi'); ?></span>: <?php _e('if you do not have an API key you can create a new one for free from', 'gpagespeedi'); ?>: <a href="https://code.google.com/apis/console" target="_blank">https://code.google.com/apis/console</a></p>
+                <p class="description"><?php _e('If you need help creating an API key, please see the documentation included with this plugin.', 'gpagespeedi'); ?>: <a href="http://mattkeys.me/documentation/google-pagespeed-insights/" target="_blank">Documentation</a></p>
 
                 <p><?php _e('Google Response Language:', 'gpagespeedi'); ?></p>
                 <select name="response_language" id="response_language">
