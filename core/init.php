@@ -79,9 +79,9 @@ add_filter('cron_schedules', 'gpi_cron_schedules');
 
 function gpi_register_languages_dir() {
  
-    $lang_dir = GPI_DIRECTORY . '/languages';
+    $lang_dir = 'google-pagespeed-insights/languages';
      
-    load_plugin_textdomain('gpagespeedi', '', $lang_dir);
+    load_plugin_textdomain('gpagespeedi', false, $lang_dir);
  
 }
 add_action('plugins_loaded', 'gpi_register_languages_dir');

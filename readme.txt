@@ -27,6 +27,11 @@ Check out the [Premium Edition](http://mattkeys.me/products/google-pagespeed-ins
 
 [Compare the Free and Premium versions](http://mattkeys.me/products/google-pagespeed-insights/#compare_table)
 
+= Additional Languages =
+
+Spanish Translation provided by: Ogi Djuraskovic from [firstsiteguide.com](http://firstsiteguide.com)
+Serbian Translation provided by: Ogi Djuraskovic from [firstsiteguide.com](http://firstsiteguide.com)
+
 = Detailed Page Reporting =
 
 Sort your page reports by their Page Speed Score to prioritize the largest areas of opportunity on your site. Page reports utilize easy to read visualizations that allow you to quickly focus in on the most important data to improve your sites performance.
@@ -131,6 +136,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 == Changelog ==
 
+= 1.0.4 =
+* Added Spanish and Serbian translations. Thank you Ogi Djuraskovic from [firstsiteguide.com](http://firstsiteguide.com) for providing these.
+
 = 1.0.3 =
 * Tweaked interactions with WPDB so that it will properly get the table prefix for WordPress multisite installations.
 
@@ -149,6 +157,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 * Initial Release
 
 == Upgrade Notice ==
+
+= 1.0.4 =
+Added Spanish and Serbian translations
 
 = 1.0.3 =
 Adding Support for WordPress Multisite
