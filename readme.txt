@@ -29,8 +29,8 @@ Check out the [Premium Edition](http://mattkeys.me/products/google-pagespeed-ins
 
 = Additional Languages =
 
-Spanish Translation provided by: Ogi Djuraskovic from [firstsiteguide.com](http://firstsiteguide.com)
-Serbian Translation provided by: Ogi Djuraskovic from [firstsiteguide.com](http://firstsiteguide.com)
+* Spanish Translation provided by: Ogi Djuraskovic from [firstsiteguide.com](http://firstsiteguide.com)
+* Serbian Translation provided by: Ogi Djuraskovic from [firstsiteguide.com](http://firstsiteguide.com)
 
 = Detailed Page Reporting =
 
