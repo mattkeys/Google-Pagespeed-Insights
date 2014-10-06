@@ -136,6 +136,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 == Changelog ==
 
+= 1.0.5 =
+* Fixed problem with temp directory used by Google API which was not writable on many shared hosting environments, and prevented the plugin from working properly. Replaced sys_get_temp_dir function with WordPress get_temp_dir function to resolve.
+
 = 1.0.4 =
 * Added Spanish and Serbian translations. Thank you Ogi Djuraskovic from [firstsiteguide.com](http://firstsiteguide.com) for providing these.
 
@@ -157,6 +160,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 * Initial Release
 
 == Upgrade Notice ==
+
+= 1.0.5 =
+Fixed problems preventing reports from running on many shared hosting environments
 
 = 1.0.4 =
 Added Spanish and Serbian translations

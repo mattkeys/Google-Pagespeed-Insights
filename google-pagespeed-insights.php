@@ -1,14 +1,14 @@
 <?php
 /**
  * @package google_pagespeed_insights
- * @version 1.0.4
+ * @version 1.0.5
  */
 /*
 Plugin Name: Google Pagespeed Insights
 Plugin URI: http://mattkeys.me
 Description: Google Pagespeed Insights
 Author: Matt Keys
-Version: 1.0.4
+Version: 1.0.5
 Author URI: http://mattkeys.me
 */
 
