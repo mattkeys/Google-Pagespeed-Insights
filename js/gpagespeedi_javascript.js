@@ -1,6 +1,4 @@
-var $ = jQuery;
-
-$(document).ready(function() {
+jQuery(document).ready(function($) {
 
 	$(".impact_chart_right a").hover(
 		function () {
