@@ -27,6 +27,10 @@ class GPI_List_Table extends WP_List_Table {
     // here for compatibility with 4.3
     function get_columns()
     {
+        // Get options
+        $gpi_options = $this->getOptions();
+
+        return $this->gpi_get_columns(false, false, false, $gpi_options['strategy']);
     }
 
     // humanTiming used to calculate time since last report check
