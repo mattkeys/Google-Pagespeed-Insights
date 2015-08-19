@@ -24,6 +24,11 @@ class GPI_List_Table extends WP_List_Table {
         
     }
     
+    // here for compatibility with 4.3
+    function get_columns()
+    {
+    }
+
     // humanTiming used to calculate time since last report check
     function humanTiming($time)
     {
@@ -272,7 +277,7 @@ class GPI_List_Table extends WP_List_Table {
     }
     
     // Setup available column types
-    function get_columns($ignored = false, $strategy){
+    function gpi_get_columns($ignored = false, $strategy){
         if($ignored) {
             $columns = array(
                 'cb'            => '<input type="checkbox" />', //Render a checkbox instead of text
@@ -440,7 +445,7 @@ class GPI_List_Table extends WP_List_Table {
         $gpi_options = $this->getOptions();
 
         // Setup Columns
-        $columns = $this->get_columns($ignored_query, $gpi_options['strategy']);
+        $columns = $this->gpi_get_columns($ignored_query, $gpi_options['strategy']);
         $hidden = array();
         $sortable = $this->get_sortable_columns($ignored_query);
         $this->_column_headers = array($columns, $hidden, $sortable);       
