@@ -3,7 +3,7 @@ Contributors: mattkeys
 Donate link: http://mattkeys.me/
 Tags: SEO, seo, performance, speed, google, search engine optimization, pagespeed, google page speed, page speed, pagespeed insights, google pagespeed insights
 Requires at least: 3.3
-Tested up to: 4.1
+Tested up to: 4.0
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -29,6 +29,7 @@ Check out the [Premium Edition](http://mattkeys.me/products/google-pagespeed-ins
 
 = Additional Languages =
 
+* Russian Translation provided by: Ivanka from [coupofy.com](http://coupofy.com)
 * Spanish Translation provided by: Ogi Djuraskovic from [firstsiteguide.com](http://firstsiteguide.com)
 * Serbian Translation provided by: Ogi Djuraskovic from [firstsiteguide.com](http://firstsiteguide.com)
 
@@ -136,6 +137,10 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 == Changelog ==
 
+= 1.0.6 =
+* Fixed error with WP_List_Table introduced with WordPress 4.3
+* Added Russian translation. Thank you Ivanka from [coupofy.com](http://coupofy.com)
+
 = 1.0.5 =
 * Fixed problem with temp directory used by Google API which was not writable on many shared hosting environments, and prevented the plugin from working properly. Replaced sys_get_temp_dir function with WordPress get_temp_dir function to resolve.
 
@@ -160,6 +165,10 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 * Initial Release
 
 == Upgrade Notice ==
+
+= 1.0.6 =
+Fixed error with WP_List_Table introduced with WordPress 4.3
+Added Russian translation. Thank you Ivanka from [coupofy.com](http://coupofy.com)
 
 = 1.0.5 =
 Fixed problems preventing reports from running on many shared hosting environments

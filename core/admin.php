@@ -49,7 +49,7 @@ class GPI_List_Table extends WP_List_Table {
     }
 
     function no_items() {
-        $pagetype = $_GET['render'];
+        $pagetype = isset( $_GET['render'] ) ? $_GET['render'] : 'list';
 
         switch($pagetype)
         {
@@ -272,7 +272,7 @@ class GPI_List_Table extends WP_List_Table {
     }
     
     // Setup available column types
-    function gpi_get_columns($ignored = false, $strategy){
+    function get_columns($ignored = false, $strategy){
         if($ignored) {
             $columns = array(
                 'cb'            => '<input type="checkbox" />', //Render a checkbox instead of text
@@ -440,7 +440,7 @@ class GPI_List_Table extends WP_List_Table {
         $gpi_options = $this->getOptions();
 
         // Setup Columns
-        $columns = $this->gpi_get_columns($ignored_query, $gpi_options['strategy']);
+        $columns = $this->get_columns($ignored_query, $gpi_options['strategy']);
         $hidden = array();
         $sortable = $this->get_sortable_columns($ignored_query);
         $this->_column_headers = array($columns, $hidden, $sortable);       
