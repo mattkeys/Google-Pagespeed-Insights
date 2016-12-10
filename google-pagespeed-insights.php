@@ -1,7 +1,7 @@
 <?php
 /**
  * @package google_pagespeed_insights
- * @version 1.0.6
+ * @version 1.0.7
  */
 /*
 Plugin Name: Google Pagespeed Insights

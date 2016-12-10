@@ -3,7 +3,7 @@ Contributors: mattkeys
 Donate link: http://mattkeys.me/
 Tags: SEO, seo, performance, speed, google, search engine optimization, pagespeed, google page speed, page speed, pagespeed insights, google pagespeed insights
 Requires at least: 3.3
-Tested up to: 4.6
+Tested up to: 4.7
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -59,7 +59,7 @@ Toggle back and forth between report types to see specific suggestions for impro
 
 = Configuration =
 
-An extended version of the folliowing instructions as well as other documentation are included in the "documentation" folder of this plugin.
+An extended version of the following instructions as well as other documentation are included in the "documentation" folder of this plugin.
 
 Google Pagespeed Insights requires a Google API Key. Keys are free and can be obtained from Google. In order to get a key, you will need a Google account such as a GMail account. If you do not already have a Google account you can create one here: https://accounts.google.com/SignUp.
 
@@ -131,11 +131,14 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 == Screenshots ==
 
 1. Filter reports by Pages, Posts, Category Indexes, or Custom Post Types. Sort Report Lists by Page Score to see your highest and lowest performing pages.
-2. Seperate reports for Desktop and Mobile page reports. Check each report to receive platform specific recommendations to increase your sites performance.
+2. Separate reports for Desktop and Mobile page reports. Check each report to receive platform specific recommendations to increase your sites performance.
 3. Configure Google Report Language, Report Types, and choose which Wordpress URLs to run reports on.
 4. View in-depth report details for recommendations on increasing your sites performance.
 
 == Changelog ==
+
+= 1.0.7 =
+* Fixed PHP7 incompatibilities
 
 = 1.0.6 =
 * Fixed error with WP_List_Table introduced with WordPress 4.3
@@ -165,6 +168,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 * Initial Release
 
 == Upgrade Notice ==
+
+= 1.0.7 =
+Fixed PHP7 incompatibilities
 
 = 1.0.6 =
 Fixed error with WP_List_Table introduced with WordPress 4.3

@@ -18,7 +18,7 @@ if (!class_exists('googlePagespeedInsights')) {
 		var $gpi_options;
 		var $execution_start_time;
 
-		function googlePagespeedInsights(&$gpi_options) {
+		function __construct(&$gpi_options) {
 
 			//Get Options (passed from init.php)
 			$this->gpi_options = &$gpi_options;
@@ -97,15 +97,7 @@ if (!class_exists('googlePagespeedInsights')) {
 			$max_execution_time = $this->gpi_options['max_execution_time'];
 
 			// Check for safe mode
-			if( $this->is_safe_mode() ){
-				// Use PHP.ini value. It isn't going to allow us to override it (BOO HISS!)
-				$t = ini_get('max_execution_time');
-				if ($t && ($t < $max_execution_time)) 
-					$max_execution_time = $t-1;
-			} else {
-				// Use max_execution_time set in settings.
-				@set_time_limit( $max_execution_time );
-			}
+			@set_time_limit( $max_execution_time );
 
 			//Don't stop the script when the connection is closed
 			ignore_user_abort(true);
@@ -534,21 +526,6 @@ if (!class_exists('googlePagespeedInsights')) {
 
 		function execution_time(){
 			return microtime_float() - $this->execution_start_time;
-		}
-
-		function is_safe_mode(){
-			$retval = true;
-		
-			if (function_exists('ini_get')) {
-				if (ini_get('safe_mode')==true) {
-					$retval = true;
-				} else {
-					$retval = false;
-				}
-			} else {
-				$retval = true;
-			}
-			return $retval;
 		}
 	}
 }
