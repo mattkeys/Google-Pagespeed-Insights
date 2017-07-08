@@ -1,4 +1,4 @@
-=== Google Pagespeed Insights Premium for Wordpress ===
+=== Google Pagespeed Insights ===
 Contributors: mattkeys
 Donate link: http://mattkeys.me/
 Tags: SEO, seo, performance, speed, google, search engine optimization, pagespeed, google page speed, page speed, pagespeed insights, google pagespeed insights
