@@ -17,7 +17,7 @@
 <body>
 	<div class="container">
 	
-		<h3 class="center alt">Google Pagespeed Insights for Wordpress v1.03 Documentation by Matt Keys</h3>
+		<h3 class="center alt">Google Pagespeed Insights for Wordpress v2.0 Documentation by Matt Keys</h3>
 		
 		<hr>
 		
@@ -32,7 +32,7 @@
 				<p class="prepend-top">
 					<strong>
 					Created: 09/28/2013<br>
-					Updated: 02/03/2014<br>
+					Updated: 03/18/2017<br>
 					By: Matt Keys<br>
 					<a href="http://mattkeys.me">mattkeys.me</a>
 					</strong>
@@ -88,40 +88,49 @@
 		<h4 style="color: red; font-weight: bold;">Required - Obtain and Enter a Google API Key:</h4>
 
 		<p>Google API Key's are free, and can be obtained from Google. In order to get a key, you will need a Google account such as a GMail account. If you do not already have a Google account you can create one here: <a href="https://accounts.google.com/SignUp" target="_blank">https://accounts.google.com/SignUp</a>.</p>
-		
-		<div style="text-align:center"><img style="border: 1px solid #ccc;" src="assets/images/api_key_1.png" alt="" /></div>
-		<p>Navigate to <a href="http://code.google.com/apis/console" target="_blank">http://code.google.com/apis/console</a>. If you are not already logged into your google account, log in now. Once logged in you should see the "create project" button. If you have already created a project you can skip ahead to enabling the PageSpeed Insights API.</p>
 
-		<div style="text-align:center"><img style="border: 1px solid #ccc;" src="assets/images/api_key_2.png" alt="" /></div>
-		<p>Google will have automaticly generated a Project name and Project ID for you. You can leave these as-is. You must agree to google's Terms of Service, then click "create".
+		<p><strong>Google often changes the layout and process involved in enabling their APIs and obtaining an API Key</strong>, but the general process stays the same.</p>
+		<ol>
+			<li>Login to <a href="http://code.google.com/apis/console" target="_blank">Google API Console</a></li>
+			<li>Create a new project</li>
+			<li>Enable the PageSpeed Insights API</li>
+			<li>Create an API Key</li>
+			<li>Paste the API Key into the Google PageSpeed Insights for WordPress options page</li>
+		</ol>
 
-		<div style="text-align:center"><img style="border: 1px solid #ccc;" src="assets/images/api_key_3.png" alt="" /></div>
-		<p>If this is a new account, google may require you to verify you are not a spammer by having them call or text your phone. You will be given a verification number that you must enter on the next screen to continue.</p>
+		<p>Below I will provide a more in depth step by step guide based on the current version Google API Console; <strong><em>but know that depending on when you are reading this guide, things may not look the way they do in my screenshots anymore, and in priciple you should be looking to follow the 5 basic steps outlined above.</em></strong></p>
 
-		<div style="text-align:center"><img style="border: 1px solid #ccc;" src="assets/images/api_key_5.png" alt="" /></div>
-		<p>If you had to verify your account, you will be directed back to this screen after verification, click create to continue.</p>
-
-		<div style="text-align:center"><img style="border: 1px solid #ccc;" src="assets/images/api_key_6.png" alt="" /></div>
-		<p>Google will now create your project, it took about 20 seconds or so on my computer until the project creation finished. After your project has been created, you can enable the google services you want to use. Find "PageSpeed Insights API" in the list, and click it.</p>
-
-		<div style="text-align:center"><img style="border: 1px solid #ccc;" src="assets/images/api_key_7.png" alt="" /></div>
-		<p>You must accept Google's Terms of Service to continue.</p>
-
-		<div style="text-align:center"><img style="border: 1px solid #ccc;" src="assets/images/api_key_8.png" alt="" /></div>
-		<p>Click the "Credentials" menu item from the left to move on to the API key creation. Click "Create New Key" under the Public API access area.</p>
-
-		<div style="text-align:center"><img style="border: 1px solid #ccc;" src="assets/images/api_key_9.png" alt="" /></div>
-		<p>Select "Browser key" from the key types.</p>
-
-		<div style="text-align:center"><img style="border: 1px solid #ccc;" src="assets/images/api_key_10.png" alt="" /></div>
-		<p>Google will ask you if you would like to limit the domains that are allowed to interact with this API key. This is optional, and I leave this field blank. Click Create to continue.</p>
-
-		<div style="text-align:center"><img style="border: 1px solid #ccc;" src="assets/images/api_key_11.png" alt="" /></div>
-		<p>You will now see the Alpha-Numeric API Key which we will need for the last step. Copy this key.</p>
-
-		<div style="text-align:center"><img style="border: 1px solid #ccc;" src="assets/images/api_key_12.png" alt="" /></div>
-		<p>Paste your API key into the Google Pagespeed Insights plugin, and Save.</p>
-
+		<ol>
+			<li><p>Navigate to <a href="https://console.developers.google.com" target="_blank">https://console.developers.google.com</a>. If you are not already logged into your google account, log in now.</p></li>
+			<li>
+				<p>Once logged in you should create a project. Name the project anything you'd like, such as: PageSpeed Insights. Agree to the terms and service if asked. It may take 10-20 seconds for the new project to be created, be patient. If you have already created a project previously that you want to use, select that project and skip ahead to enabling the PageSpeed Insights API.</p>
+				<div style="text-align:center"><img style="border: 1px solid #ccc;" src="assets/images/console_1.png" alt="" /></div>
+				<div style="text-align:center"><img style="border: 1px solid #ccc;" src="assets/images/console_2.png" alt="" /></div>
+			</li>
+			<li>
+				<p>After your project has been created, you can enable the google services you want to use from the API Library. Find / Search for "PageSpeed Insights API", and click it.</p>
+				<div style="text-align:center"><img style="border: 1px solid #ccc;" src="assets/images/console_3.png" alt="" /></div>
+			</li>
+			<li>
+				<p>Enable the PageSpeed Insights API</p>
+				<div style="text-align:center"><img style="border: 1px solid #ccc;" src="assets/images/console_4.png" alt="" /></div>
+			</li>
+			<li>
+				<p>Create credentials for using the PageSpeed API from the credentials page. The type of credentials that we want to make are "API Key".</p>
+				<div style="text-align:center"><img style="border: 1px solid #ccc;" src="assets/images/console_5.png" alt="" /></div>
+			</li>
+			<li>
+				<p>Google will generate an API Key for you to use, copy it to your clipboard, we will need it later. You can come back to the credentials page if you misplace it.</p>
+				<div style="text-align:center"><img style="border: 1px solid #ccc;" src="assets/images/console_6.png" alt="" /></div>
+			</li>
+			<li>
+				<p>Google will give you the option the restrict usage of your API Key. Be careful that you do not accidently add a restriction that will block your site form using this key. This is one of the most common causes for scans not running properly when people ask for support. I recommend that you first try the plugin without any restrictions to make sure that it is working as expected, and then consider adding restrictions if desired.</p>
+			</li>
+			<li>
+				<p>Paste your API key into the Google Pagespeed Insights plugin, and Save.</p>
+				<div style="text-align:center"><img style="border: 1px solid #ccc;" src="assets/images/console_7.png" alt="" /></div>
+			</li>
+		</ol>
 		<hr>
 		
 		<h3 id="recommended_configuration"><strong>D) Recommended Configuration</strong> - <a href="#toc">top</a></h3>
@@ -286,15 +295,14 @@
 		<ol>
 			<li>Google Pagespeed needs to be able to load each page to create its report. Make sure that your pages are publicly accessible over the internet.</li>
 			<li>Ensure that your API key is entered correctly, and that you have enabled the "PageSpeed Insights API" from the Google API Console.</li>
-			<li>If problems persist, your server may not support the default method used to check pages. There are two alternate methods available that you can try.
-				<ol>
-					<li>Navigate to the "Options" tab</li>
-					<li>Expand the "Advanced Configuration" section.</li>
-					<li>Find the "Scan Technique" dropdown</li>
-					<li>Try "Ajax" next, If problems persist try "Session Flush"</li>
-					<li>Click "Save Options &amp; Check Pages</li>
-				</ol>
-			</li>
+			<li>In the Options page, under "Advanced Configuration" there is a checkbox called "Log API Exceptions". Any API exception that is not caught and handled automatically will be stored for up to 7 days. This log information can be very helpful when diagnosing issues.</li>
+		</ol>
+
+		<p><strong>Page report checks never finish all of the way, I have to press "Save Options &amp; Check Pages" again and again to get it to finish checking all of my pages.</strong></p>
+
+		<ol>
+			<li>If the reports seem to always run for a certain length of time before stopping unexpectedly, you may be exceeding your servers Max Execution time. Try increasing the value in Options->Advanced Configuration "Maximum Execution Time".</li>
+			<li>Some web hosting providers do not allow the Maximum Execution Time to be overridden or increased. In that case you can try setting the Maximum Script Run Time. This will make the script run for the set period of time, then stop and spawn a new script, to get around timeout issues. Start with a low value, and test. Increase the value one step at a time until you find the largest value that allows your scans to finish successfully.</li>
 		</ol>
 
 		<p><strong>An error was reported while trying to check on of my pages, and it has been added to the Ignored Pages section.</strong></p>
@@ -310,22 +318,7 @@
 		<ol>
 			<li>If the error appeared while Google Pagespeed was checking pages, you may have loaded the page while it was storing data. Refresh the page in a couple seconds to see if the issue has gone away.</li>
 			<li>If issues persist please report the problem with as much information as you can gather, including: What page you were on, the exact text of the error, or a screenshot of the error.</li>
-			<li>In the Options page, under "Advanced Configuration" there is a checkbox called "Log API Exceptions". Any API exception that is not caught and handled automatically will be stored to a log file. This log information can be very helpful when diagnosing issues</li>
-		</ol>
-
-		<p><strong>Page report checks never finish all of the way, I have to press "Save Options &amp; Check Pages" again and again to get it to finish checking all of my pages.</strong></p>
-
-		<ol>
-			<li>If the reports seem to always run for a certain length of time before stopping unexpectedly, you may be exceeding your servers Max Execution time. Try increasing the value in Options->Advanced Configuration "Maximum Execution Time". Note: If PHP is running in safe mode your Max Execution time cannot be changed from this option, you may need to contact your server administrator for further assistance.</li>
-			<li>If problems persist, your server may not fully support the default method used to check pages. There are two alternate methods available that you can try.
-				<ol>
-					<li>Navigate to the "Options" tab</li>
-					<li>Expand the "Advanced Configuration" section.</li>
-					<li>Find the "Scan Technique" dropdown</li>
-					<li>Try "Ajax" next, If problems persist try "Session Flush"</li>
-					<li>Click "Save Options &amp; Check Pages</li>
-				</ol>
-			</li>
+			<li>In the Options page, under "Advanced Configuration" there is a checkbox called "Log API Exceptions". Any API exception that is not caught and handled automatically will be logged for up to 7 days. This log information can be very helpful when diagnosing issues</li>
 		</ol>
 
 		<p><strong>My Page Scores seem really low. When I click "Recheck Results" when viewing Report Details, the score jumps up dramatically.</strong></p>
