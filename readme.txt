@@ -112,6 +112,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 == Changelog ==
 
+= 2.0.1 =
+* Removed phpseclib unit tests from Google PHP API library to avoid false-positive with WordFence
+
 = 2.0 =
 * Major rewrite for better compatibility and performance
 * Updated to the latest Google Pagespeed Insights API verison and library
@@ -152,6 +155,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 * Initial Release
 
 == Upgrade Notice ==
+
+= 2.0.1 =
+* Removed phpseclib unit tests from Google PHP API library to avoid false-positive with WordFence
 
 = 2.0 =
 * Major rewrite for better compatibility and performance
