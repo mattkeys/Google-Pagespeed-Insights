@@ -44,6 +44,8 @@ class GPI_Admin
 		add_filter( 'gpi_custom_post_types', array( $this, 'get_custom_post_types' ), 10, 1 );
 		add_filter( 'gpi_summary_stats', array( $this, 'get_summary_stats' ), 10, 1 );
 		add_filter( 'gpi_summary_reports', array( $this, 'get_summary_reports' ), 10, 1 );
+
+		load_plugin_textdomain( 'gpagespeedi', false, 'google-pagespeed-insights/translations' );
 	}
 
 	public function upgrade_check()

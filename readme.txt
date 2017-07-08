@@ -16,6 +16,12 @@ Google Pagespeed Insights is a tool that empowers you to make decisions that inc
 
 Through the addition of advanced data visualization, tagging, filtering, and snapshot technology, Google Pagespeed Insights for Wordpress provides a comprehensive solution for any webmaster looking to increase their site performance, their search engine ranking, and their visitors browsing experience.
 
+= Additional Languages =
+
+* (v1.x translation) Russian Translation provided by: Ivanka from [coupofy.com](http://coupofy.com)
+* (v1.x translation) Spanish Translation provided by: Ogi Djuraskovic from [firstsiteguide.com](http://firstsiteguide.com)
+* (v1.x translation) Serbian Translation provided by: Ogi Djuraskovic from [firstsiteguide.com](http://firstsiteguide.com)
+
 = Detailed Page Reporting =
 
 Sort your page reports by their Page Speed Score to prioritize the largest areas of opportunity on your site. Page reports utilize easy to read visualizations that allow you to quickly focus in on the most important data to improve your sites performance.
