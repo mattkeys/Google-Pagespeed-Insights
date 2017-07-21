@@ -60,7 +60,7 @@ class GPI_Core
 		$this->googlepagespeedinsightsworker( array(), $force_recheck_all_urls, $timeout_respawn );
 	}
 
-	public function cron_schedules()
+	public function cron_schedules( $schedules )
 	{
 		if ( ! isset( $schedules['gpi_scheduled_interval'] ) ) {
 			$schedules['gpi_scheduled_interval'] = array(
