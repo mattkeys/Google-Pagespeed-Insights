@@ -48,6 +48,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 			?>
 		</form>
 	</div>
+	<div class="alignleft actions">
+		<form method="post" action="" id="savesnapshot" name="savesnapshot">
+			<input type="hidden" name="page" value="<?php echo $_REQUEST['page']; ?>" />
+			<input type="hidden" name="render" value="summary" />
+			<input type="hidden" name="action" value="save-snapshot" />
+			<input type="text" name="comment" placeholder="<?php _e( 'Report Description', 'gpagespeedi' ); ?>" value="" />
+			<?php
+				wp_nonce_field( 'gpi_save_snapshot' );
+				submit_button( __( 'Save Report Snapshot', 'gpagespeedi' ), 'button', 'save-snapshot', false );
+			?>
+		</form>
+	</div>
+
 	<?php do_action( 'gpi_summary_tablenav' ); ?>
 
 	<br class="clear">

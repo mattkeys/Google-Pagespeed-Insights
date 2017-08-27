@@ -110,6 +110,8 @@ class GPI_Activation
 		$gpi_page_stats_table			= $wpdb->prefix . 'gpi_page_stats';
 		$gpi_page_reports_table			= $wpdb->prefix . 'gpi_page_reports';
 		$gpi_page_blacklist_table		= $wpdb->prefix . 'gpi_page_blacklist';
+		$gpi_custom_urls_table			= $wpdb->prefix . 'gpi_custom_urls';
+		$gpi_summary_snapshots_table	= $wpdb->prefix . 'gpi_summary_snapshots';
 		$gpi_api_error_logs_table		= $wpdb->prefix . 'gpi_api_error_logs';
 
 		$charset_collate = $wpdb->get_charset_collate();
@@ -157,6 +159,24 @@ class GPI_Activation
 			PRIMARY KEY  (ID)
 		) $charset_collate;";
 
+		$gpi_custom_urls = "CREATE TABLE $gpi_custom_urls_table (
+			ID bigint(20) NOT NULL AUTO_INCREMENT,
+			URL text NULL,
+			type varchar(200) DEFAULT NULL,
+			PRIMARY KEY  (ID)
+		) $charset_collate;";
+
+		$gpi_summary_snapshots = "CREATE TABLE $gpi_summary_snapshots_table (
+			ID bigint(20) NOT NULL AUTO_INCREMENT,
+			strategy varchar(20) NOT NULL,
+			type varchar(200) DEFAULT NULL,
+			snaptime varchar(20) NOT NULL,
+			comment varchar(200) DEFAULT NULL,
+			summary_stats longtext,
+			summary_reports longtext,
+			PRIMARY KEY  (ID)
+		) $charset_collate;";
+
 		$gpi_api_error_logs = "CREATE TABLE $gpi_api_error_logs_table (
 			ID bigint(20) NOT NULL AUTO_INCREMENT,
 			URL text NULL,
@@ -171,6 +191,8 @@ class GPI_Activation
 		dbDelta( $gpi_page_stats );
 		dbDelta( $gpi_page_reports );
 		dbDelta( $gpi_page_blacklist );
+		dbDelta( $gpi_custom_urls );
+		dbDelta( $gpi_summary_snapshots );
 		dbDelta( $gpi_api_error_logs );
 	}
 

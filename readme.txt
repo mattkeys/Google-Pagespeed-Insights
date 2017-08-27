@@ -4,7 +4,7 @@ Donate link: http://mattkeys.me/
 Tags: SEO, seo, performance, speed, google, search engine optimization, pagespeed, google page speed, page speed, pagespeed insights, google pagespeed insights
 Requires at least: 3.6
 Tested up to: 4.8
-Stable tag: trunk
+Stable tag: 2.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ Use Google Pagespeed Insights to increase your sites performance, your search en
 
 Google Pagespeed Insights is a tool that empowers you to make decisions that increase the performance of your website. Recommendations from Google Pagespeed are based upon current industry best practices for desktop and mobile web performance.
 
-Through the addition of advanced data visualization, tagging, filtering, and snapshot technology, Google Pagespeed Insights for Wordpress provides a comprehensive solution for any webmaster looking to increase their site performance, their search engine ranking, and their visitors browsing experience.
+Through the addition of advanced data visualization, tagging, filtering, and snapshot technology, Google Pagespeed Insights for WordPress provides a comprehensive solution for any webmaster looking to increase their site performance, their search engine ranking, and their visitors browsing experience.
 
 = Additional Languages =
 
@@ -38,11 +38,35 @@ Best practices for site performance differ greatly between Desktop and Mobile de
 
 Toggle back and forth between report types to see specific suggestions for improving the performance and experience on each platform.
 
+= Report Snapshots =
+
+The Report Snapshot tool builds on the power of Report Summaries, to provide historical “Point In Time” data about your website.
+
+Take a snapshot of any Report Summary screen to store that data for future retrieval. Add comments to your snapshots to provide additional meaning, such as “Before Installing W3 Total Cache.” Additionally, filter a Report Summary before taking a Snapshot to save a summary of the filtered data.
+
+= Snapshot Comparison Tool =
+
+The Snapshot Comparison Tool is an amazing utility that lets you visualize side-by-side results from any two similar Report Snapshots.
+
+Take a Report Snapshot before installing new plugins, or before implementing performance recommendations. Take another snapshot when you are finished and compare your results to measure the effect of your changes.
+
+= Add/Import Custom URLs =
+
+Easily add additional URLs for inclusion in Pagespeed Reports. Even add URLs for non-WordPress sites, even if they are not hosted on your server. URLs can be added manually, or upload a properly formatted XML sitemap to add multiple pages at once.
+
+Custom URLs can be tagged and filtered in Report Summaries. Take Report Snapshots of your Custom URLs just like you would with any other report type.
+
+= Scheduled Report Checks =
+
+Configure Google Pagespeed Insights for WordPress to automatically recheck your site on a Daily, Weekly, Bi-Monthly, or Monthly basis.
+
+With each scan, any new pages or posts will be discovered, and existing reports will be updated to reflect any changes to your site, as well as any changes in the Pagespeed recommendations.
+
 == Installation ==
 
-1. Login to your Wordpress Admin page (usually http://yourdomain.com/wp-admin)
+1. Login to your WordPress Admin page (usually http://yourdomain.com/wp-admin)
 2. Navigate to the Plugins screen and then click the "Add New" button
-3. Click on the "Upload" link near the top of the page and browse for the Google Pagespeed Insights for Wordpress zip file
+3. Click on the "Upload" link near the top of the page and browse for the Google Pagespeed Insights for WordPress zip file
 4. Upload the file, and click "Activate Plugin" after the installation completes
 5. Congratulations, installation is complete; proceed to configuration.
 
@@ -55,7 +79,7 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 1. Navigate to https://code.google.com/apis/console
 2. Login with your Google Account (Create a Google account if you do not have one)
 3. Create a new API Key and enable the Google Pagespeed Insights API* (see note about restrictions)
-4. Paste your API Key into the Options page of Google Pagespeed Insights for Wordpress
+4. Paste your API Key into the Options page of Google Pagespeed Insights for WordPress
 
 * Try first creating the API key without any 'restrictions'. In my testing there seems to be a bug with using restricitons with the Pagespeed API.
 
@@ -107,10 +131,14 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 1. Filter reports by Pages, Posts, Category Indexes, or Custom Post Types. Sort Report Lists by Page Score to see your highest and lowest performing pages.
 2. Seperate reports for Desktop and Mobile page reports. Check each report to receive platform specific recommendations to increase your sites performance.
-3. Configure Google Report Language, Report Types, and choose which Wordpress URLs to run reports on.
+3. Configure Google Report Language, Report Types, and choose which WordPress URLs to run reports on.
 4. View in-depth report details for recommendations on increasing your sites performance.
 
 == Changelog ==
+
+= 3.0.0 =
+* Includes all previously "premium" functionality for free. This includes report snapshots, snapshot comparison tool, custom URL reporting, and scheduled report checks.
+* Added in URL hotlinking in report details for paths to assets (images/scripts/etc)
 
 = 2.0.3 =
 * Updating to latest google api php library 2.2.0 to resolve issues with PHP 7.1
@@ -121,7 +149,7 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 = 2.0.1 =
 * Removed phpseclib unit tests from Google PHP API library to avoid false-positive with WordFence
 
-= 2.0 =
+= 2.0.0 =
 * Major rewrite for better compatibility and performance
 * Updated to the latest Google Pagespeed Insights API verison and library
 * Fixed issues with bulk installers not generating DB tables
@@ -162,6 +190,10 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 == Upgrade Notice ==
 
+= 3.0.0 =
+* Includes all previously "premium" functionality for free. This includes report snapshots, snapshot comparison tool, custom URL reporting, and scheduled report checks.
+* Added in URL hotlinking in report details for paths to assets (images/scripts/etc)
+
 = 2.0.3 =
 * Updating to latest google api php library 2.2.0 to resolve issues with PHP 7.1
 
@@ -171,7 +203,7 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 = 2.0.1 =
 * Removed phpseclib unit tests from Google PHP API library to avoid false-positive with WordFence
 
-= 2.0 =
+= 2.0.0 =
 * Major rewrite for better compatibility and performance
 * Updated to the latest Google Pagespeed Insights API verison and library
 * Fixed issues with bulk installers not generating DB tables

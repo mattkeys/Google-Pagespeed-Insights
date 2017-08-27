@@ -52,10 +52,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<p><strong><?php _e( 'This referrer or IP address is restricted from using your API Key. To change your API Key restrictions, please visit the', 'gpagespeedi' ); ?> <a href="https://code.google.com/apis/console/" target="_blank"><?php _e( 'Google API Console', 'gpagespeedi' ); ?></a></strong>.</p>
 	</div>
 <?php endif; ?>
-<?php if ( $action_message = $this->gpi_ui_options['action_message'] ) : ?>
-	<div id="message" class="updated">
-		<p><?php echo $action_message; ?></p>
-	</div>
+<?php if ( $action_message = $this->gpi_ui_options['action_message'] ) :
+		if ( ! is_array( $action_message ) ) : ?>
+			<div id="message" class="updated">
+				<p><?php echo $action_message; ?></p>
+			</div>
+		<?php elseif ( isset( $action_message['type'] ) && isset( $action_message['message'] ) ) : ?>
+			<div id="message" class="<?php echo $action_message['type']; ?>">
+				<p><?php echo $action_message['message']; ?></p>
+			</div>
+		<?php endif; ?>
 <?php endif; ?>
 <?php if ( $error_message = get_option('gpi_error_message') ) : ?>
 	<div id="message" class="error">

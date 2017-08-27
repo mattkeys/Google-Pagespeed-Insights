@@ -692,6 +692,9 @@ class GPI_Core
 					$format = str_replace( '{{END_LINK}}', '</a>', $format );
 					break;
 
+				case 'URL':
+					$format = str_replace( '{{URL}}', '<a href="' . $value . '" target="_blank">' . $value . '</a>', $format );
+
 				default:
 					$format = str_replace( '{{' . $key . '}}', $value, $format );
 					break;

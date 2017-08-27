@@ -22,11 +22,15 @@ class GPI_Uninstall
 		$gpi_page_stats			= $wpdb->prefix . 'gpi_page_stats';
 		$gpi_page_reports		= $wpdb->prefix . 'gpi_page_reports';
 		$gpi_page_blacklist		= $wpdb->prefix . 'gpi_page_blacklist';
+		$gpi_custom_urls		= $wpdb->prefix . 'gpi_custom_urls';
+		$gpi_summary_snapshots	= $wpdb->prefix . 'gpi_summary_snapshots';
 		$gpi_api_error_logs		= $wpdb->prefix . 'gpi_api_error_logs';
 	 
 		$wpdb->query( "DROP TABLE $gpi_page_stats" );
 		$wpdb->query( "DROP TABLE $gpi_page_reports" );
 		$wpdb->query( "DROP TABLE $gpi_page_blacklist" );
+		$wpdb->query( "DROP TABLE $gpi_custom_urls" );
+		$wpdb->query( "DROP TABLE $gpi_summary_snapshots" );
 		$wpdb->query( "DROP TABLE $gpi_api_error_logs" );
 
 		delete_option('gpagespeedi_options');
@@ -35,6 +39,7 @@ class GPI_Uninstall
 		delete_option('gpi_progress');
 
 		wp_clear_scheduled_hook( 'gpi_prune_logs' );
+		wp_clear_scheduled_hook( 'googlepagespeedinsightsworker' );
 	}
 
 }

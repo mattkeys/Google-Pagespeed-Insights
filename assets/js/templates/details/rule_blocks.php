@@ -5,7 +5,7 @@
 		<h3>{{{data[ i ].header}}}</h3>
 		<ul>
 			<# for (x = 0; x < data[ i ].urls.length; x++ ) { #>
-				<li>{{data[ i ].urls[x]}}</li>
+				<li>{{{data[ i ].urls[x]}}}</li>
 			<# } #>
 		</ul>
 	<# } #>

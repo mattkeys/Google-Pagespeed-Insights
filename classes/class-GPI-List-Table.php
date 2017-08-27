@@ -55,6 +55,16 @@ class GPI_List_Table extends WP_List_Table
 				$this->db_columns	= array( 'ID', 'URL', 'type' );
 				break;
 
+			case 'snapshots':
+				$this->table		= $wpdb->prefix . 'gpi_summary_snapshots';
+				$this->db_columns	= array( 'ID', 'strategy', 'type', 'snaptime', 'comment' );
+				break;
+
+			case 'custom-urls':
+				$this->table		= $wpdb->prefix . 'gpi_custom_urls';
+				$this->db_columns	= array( 'ID', 'URL', 'type' );
+				break;
+
 			case apply_filters( 'gpi_list_table_custom_case_1_type', 'reserved_for_internal_use' ):
 				$this->table		= apply_filters( 'gpi_list_table_custom_case_1_table', 'reserved_for_internal_use' );
 				$this->db_columns	= apply_filters( 'gpi_list_table_custom_case_1_db_columns', 'reserved_for_internal_use' );
@@ -70,19 +80,9 @@ class GPI_List_Table extends WP_List_Table
 				$this->db_columns	= apply_filters( 'gpi_list_table_custom_case_3_db_columns', 'reserved_for_internal_use' );
 				break;
 
-			case apply_filters( 'gpi_list_table_custom_case_4_type', 'reserved_for_internal_use' ):
-				$this->table		= apply_filters( 'gpi_list_table_custom_case_4_table', 'reserved_for_internal_use' );
-				$this->db_columns	= apply_filters( 'gpi_list_table_custom_case_4_db_columns', 'reserved_for_internal_use' );
-				break;
-
-			case apply_filters( 'gpi_list_table_custom_case_5_type', 'reserved_for_internal_use' ):
-				$this->table		= apply_filters( 'gpi_list_table_custom_case_5_table', 'reserved_for_internal_use' );
-				$this->db_columns	= apply_filters( 'gpi_list_table_custom_case_5_db_columns', 'reserved_for_internal_use' );
-				break;
-
-			case apply_filters( 'gpi_list_table_custom_case_6_type', 'available_for_custom_integration' ):
-				$this->table		= apply_filters( 'gpi_list_table_custom_case_6_table', 'available_for_custom_integration' );
-				$this->db_columns	= apply_filters( 'gpi_list_table_custom_case_6_db_columns', 'available_for_custom_integration' );
+			case apply_filters( 'gpi_list_table_custom_case_4_type', 'available_for_custom_integration' ):
+				$this->table		= apply_filters( 'gpi_list_table_custom_case_4_table', 'available_for_custom_integration' );
+				$this->db_columns	= apply_filters( 'gpi_list_table_custom_case_4_db_columns', 'available_for_custom_integration' );
 				break;
 
 			default:
@@ -150,6 +150,14 @@ class GPI_List_Table extends WP_List_Table
 				_e( 'No Ignored URLs found. A URL can be ignored from the <a href="?page=' . $_REQUEST['page'] . '&render=report-list">Report List</a> page if you would like to remove it from report pages', 'gpagespeedi' );
 				break;
 
+			case 'snapshots':
+				_e( 'No Snapshots found. Snapshots can be created from the', 'gpagespeedi' ) . ' ' . '<a href="?page=' . $_REQUEST['page'] . '&render=summary">' . __( 'Report Summary', 'gpagespeedi' ) . '</a>' . ' ' . __( 'page', 'gpagespeedi' ) . '.';
+				break;
+
+			case 'custom-urls':
+				_e( 'No Custom URLs found. Click "Add New URLs" or "Bulk Upload New URLs" above to add custom URLs.', 'gpagespeedi' );
+				break;
+
 			case apply_filters( 'gpi_list_table_custom_case_1_type', 'reserved_for_internal_use' ):
 				echo apply_filters( 'gpi_list_table_custom_case_1_no_items', 'reserved_for_internal_use' );
 				break;
@@ -162,16 +170,8 @@ class GPI_List_Table extends WP_List_Table
 				echo apply_filters( 'gpi_list_table_custom_case_3_no_items', 'reserved_for_internal_use' );
 				break;
 
-			case apply_filters( 'gpi_list_table_custom_case_4_type', 'reserved_for_internal_use' ):
-				echo apply_filters( 'gpi_list_table_custom_case_4_no_items', 'reserved_for_internal_use' );
-				break;
-
-			case apply_filters( 'gpi_list_table_custom_case_5_type', 'reserved_for_internal_use' ):
-				echo apply_filters( 'gpi_list_table_custom_case_5_no_items', 'reserved_for_internal_use' );
-				break;
-
-			case apply_filters( 'gpi_list_table_custom_case_6_type', 'available_for_custom_integration' ):
-				echo apply_filters( 'gpi_list_table_custom_case_6_no_items', 'available_for_custom_integration' );
+			case apply_filters( 'gpi_list_table_custom_case_4_type', 'available_for_custom_integration' ):
+				echo apply_filters( 'gpi_list_table_custom_case_4_no_items', 'available_for_custom_integration' );
 				break;
 
 			default:
@@ -218,6 +218,49 @@ class GPI_List_Table extends WP_List_Table
 			case 'type':
 				return $item[ $column_name ];
 
+			case 'custom_url':
+				$actions = array(
+					'delete'    => sprintf( '?page=%s&render=%s&action=%s&page_id=%s', $_REQUEST['page'], 'custom-urls', 'delete', $item['ID'] ),
+					'visit'     => sprintf( '<a href="%s" target="_blank">%s</a>', $item['URL'], __( 'View URL', 'gpagespeedi' ) )
+				);
+				
+				$nonced_url = wp_nonce_url( $actions['delete'], 'bulk-gpi_page_reports' );
+				$actions['delete'] = '<a href="' . $nonced_url . '">' . __( 'Delete', 'gpagespeedi') . '</a>';
+
+				return sprintf( '%1$s %2$s',
+					$item['URL'],
+					$this->row_actions( $actions )
+				);
+
+			case 'snaptime':
+				$date = $item['snaptime'];
+				$date = date( 'M d, Y - h:i a', $date );
+
+				$actions = array(
+					'delete'    => sprintf( '?page=%s&render=%s&action=%s&snapshot_id=%s' ,$_REQUEST['page'], 'snapshots', 'delete-snapshot', $item['ID'] ),
+					'view'      => sprintf( '<a href="?page=%s&render=%s&snapshot_id=%s">%s</a>' , $_REQUEST['page'], 'view-snapshot', $item['ID'], __( 'View Snapshot', 'gpagespeedi' ) )
+				);
+				
+				$nonced_url = wp_nonce_url( $actions['delete'], 'bulk-gpi_page_reports' );
+				$actions['delete'] = '<a href="' . $nonced_url . '">' . __('Delete', 'gpagespeedi') . '</a>';
+
+
+				return sprintf( '<a href="?page=%1$s&render=%2$s&snapshot_id=%3$s">%4$s</a> %5$s',
+					$_REQUEST['page'],
+					'view-snapshot',
+					$item['ID'],
+					$date,
+					$this->row_actions( $actions )
+				);
+
+			case 'snapfilter':
+				$filter = $item['type'];
+				$filter_search = array( 'all', 'page', 'post', 'category', 'gpi_custom_posts-', 'gpi_custom_urls-', 'gpi_custom_posts', 'gpi_custom_urls' );
+				$filter_replace = array( __( 'All Reports', 'gpagespeedi' ), __( 'Pages', 'gpagespeedi' ), __( 'Posts', 'gpagespeedi' ), __( 'Categories', 'gpagespeedi' ), '', '', __( 'All Custom Post Types', 'gpagespeedi' ), __( 'All Custom URLs', 'gpagespeedi' ) );
+				$cleaned_filter = str_replace( $filter_search, $filter_replace, $filter );
+
+				return $cleaned_filter;
+
 			case apply_filters( 'gpi_custom_column', $column_name ):
 				return apply_filters( 'gpi_custom_column_config', $column_name, $item );
 
@@ -241,11 +284,11 @@ class GPI_List_Table extends WP_List_Table
 		$actions['delete_report'] = '<a href="' . wp_nonce_url( $actions['delete_report'], 'bulk-gpi_page_reports' ) . '">'.__( 'Delete', 'gpagespeedi' ) . '</a>';
 
 		return sprintf( '<a href="?page=%3$s&render=%4$s&page_id=%5$s">%1$s</a> %2$s',
-			/*$1%s*/ $cleaned_url,
-			/*$2%s*/ $this->row_actions($actions),
-			/*$3%s*/ $_REQUEST['page'],
-			/*$4%s*/ 'details',
-			/*$5%s*/ $item['ID']
+			$cleaned_url,
+			$this->row_actions( $actions ),
+			$_REQUEST['page'],
+			'details',
+			$item['ID']
 		);
 	}
 
@@ -263,8 +306,8 @@ class GPI_List_Table extends WP_List_Table
 		$actions['delete_blacklist'] = '<a href="' . wp_nonce_url( $actions['delete_blacklist'], 'bulk-gpi_page_reports' ) . '">'.__( 'Delete', 'gpagespeedi' ) . '</a>';
 
 		return sprintf( '%1$s %2$s',
-			/*$1%s*/ $cleaned_url,
-			/*$2%s*/ $this->row_actions( $actions )
+			$cleaned_url,
+			$this->row_actions( $actions )
 		);
 	}
 
@@ -298,8 +341,8 @@ class GPI_List_Table extends WP_List_Table
 	{
 		return sprintf(
 			'<input type="checkbox" name="%1$s[]" value="%2$s" />',
-			/*$1%s*/ $this->_args['singular'],
-			/*$2%s*/ $item['ID']
+			$this->_args['singular'],
+			$item['ID']
 		);
 	}
 
@@ -310,6 +353,24 @@ class GPI_List_Table extends WP_List_Table
 				$columns = array(
 					'cb'			=> '<input type="checkbox" />',
 					'ignored_url'	=> __( 'Ignored URL', 'gpagespeedi' ),
+					'type'			=> __( 'Page Type', 'gpagespeedi' )
+				);
+				break;
+
+			case 'snapshots':
+				$columns = array(
+					'cb'			=> '<input type="checkbox" />',
+					'snaptime'		=> __( 'Snapshot Date', 'gpagespeedi' ),
+					'snapfilter'	=> __( 'Report Description', 'gpagespeedi' ),
+					'strategy'		=> __( 'Report Type', 'gpagespeedi' ),
+					'comment'		=> __( 'Comment', 'gpagespeedi' )
+				);
+				break;
+
+			case 'custom-urls':
+				$columns = array(
+					'cb'			=> '<input type="checkbox" />',
+					'custom_url'	=> __( 'Custom URL', 'gpagespeedi' ),
 					'type'			=> __( 'Page Type', 'gpagespeedi' )
 				);
 				break;
@@ -326,16 +387,8 @@ class GPI_List_Table extends WP_List_Table
 				$columns = apply_filters( 'gpi_list_table_custom_case_3_columns', 'reserved_for_internal_use' );
 				break;
 
-			case apply_filters( 'gpi_list_table_custom_case_4_type', 'reserved_for_internal_use' ):
-				$columns = apply_filters( 'gpi_list_table_custom_case_4_columns', 'reserved_for_internal_use' );
-				break;
-
-			case apply_filters( 'gpi_list_table_custom_case_5_type', 'reserved_for_internal_use' ):
-				$columns = apply_filters( 'gpi_list_table_custom_case_5_columns', 'reserved_for_internal_use' );
-				break;
-
-			case apply_filters( 'gpi_list_table_custom_case_6_type', 'available_for_custom_integration' ):
-				$columns = apply_filters( 'gpi_list_table_custom_case_6_columns', 'available_for_custom_integration' );
+			case apply_filters( 'gpi_list_table_custom_case_4_type', 'available_for_custom_integration' ):
+				$columns = apply_filters( 'gpi_list_table_custom_case_4_columns', 'available_for_custom_integration' );
 				break;
 
 			default:
@@ -383,6 +436,20 @@ class GPI_List_Table extends WP_List_Table
 				);
 				break;
 
+			case 'snapshots':
+				$sortable_columns = array(
+					'snaptime'		=> array( 'snaptime', false ),
+					'snapfilter'	=> array( 'type', false ),
+					'strategy'		=> array( 'strategy', false )
+				);
+				break;
+
+			case 'custom-urls':
+				$sortable_columns = array(
+					'type' => array( 'type', false )
+				);
+				break;
+
 			case apply_filters( 'gpi_list_table_custom_case_1_type', 'reserved_for_internal_use' ):
 				$sortable_columns = apply_filters( 'gpi_list_table_custom_case_1_sortable_columns', 'reserved_for_internal_use' );
 				break;
@@ -395,16 +462,8 @@ class GPI_List_Table extends WP_List_Table
 				$sortable_columns = apply_filters( 'gpi_list_table_custom_case_3_sortable_columns', 'reserved_for_internal_use' );
 				break;
 
-			case apply_filters( 'gpi_list_table_custom_case_4_type', 'reserved_for_internal_use' ):
-				$sortable_columns = apply_filters( 'gpi_list_table_custom_case_4_sortable_columns', 'reserved_for_internal_use' );
-				break;
-
-			case apply_filters( 'gpi_list_table_custom_case_5_type', 'reserved_for_internal_use' ):
-				$sortable_columns = apply_filters( 'gpi_list_table_custom_case_5_sortable_columns', 'reserved_for_internal_use' );
-				break;
-
-			case apply_filters( 'gpi_list_table_custom_case_6_type', 'available_for_custom_integration' ):
-				$sortable_columns = apply_filters( 'gpi_list_table_custom_case_6_sortable_columns', 'available_for_custom_integration' );
+			case apply_filters( 'gpi_list_table_custom_case_4_type', 'available_for_custom_integration' ):
+				$sortable_columns = apply_filters( 'gpi_list_table_custom_case_4_sortable_columns', 'available_for_custom_integration' );
 				break;
 
 			default:
@@ -438,6 +497,18 @@ class GPI_List_Table extends WP_List_Table
 				);
 				break;
 
+			case 'snapshots':
+				$actions = array(
+					'delete-snapshot' => __( 'Delete', 'gpagespeedi' )
+				);
+				break;
+
+			case 'custom-urls':
+				$actions = array(
+					'delete' => __( 'Delete', 'gpagespeedi' )
+				);
+				break;
+
 			case apply_filters( 'gpi_list_table_custom_case_1_type', 'reserved_for_internal_use' ):
 				$actions = apply_filters( 'gpi_list_table_custom_case_1_bulk_actions', 'reserved_for_internal_use' );
 				break;
@@ -450,16 +521,8 @@ class GPI_List_Table extends WP_List_Table
 				$actions = apply_filters( 'gpi_list_table_custom_case_3_bulk_actions', 'reserved_for_internal_use' );
 				break;
 
-			case apply_filters( 'gpi_list_table_custom_case_4_type', 'reserved_for_internal_use' ):
-				$actions = apply_filters( 'gpi_list_table_custom_case_4_bulk_actions', 'reserved_for_internal_use' );
-				break;
-
-			case apply_filters( 'gpi_list_table_custom_case_5_type', 'reserved_for_internal_use' ):
-				$actions = apply_filters( 'gpi_list_table_custom_case_5_bulk_actions', 'reserved_for_internal_use' );
-				break;
-
-			case apply_filters( 'gpi_list_table_custom_case_6_type', 'available_for_custom_integration' ):
-				$actions = apply_filters( 'gpi_list_table_custom_case_6_bulk_actions', 'available_for_custom_integration' );
+			case apply_filters( 'gpi_list_table_custom_case_4_type', 'available_for_custom_integration' ):
+				$actions = apply_filters( 'gpi_list_table_custom_case_4_bulk_actions', 'available_for_custom_integration' );
 				break;
 
 			default:
@@ -526,6 +589,11 @@ class GPI_List_Table extends WP_List_Table
 					submit_button( __( 'Filter', 'gpagespeedi' ), 'button', false, false, array( 'id' => 'post-query-submit' ) );
 				?>
 
+				<?php if ( 'custom-urls' == $_GET['render'] ) : ?>
+					<a href="?page=<?php echo $_REQUEST['page']; ?>&amp;render=add-custom-urls" class="button-secondary"><?php _e( 'Add New URLs', 'gpagespeedi' ); ?></a>
+					<a href="?page=<?php echo $_REQUEST['page']; ?>&amp;render=add-custom-urls-bulk" class="button-secondary"><?php _e( 'Bulk Upload New URLs', 'gpagespeedi' ); ?></a>
+				<?php endif; ?>
+
 				<?php do_action( 'gpi_after_tablenav', $_GET['render'] ); ?>
 
 			</div>
@@ -546,7 +614,7 @@ class GPI_List_Table extends WP_List_Table
 		if ( 'default' == $this->type ) {
 			$filter	= isset( $_GET['filter'] ) ? $_GET['filter'] : 'all';
 			$filter	= 'all' != $filter ? $filter : implode( '|', $all_types );
-			$filter	= 'gpi_custom_urls' != $filter ? $filter : apply_filters( 'gpia_custom_url_labels', $filter );
+			$filter	= 'gpi_custom_urls' != $filter ? $filter : apply_filters( 'gpi_custom_url_labels', $filter );
 
 			$data = $wpdb->get_results( $wpdb->prepare(
 				"

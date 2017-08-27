@@ -83,18 +83,32 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 		<div class="padded hidden">
 
-			<?php do_action( 'gpi_before_recheck_interval', $this->gpi_options['use_schedule'] ); ?>
+			<p><h4><?php _e( 'Choose wether or not Google Pagespeed Insights should automatically re-check page scores, and if so, how often.', 'gpagespeedi' ); ?></h4></p>
+			<p class="checkbx">
+				<input type="checkbox" name="use_schedule" id="use_schedule" <?php checked( $this->gpi_options['use_schedule'] ); ?>/>
+				<label for="use_schedule"><?php _e( 'Automatically re-check Pagespeed Insights scores using a schedule', 'gpagespeedi' ); ?></label>
+				<?php if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON ) : ?>
+					<p class="description"><strong><?php _e( 'Notice', 'gpagespeedi' ); ?>:</strong> <?php _e( 'The WP Cron service this plugin uses to check pages is disabled. Hosting providers often disable the WP Cron service and run their own manual Cron service on an interval of their choosing. Contact your hosting provider if scheduled checks fail to run.', 'gpagespeedi' ); ?></p>
+				<?php endif; ?>
+			</p>
 
-			<p><label for="recheck_interval"><?php echo apply_filters( 'gpi_recheck_interval_label', __( 'Report Expiration', 'gpagespeedi' ) ); ?>:</label></p>
+			<p><label for="recheck_interval"><?php _e( 'Report Expiration / Recheck Interval', 'gpagespeedi' ); ?>:</label></p>
 			<select name="recheck_interval" id="recheck_interval">
 				<option value="<?php echo DAY_IN_SECONDS;?>" <?php selected( $this->gpi_options['recheck_interval'], DAY_IN_SECONDS ); ?>><?php _e( '1 Day', 'gpagespeedi' ); ?></option>
 				<option value="<?php echo WEEK_IN_SECONDS;?>" <?php selected( $this->gpi_options['recheck_interval'], WEEK_IN_SECONDS ); ?>><?php _e( '7 Days', 'gpagespeedi' ); ?></option>
 				<option value="<?php echo MONTH_IN_SECONDS / 2;?>" <?php selected( $this->gpi_options['recheck_interval'], MONTH_IN_SECONDS / 2 ); ?>><?php _e( '15 Days', 'gpagespeedi' ); ?></option>
 				<option value="<?php echo MONTH_IN_SECONDS;?>" <?php selected( $this->gpi_options['recheck_interval'], MONTH_IN_SECONDS ); ?>><?php _e( '30 Days', 'gpagespeedi' ); ?></option>
 			</select>
-			<p class="description"><?php echo apply_filters( 'gpi_recheck_interval_description', __( 'When using "Save Options & Check Pages", pages which are newer than the specified Report Expiration will be skipped.', 'gpagespeedi' ) ); ?></p>
+			<p class="description"><?php _e( 'When page reporting is running, pages which are newer than the specified Report Expiration will be skipped.', 'gpagespeedi' ) . '<br />' . __( 'If "Automatically re-check Pagespeed Insights scores" is checked above, this option will control its frequency.', 'gpagespeedi' ); ?></p>
 
-			<?php do_action( 'gpi_after_recheck_interval' ); ?>
+			<?php
+				$timestamp = wp_next_scheduled( 'googlepagespeedinsightsworker' );
+				if ( $timestamp ) {
+					?>
+					<p><strong><?php _e( 'Next Scheduled Check', 'gpagespeedi' ); ?></strong>: <?php echo get_date_from_gmt( gmdate( 'Y-m-d H:i:s', $timestamp ), 'F, d @ g:i a' ); ?></p>
+					<?php
+				}
+			?>
 
 			<hr>
 			<p><h4><?php _e( 'Configure which types of URLs should be checked when running reports.', 'gpagespeedi' ); ?></h4></p>
@@ -112,7 +126,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<label for="check_categories"><?php _e( 'Check Category Indexes', 'gpagespeedi' ); ?> (<?php echo count( get_categories() ) ?>)</label>
 			</p>
 
-			<?php do_action( 'gpi_report_url_types', $this->gpi_options['check_custom_urls'] ); ?>
+			<p class="checkbx">
+				<input type="checkbox" name="check_custom_urls" id="check_custom_urls" <?php checked( $this->gpi_options['check_custom_urls'] ); ?>/>
+				<label for="check_custom_urls"><?php _e( 'Check Custom URLs', 'gpagespeedi' ); ?> (<?php echo $custom_urls_count = apply_filters( 'gpi_custom_urls_count', 0 ); ?>)</label>
+			</p>
 
 			<?php
 				$custom_post_types = apply_filters( 'gpi_custom_post_types', array() );

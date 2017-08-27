@@ -24,6 +24,7 @@ class GPI_Actions
 	var $gpi_page_stats;
 	var $gpi_page_reports;
 	var $gpi_page_blacklist;
+	var $gpi_summary_snapshots;
 	var $gpi_custom_urls;
 
 	public function init()
@@ -33,13 +34,14 @@ class GPI_Actions
 		$this->action				= $_REQUEST['action'];
 		$this->gpi_options			= get_option( 'gpagespeedi_options' );
 		$this->gpi_ui_options		= get_option( 'gpagespeedi_ui_options' );
-		$this->page_id				= isset( $_GET['page_id'] ) ? $_GET['page_id'] : false;
+		$this->page_id				= isset( $_GET['page_id'] ) ? intval( $_GET['page_id'] ) : false;
 		$this->bulk_pages			= isset( $_GET['gpi_page_report'] ) ? $_GET['gpi_page_report'] : false;
 		$this->bulk_pages_count		= count( $this->bulk_pages );
 
 		$this->gpi_page_stats			= $wpdb->prefix . 'gpi_page_stats';
 		$this->gpi_page_reports			= $wpdb->prefix . 'gpi_page_reports';
 		$this->gpi_page_blacklist		= $wpdb->prefix . 'gpi_page_blacklist';
+		$this->gpi_summary_snapshots	= $wpdb->prefix . 'gpi_summary_snapshots';
 		$this->gpi_custom_urls			= $wpdb->prefix . 'gpi_custom_urls';
 		$this->gpi_api_error_logs		= $wpdb->prefix . 'gpi_api_error_logs';
 
@@ -83,6 +85,26 @@ class GPI_Actions
 
 			case 'delete_blacklist':
 				$action_message = $this->delete_blacklist();
+				break;
+
+			case 'save-snapshot':
+				$action_message = $this->save_snapshot();
+				break;
+
+			case 'delete-snapshot':
+				$action_message = $this->delete_snapshot();
+				break;
+
+			case 'add-custom-urls':
+				$action_message = $this->add_custom_urls();
+				break;
+
+			case 'add-custom-urls-bulk':
+				$action_message = $this->add_custom_urls_bulk();
+				break;
+
+			case 'delete':
+				$action_message = $this->delete_page();
 				break;
 
 			case 'set_view_preference':
@@ -149,6 +171,8 @@ class GPI_Actions
 				$wpdb->query( "TRUNCATE TABLE $this->gpi_page_reports" );
 				$wpdb->query( "TRUNCATE TABLE $this->gpi_page_blacklist" );
 				$wpdb->query( "TRUNCATE TABLE $this->gpi_api_error_logs" );
+				$wpdb->query( "TRUNCATE TABLE $this->gpi_custom_urls" );
+				$wpdb->query( "TRUNCATE TABLE $this->gpi_summary_snapshots" );
 
 				do_action( 'gpi_truncate_custom_tables' );
 			}
@@ -192,6 +216,15 @@ class GPI_Actions
 
 		update_option( 'gpagespeedi_ui_options', $gpagespeedi_ui_options );
 		$this->gpi_ui_options = $gpagespeedi_ui_options;
+
+		if ( $gpagespeedi_options['use_schedule'] && ! wp_next_scheduled('googlepagespeedinsightsworker') ) {
+			wp_schedule_event( time() + $gpagespeedi_options['recheck_interval'], 'gpi_scheduled_interval', 'googlepagespeedinsightsworker' );
+		} else if ( $gpagespeedi_options['use_schedule'] && ( $gpagespeedi_options['recheck_interval'] != $old_options['recheck_interval'] ) ) {
+			wp_clear_scheduled_hook( 'googlepagespeedinsightsworker' );
+			wp_schedule_event( time() + $gpagespeedi_options['recheck_interval'], 'gpi_scheduled_interval', 'googlepagespeedinsightsworker' );
+		} else if ( ! $gpagespeedi_options['use_schedule'] ) {
+			wp_clear_scheduled_hook( 'googlepagespeedinsightsworker' );
+		}
 
 		return __( 'Settings Saved.', 'gpagespeedi' );
 	}
@@ -411,6 +444,360 @@ class GPI_Actions
 		return $delete_count . ' ' . __( 'URLs have been deleted.', 'gpagespeedi' );
 	}
 
+	private function save_snapshot()
+	{
+		if ( ! isset( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'gpi_save_snapshot' ) ) {
+			return array(
+				'type'		=> 'error',
+				'message'	=> __( 'Invalid Nonce. Please refresh the page and try again.', 'gpagespeedi' )
+			);
+		}
+
+		global $wpdb;
+
+		$snapshot_data = array(
+			'strategy'			=> $this->gpi_options['strategy'],
+			'type'				=> isset( $_GET['filter'] ) ? $_GET['filter'] : 'all',
+			'snaptime'			=> current_time( 'timestamp' ),
+			'comment'			=> isset( $_POST['comment'] ) ? $_POST['comment'] : false,
+			'summary_stats'		=> json_encode( apply_filters( 'gpi_summary_stats', array() ) ),
+			'summary_reports'	=> json_encode( apply_filters( 'gpi_summary_reports', array() ) )
+		);
+
+		$save_snapshot = $wpdb->insert( 
+			$this->gpi_summary_snapshots,
+			$snapshot_data, 
+			array(
+				'%s',
+				'%s',
+				'%d',
+				'%s',
+				'%s',
+				'%s',
+			) 
+		);
+
+		if ( $save_snapshot ) {
+			return __( 'Snapshot Saved Successfully', 'gpagespeedi' );
+		}	
+	}
+
+	private function delete_snapshot()
+	{
+		if ( ! isset( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-gpi_page_reports' ) ) {
+			return array(
+				'type'		=> 'error',
+				'message'	=> __( 'Invalid Nonce. Please refresh the page and try again.', 'gpagespeedi' )
+			);
+		}
+
+		if ( empty( $this->bulk_pages ) && ( isset( $_GET['snapshot_id'] ) && ! empty( $_GET['snapshot_id'] ) ) ) {
+			$this->bulk_pages = array( $_GET['snapshot_id'] );
+		}
+
+		if ( empty( $this->bulk_pages ) ) {
+			return array(
+				'type'		=> 'error',
+				'message'	=> __( 'No snapshot(s) selected.', 'gpagespeedi' )
+			);
+		}
+
+		global $wpdb;
+
+		foreach ( $this->bulk_pages as $bulk_page_id ) {
+			$wpdb->delete( $this->gpi_summary_snapshots, array( 'ID' => $bulk_page_id ), array( '%d' ) );
+		}
+
+		$delete_count = count( $this->bulk_pages );
+
+		return $delete_count . ' ' . __( 'Snapshots have been deleted.', 'gpagespeedi' );
+	}
+
+	private function add_custom_urls()
+	{
+		$urls_to_store = array();
+		$inserted_urls = 0;
+
+		if ( ! isset( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'gpi-add-custom-urls' ) ) {
+			return array(
+				'type'		=> 'error',
+				'message'	=> __( 'Invalid Nonce. Please refresh the page and try again.', 'gpagespeedi' )
+			);
+		}
+
+		$custom_url_label = $_POST['custom_url_label'];
+
+		if ( empty( $custom_url_label ) ) {
+			$custom_url_label = 'custom';
+		} else {
+			$custom_url_label = preg_replace( '/[^a-zA-Z0-9\s]/', '', $custom_url_label );
+			$custom_url_label = str_replace(' ', '_', $custom_url_label);
+			$custom_url_label = substr( $custom_url_label, 0, 20 );
+		}
+
+		foreach ( $_POST['custom_urls'] as $custom_url ) {
+			$custom_url = esc_url_raw( $custom_url, array( 'http', 'https' ) );
+
+			if ( ! empty( $custom_url ) ) {
+				$urls_to_store[] = $custom_url;
+			}
+		}
+
+		if ( ! empty( $urls_to_store ) ) {
+			global $wpdb;
+
+			foreach ( $urls_to_store as $key => $url ) {
+				
+				$url_already_exist = $wpdb->get_var( $wpdb->prepare(
+					"SELECT ( SELECT COUNT(*) FROM $this->gpi_custom_urls WHERE URL = %s ) + ( SELECT COUNT(*) FROM $this->gpi_page_stats WHERE URL = %s )",
+					$url, $url
+					)
+				);
+
+				if ( ! $url_already_exist ) {
+					$wpdb->insert(
+						$this->gpi_custom_urls,
+						array(
+							'URL'	=> $url,
+							'type'	=> $custom_url_label
+						),
+						array(
+							'%s',
+							'%s'
+						)
+					);
+				} else {
+					unset( $urls_to_store[ $key ] );
+				}
+			}
+
+			$inserted_urls = count( $urls_to_store );
+
+			do_action( 'run_gpi', false );
+		}
+
+		return $inserted_urls . ' ' . __( 'URL(s) have been successfully added.', 'gpagespeedi' );
+	}
+
+	private function add_custom_urls_bulk()
+	{
+		$urls_to_store = array();
+		$already_exist = array();
+		$inserted_urls = 0;
+
+		if ( ! isset( $_FILES['xml_sitemap'] ) ) {
+			return array(
+				'type'		=> 'error',
+				'message'	=> __( 'There was a problem uploading the sitemap', 'gpagespeedi' )
+			);
+		}
+
+		if ( ! function_exists( 'wp_handle_upload' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		}
+
+		$upload_overrides = array( 'test_form' => false, 'mimes' => array( 'xml' => 'application/xml' ) );
+		$movefile = wp_handle_upload( $_FILES['xml_sitemap'], $upload_overrides );
+
+		if ( isset( $movefile['file'] ) ) {
+			if ( $movefile['type'] != 'application/xml' ) {
+				unlink( $movefile['file'] );
+				return array(
+					'type'		=> 'error',
+					'message'	=> __( 'File type must be "Application/XML"', 'gpagespeedi' )
+				);
+			}
+		} else if ( isset( $movefile['error'] ) ) {
+			return array(
+				'type'		=> 'error',
+				'message'	=> $movefile['error']
+			);
+		} else {
+			return array(
+				'type'		=> 'error',
+				'message'	=> __( 'There was a problem uploading the sitemap', 'gpagespeedi' )
+			);
+		}
+
+		$accepted_protocols = array( 'http', 'https' );
+
+		// Create new document object
+		$dom_object = new DOMDocument();
+		
+		// Load xml file
+		$dom_object->load( $movefile['file'] );
+
+		$item = $dom_object->getElementsByTagName( 'url' );
+
+		foreach ( $item as $value ) {
+			$locations = $value->getElementsByTagName( 'loc' );
+			$location  = $locations->item(0)->nodeValue;
+			$urls_to_store[] = esc_url_raw( $location, $accepted_protocols );      
+		}
+
+		if ( ! empty( $urls_to_store ) ) {
+
+			$custom_url_label = isset( $_POST['custom_url_label'] ) ? $_POST['custom_url_label'] : false;
+
+			if ( ! $custom_url_label ) {
+				$custom_url_label = 'custom';
+			} else {
+				$custom_url_label = str_replace( ' ', '_', $custom_url_label );
+				$custom_url_label = preg_replace( '/[^\w\d ]/ui', '', $custom_url_label );
+				$custom_url_label = substr( $custom_url_label, 0, 20 );
+			}
+
+			global $wpdb;
+
+			foreach ( $urls_to_store as $key => $url ) {
+
+				// Make sure the URL does not already exist
+				$url_already_exist = $wpdb->get_var( $wpdb->prepare(
+					"SELECT ( SELECT COUNT(*) FROM $this->gpi_custom_urls WHERE URL = %s ) + ( SELECT COUNT(*) FROM $this->gpi_page_stats WHERE URL = %s )",
+					$url, $url
+					)
+				);
+
+				// If URL does not already exist, add it
+				if ( $url_already_exist == 0 ) {
+					$wpdb->insert(
+						$this->gpi_custom_urls, 
+						array( 
+							'URL'	=> $url,
+							'type'	=> $custom_url_label
+						),
+						array(
+							'%s',
+							'%s'
+						)
+					);
+				} else {
+					$already_exist[] = $url;
+					unset( $urls_to_store[ $key ] );
+				}
+			}
+
+			$already_exist = count( $already_exist );
+			$inserted_urls = count( $urls_to_store );
+
+			if ( ! empty( $urls_to_store ) ) {
+				do_action( 'run_gpi', false );
+			}
+		}
+
+		return $inserted_urls . ' ' . __( 'URL(s) have been successfully added.', 'gpagespeedi' ) . ' ' . $already_exist . ' ' . __( 'URL(s) already exist and have been skipped.', 'gpagespeedi' ) ;
+	}
+
+	private function delete_page()
+	{
+		global $wpdb;
+
+		if ( is_array( $this->bulk_pages ) && ! empty( $this->bulk_pages ) ) {
+			$x = 1;
+			$custom_id_where_clause = '';
+			$select_id_where_clause = '';
+			foreach ( $this->bulk_pages as $page ) {
+				$page = intval( $page );
+
+				if ( ! $page ) {
+					continue;
+				}
+
+				if ( $x < $this->bulk_pages_count ) {
+					$custom_id_where_clause .= 'custom_id = ' . $page . ' OR ';
+					$select_id_where_clause .= 'ID = ' . $page . ' OR ';
+				} else {
+					$custom_id_where_clause .= 'custom_id = ' . $page;
+					$select_id_where_clause .= 'ID = ' . $page;
+				}
+				$x++;
+			}
+
+			// Get the URLs for all pages being deleted
+			$delete_array = $wpdb->get_results( "SELECT URL FROM $this->gpi_custom_urls WHERE $select_id_where_clause", ARRAY_A );
+			$delete_array_count = count( $delete_array );
+			if ( ! empty( $delete_array ) ) {
+				$z = 1;
+				$select_url_where_clause = '';
+				foreach ( $delete_array as $delete_url ) {
+					if ( $z < $delete_array_count ) {
+						$select_url_where_clause .= 'URL = "' . $delete_url['URL'] . '" OR ';
+					} else {
+						$select_url_where_clause .= 'URL = "' . $delete_url['URL'] . '"';
+					}
+					$z++;
+				}
+
+				// Get IDs for all the pages to be deleted
+				$page_stats_ids = $wpdb->get_results( "SELECT ID FROM $this->gpi_page_stats WHERE $select_url_where_clause", ARRAY_A );
+
+				if ( ! empty( $page_stats_ids ) ) {
+
+					$page_stats_ids_count = count( $page_stats_ids );
+					$y = 1;
+					$where_string = '';
+					foreach ( $page_stats_ids as $id ) {
+						if ( $y < $page_stats_ids_count ) {
+							$where_string .= $this->gpi_page_stats . '.ID = ' . $id['ID'] . ' OR ';
+						} else {
+							$where_string .= $this->gpi_page_stats . '.ID = ' . $id['ID'];
+						}
+						$y++;
+					}
+
+					// Delete page stats and page reports if they exist
+					$wpdb->query("
+						DELETE $this->gpi_page_stats, $this->gpi_page_reports 
+						FROM $this->gpi_page_stats, $this->gpi_page_reports
+						WHERE $this->gpi_page_stats.ID = $this->gpi_page_reports.page_id
+						AND ($where_string)
+					");
+				}
+
+				// Delete blacklisted URLs if exist
+				$wpdb->query("
+					DELETE $this->gpi_page_blacklist 
+					FROM $this->gpi_page_blacklist
+					WHERE $custom_id_where_clause
+				");
+
+				// Delete custom URLs from gpi_custom_urls table
+				$wpdb->query("
+					DELETE $this->gpi_custom_urls 
+					FROM $this->gpi_custom_urls
+					WHERE $select_id_where_clause
+				");
+			}
+
+			return $delete_array_count . ' ' . __( 'URLs have been deleted.', 'gpagespeedi' );
+
+		} else if ( ! empty( $this->page_id ) ) {
+
+			// Get the URL for the page being deleted
+			$page_url = $wpdb->get_var( "SELECT URL FROM $this->gpi_custom_urls WHERE ID = $this->page_id" );
+			
+			// Get ID for the page to be deleted
+			$page_stats_id = $wpdb->get_var( "SELECT ID FROM $this->gpi_page_stats WHERE URL = '$page_url'" );
+
+			// Delete page stats and page reports if they exist
+			if ( ! empty( $page_stats_id ) ) {
+				$wpdb->query("
+					DELETE $this->gpi_page_stats, $this->gpi_page_reports
+					FROM $this->gpi_page_stats, $this->gpi_page_reports
+					WHERE $this->gpi_page_stats.ID = $this->gpi_page_reports.page_id
+					AND $this->gpi_page_stats.ID = $page_stats_id
+				");
+			}
+
+			// Delete blacklisted URL if exist
+			$wpdb->delete( $this->gpi_page_blacklist, array( 'custom_id' => $this->page_id ), array( '%d' ) );
+
+			// Delete custom URL
+			$wpdb->delete( $this->gpi_custom_urls, array( 'ID' => $this->page_id ), array( '%d' ) );
+
+			return '1 ' . __( 'URLs have been deleted.', 'gpagespeedi' );
+		}
+	}
 }
 
 add_action( 'plugins_loaded', array( new GPI_Actions, 'init' ) );
