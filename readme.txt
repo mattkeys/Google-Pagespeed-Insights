@@ -11,56 +11,55 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Use Google Pagespeed Insights to increase your sites performance, your search engine ranking, and your visitors browsing experience.
 
 == Description ==
-
 Google Pagespeed Insights is a tool that empowers you to make decisions that increase the performance of your website. Recommendations from Google Pagespeed are based upon current industry best practices for desktop and mobile web performance.
 
 Through the addition of advanced data visualization, tagging, filtering, and snapshot technology, Google Pagespeed Insights for WordPress provides a comprehensive solution for any webmaster looking to increase their site performance, their search engine ranking, and their visitors browsing experience.
+
+= Detailed Page Reporting =
+![Detailed Page Reporting](https://ps.w.org/google-pagespeed-insights/assets/detailed-page-reports.jpg)
+Sort your page reports by their Page Speed Score to prioritize the largest areas of opportunity on your site. Page reports utilize easy to read visualizations that allow you to quickly focus in on the most important data to improve your sites performance.
+
+= Report Summaries =
+![Report Summaries](https://ps.w.org/google-pagespeed-insights/assets/report-summaries.jpg)
+Report Summaries are a powerful and exclusive feature of Google Pagespeed Insights for WordPress. Summaries display your average Page Score, largest areas for improvement across ALL reports, as well as best and lowest performing pages. Report summaries can be filtered to narrow results by: Pages, Posts, Categories, Custom URLs, and Custom Post Types.
+
+Using Report Summaries allows you to ‘zoom out’ from the page-level and better understand the big picture of your sites performance.
+
+= Desktop and Mobile Page Reports =
+![Desktop and Mobile Page Reports](https://ps.w.org/google-pagespeed-insights/assets/desktop-and-mobile.jpg)
+Best practices for site performance differ greatly between Desktop and Mobile device usage. Configure Google Pagespeed Insights for WordPress to generate Desktop reports, Mobile reports, or both!
+
+Toggle back and forth between report types to see specific suggestions for improving the performance and experience on each platform.
+
+= Report Snapshots =
+![Report Snapshots](https://ps.w.org/google-pagespeed-insights/assets/report-snapshots.jpg)
+The Report Snapshot tool builds on the power of Report Summaries, to provide historical “Point In Time” data about your website.
+
+Take a snapshot of any Report Summary screen to store that data for future retrieval. Add comments to your snapshots to provide additional meaning, such as “Before Installing W3 Total Cache.” Additionally, filter a Report Summary before taking a Snapshot to save a summary of the filtered data.
+
+= Snapshot Comparison Tool =
+![Snapshot Comparison Tool](https://ps.w.org/google-pagespeed-insights/assets/compare_reports.png)
+The Snapshot Comparison Tool is an amazing utility that lets you visualize side-by-side results from any two similar Report Snapshots.
+
+Take a Report Snapshot before installing new plugins, or before implementing performance recommendations. Take another snapshot when you are finished and compare your results to measure the effect of your changes.
+
+= Add/Import Custom URLs =
+![Add/Import Custom URLs](https://ps.w.org/google-pagespeed-insights/assets/bulk-custom-url-upload.jpg)
+Easily add additional URLs for inclusion in Pagespeed Reports. Even add URLs for non-WordPress sites, even if they are not hosted on your server. URLs can be added manually, or upload a properly formatted XML sitemap to add multiple pages at once.
+
+Custom URLs can be tagged and filtered in Report Summaries. Take Report Snapshots of your Custom URLs just like you would with any other report type.
+
+= Scheduled Report Checks =
+![Scheduled Report Checks](https://ps.w.org/google-pagespeed-insights/assets/schedule_configure.png)
+Configure Google Pagespeed Insights for WordPress to automatically recheck your site on a Daily, Weekly, Bi-Monthly, or Monthly basis.
+
+With each scan, any new pages or posts will be discovered, and existing reports will be updated to reflect any changes to your site, as well as any changes in the Pagespeed recommendations.
 
 = Additional Languages =
 
 * (v1.x translation) Russian Translation provided by: Ivanka from [coupofy.com](http://coupofy.com)
 * (v1.x translation) Spanish Translation provided by: Ogi Djuraskovic from [firstsiteguide.com](http://firstsiteguide.com)
 * (v1.x translation) Serbian Translation provided by: Ogi Djuraskovic from [firstsiteguide.com](http://firstsiteguide.com)
-
-= Detailed Page Reporting =
-
-Sort your page reports by their Page Speed Score to prioritize the largest areas of opportunity on your site. Page reports utilize easy to read visualizations that allow you to quickly focus in on the most important data to improve your sites performance.
-
-= Report Summaries =
-
-Report Summaries are a powerful and exclusive feature of Google Pagespeed Insights for WordPress. Summaries display your average Page Score, largest areas for improvement across ALL reports, as well as best and lowest performing pages. Report summaries can be filtered to narrow results by: Pages, Posts, Categories, Custom URLs, and Custom Post Types.
-
-Using Report Summaries allows you to ‘zoom out’ from the page-level and better understand the big picture of your sites performance.
-
-= Desktop and Mobile Page Reports =
-
-Best practices for site performance differ greatly between Desktop and Mobile device usage. Configure Google Pagespeed Insights for WordPress to generate Desktop reports, Mobile reports, or both!
-
-Toggle back and forth between report types to see specific suggestions for improving the performance and experience on each platform.
-
-= Report Snapshots =
-
-The Report Snapshot tool builds on the power of Report Summaries, to provide historical “Point In Time” data about your website.
-
-Take a snapshot of any Report Summary screen to store that data for future retrieval. Add comments to your snapshots to provide additional meaning, such as “Before Installing W3 Total Cache.” Additionally, filter a Report Summary before taking a Snapshot to save a summary of the filtered data.
-
-= Snapshot Comparison Tool =
-
-The Snapshot Comparison Tool is an amazing utility that lets you visualize side-by-side results from any two similar Report Snapshots.
-
-Take a Report Snapshot before installing new plugins, or before implementing performance recommendations. Take another snapshot when you are finished and compare your results to measure the effect of your changes.
-
-= Add/Import Custom URLs =
-
-Easily add additional URLs for inclusion in Pagespeed Reports. Even add URLs for non-WordPress sites, even if they are not hosted on your server. URLs can be added manually, or upload a properly formatted XML sitemap to add multiple pages at once.
-
-Custom URLs can be tagged and filtered in Report Summaries. Take Report Snapshots of your Custom URLs just like you would with any other report type.
-
-= Scheduled Report Checks =
-
-Configure Google Pagespeed Insights for WordPress to automatically recheck your site on a Daily, Weekly, Bi-Monthly, or Monthly basis.
-
-With each scan, any new pages or posts will be discovered, and existing reports will be updated to reflect any changes to your site, as well as any changes in the Pagespeed recommendations.
 
 == Installation ==
 
