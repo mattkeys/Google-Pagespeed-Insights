@@ -1,6 +1,6 @@
 === Google Pagespeed Insights ===
 Contributors: mattkeys
-Tags: SEO, seo, performance, speed, google, search engine optimization, pagespeed, google page speed, page speed, pagespeed insights, google pagespeed insights
+Tags: SEO, performance, speed, page speed, search engine optimization, pagespeed, google page speed, pagespeed insights, google pagespeed insights
 Requires at least: 3.6
 Tested up to: 4.8
 Stable tag: trunk
