@@ -225,7 +225,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<input type="checkbox" name="log_api_errors" id="log_api_errors" <?php checked( $this->gpi_options['log_api_errors'] ); ?>/>
 				<label for="log_api_errors"><?php _e( 'Log API Exceptions', 'gpagespeedi' ); ?></label>
 			</p>
-			<p class="description"><?php _e( 'API error logs will be stored for up to 7 days.', 'gpagespeedi' ); ?> <a href="?page=<?php echo $_REQUEST['page'];?>&amp;render=logs"><?php _e( 'View Logs', 'gpagespeedi' ); ?></a></p>
+			<p class="description"><?php _e( 'API error logs will be stored for up to 7 days.', 'gpagespeedi' ); ?> <a href="?page=<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>&amp;render=logs"><?php _e( 'View Logs', 'gpagespeedi' ); ?></a></p>
 
 			<p><label for="sleep_time"><?php _e( 'Delete Data', 'gpagespeedi' ); ?>:</label></p>
 			<select name="purge_all_data" id="purge_all_data">

@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <form method="post" action="" enctype="multipart/form-data">
-	<input type="hidden" name="page" value="<?php echo $_REQUEST['page'];?>" />
+	<input type="hidden" name="page" value="<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>" />
 	<input type="hidden" name="render" value="add-custom-urls-bulk" />
 	<input type="hidden" name="action" value="add-custom-urls-bulk" />
 

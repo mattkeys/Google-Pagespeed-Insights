@@ -44,10 +44,10 @@ class GPI_List_Table extends WP_List_Table
 		$this->strategy			= $this->gpi_options['strategy'];
 		$this->columns			= $this->get_columns();
 		$this->sortable			= $this->get_sortable_columns();
-		$this->per_page			= isset( $_GET['post-per-page']) ? $_GET['post-per-page'] : 25;
+		$this->per_page			= isset( $_GET['post-per-page']) ? intval( $_GET['post-per-page'] ) : 25;
 		$this->_column_headers	= array( $this->columns, array(), $this->sortable );
-		$this->orderby			= isset( $_GET['orderby'] ) ? $_GET['orderby'] : 'ID';
-		$this->order			= isset( $_GET['order'] ) ? $_GET['order'] : 'asc';
+		$this->orderby			= isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'ID';
+		$this->order			= isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'asc';
 
 		switch ( $type ) {
 			case 'ignored-urls':
@@ -142,16 +142,16 @@ class GPI_List_Table extends WP_List_Table
 
 	public function no_items()
 	{
-		$pagetype = $_GET['render'];
+		$pagetype = sanitize_text_field( $_GET['render'] );
 
 		switch( $pagetype )
 		{
 			case 'ignored-urls':
-				_e( 'No Ignored URLs found. A URL can be ignored from the <a href="?page=' . $_REQUEST['page'] . '&render=report-list">Report List</a> page if you would like to remove it from report pages', 'gpagespeedi' );
+				_e( 'No Ignored URLs found. A URL can be ignored from the <a href="?page=' . sanitize_text_field( $_REQUEST['page'] ) . '&render=report-list">Report List</a> page if you would like to remove it from report pages', 'gpagespeedi' );
 				break;
 
 			case 'snapshots':
-				_e( 'No Snapshots found. Snapshots can be created from the', 'gpagespeedi' ) . ' ' . '<a href="?page=' . $_REQUEST['page'] . '&render=summary">' . __( 'Report Summary', 'gpagespeedi' ) . '</a>' . ' ' . __( 'page', 'gpagespeedi' ) . '.';
+				_e( 'No Snapshots found. Snapshots can be created from the', 'gpagespeedi' ) . ' ' . '<a href="?page=' . sanitize_text_field( $_REQUEST['page'] ) . '&render=summary">' . __( 'Report Summary', 'gpagespeedi' ) . '</a>' . ' ' . __( 'page', 'gpagespeedi' ) . '.';
 				break;
 
 			case 'custom-urls':
@@ -178,7 +178,7 @@ class GPI_List_Table extends WP_List_Table
 				_e( 'No Pagespeed Reports Found. Google Pagespeed may still be checking your pages. If problems persist, see the following possible solutions:', 'gpagespeedi' );
 				?>
 				<ol class="no-items">
-					<li><?php _e( 'Make sure that you have entered your Google API key on the ', 'gpagespeedi' );?><a href="?page=<?php echo $_REQUEST['page']; ?>&amp;render=options"><?php _e( 'Options', 'gpagespeedi' ); ?></a> <?php _e( 'page', 'gpagespeedi' ); ?>.</li>
+					<li><?php _e( 'Make sure that you have entered your Google API key on the ', 'gpagespeedi' );?><a href="?page=<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>&amp;render=options"><?php _e( 'Options', 'gpagespeedi' ); ?></a> <?php _e( 'page', 'gpagespeedi' ); ?>.</li>
 					<li><?php _e( 'Make sure that you have enabled "PageSpeed Insights API" from the Services page of the ', 'gpagespeedi' );?><a href="https://code.google.com/apis/console/">Google Console</a>.</li>
 					<li><?php _e( 'Make sure that your URLs are publicly accessible', 'gpagespeedi' ); ?>.</li>
 				</ol>
@@ -216,11 +216,11 @@ class GPI_List_Table extends WP_List_Table
 				return $formatted_time;
 
 			case 'type':
-				return $item[ $column_name ];
+				return sanitize_text_field( $item[ $column_name ] );
 
 			case 'custom_url':
 				$actions = array(
-					'delete'    => sprintf( '?page=%s&render=%s&action=%s&page_id=%s', $_REQUEST['page'], 'custom-urls', 'delete', $item['ID'] ),
+					'delete'    => sprintf( '?page=%s&render=%s&action=%s&page_id=%s', sanitize_text_field( $_REQUEST['page'] ), 'custom-urls', 'delete', $item['ID'] ),
 					'visit'     => sprintf( '<a href="%s" target="_blank">%s</a>', $item['URL'], __( 'View URL', 'gpagespeedi' ) )
 				);
 				
@@ -237,8 +237,8 @@ class GPI_List_Table extends WP_List_Table
 				$date = date( 'M d, Y - h:i a', $date );
 
 				$actions = array(
-					'delete'    => sprintf( '?page=%s&render=%s&action=%s&snapshot_id=%s' ,$_REQUEST['page'], 'snapshots', 'delete-snapshot', $item['ID'] ),
-					'view'      => sprintf( '<a href="?page=%s&render=%s&snapshot_id=%s">%s</a>' , $_REQUEST['page'], 'view-snapshot', $item['ID'], __( 'View Snapshot', 'gpagespeedi' ) )
+					'delete'    => sprintf( '?page=%s&render=%s&action=%s&snapshot_id=%s' ,sanitize_text_field( $_REQUEST['page'] ), 'snapshots', 'delete-snapshot', $item['ID'] ),
+					'view'      => sprintf( '<a href="?page=%s&render=%s&snapshot_id=%s">%s</a>' , sanitize_text_field( $_REQUEST['page'] ), 'view-snapshot', $item['ID'], __( 'View Snapshot', 'gpagespeedi' ) )
 				);
 				
 				$nonced_url = wp_nonce_url( $actions['delete'], 'bulk-gpi_page_reports' );
@@ -246,7 +246,7 @@ class GPI_List_Table extends WP_List_Table
 
 
 				return sprintf( '<a href="?page=%1$s&render=%2$s&snapshot_id=%3$s">%4$s</a> %5$s',
-					$_REQUEST['page'],
+					sanitize_text_field( $_REQUEST['page'] ),
 					'view-snapshot',
 					$item['ID'],
 					$date,
@@ -255,17 +255,17 @@ class GPI_List_Table extends WP_List_Table
 
 			case 'snapfilter':
 				$filter = $item['type'];
-				$filter_search = array( 'all', 'page', 'post', 'category', 'gpi_custom_posts-', 'gpi_custom_urls-', 'gpi_custom_posts', 'gpi_custom_urls' );
-				$filter_replace = array( __( 'All Reports', 'gpagespeedi' ), __( 'Pages', 'gpagespeedi' ), __( 'Posts', 'gpagespeedi' ), __( 'Categories', 'gpagespeedi' ), '', '', __( 'All Custom Post Types', 'gpagespeedi' ), __( 'All Custom URLs', 'gpagespeedi' ) );
+				$filter_search = array( 'gpi_custom_posts-', 'gpi_custom_urls-', 'gpi_custom_posts', 'gpi_custom_urls', 'all', 'page', 'post', 'category' );
+				$filter_replace = array( '', '', __( 'All Custom Post Types', 'gpagespeedi' ), __( 'All Custom URLs', 'gpagespeedi' ), __( 'All Reports', 'gpagespeedi' ), __( 'Pages', 'gpagespeedi' ), __( 'Posts', 'gpagespeedi' ), __( 'Categories', 'gpagespeedi' ) );
 				$cleaned_filter = str_replace( $filter_search, $filter_replace, $filter );
 
-				return $cleaned_filter;
+				return sanitize_text_field( $cleaned_filter );
 
-			case apply_filters( 'gpi_custom_column', $column_name ):
+			case apply_filters( 'gpi_custom_column', false, $column_name ):
 				return apply_filters( 'gpi_custom_column_config', $column_name, $item );
 
 			default:
-				return $item[ $column_name ];
+				return sanitize_text_field( $item[ $column_name ] );
 		}
 	}
 	
@@ -274,9 +274,9 @@ class GPI_List_Table extends WP_List_Table
 		$cleaned_url = $this->strip_domain( $item['URL'] );
 
 		$actions = array(
-			'view_details'  => sprintf( '<a href="?page=%s&render=%s&page_id=%s">%s</a>', $_REQUEST['page'], 'details', $item['ID'], __( 'Details', 'gpagespeedi' ) ),
-			'ignore'        => sprintf( '?page=%s&render=%s&action=%s&page_id=%s', $_REQUEST['page'], 'report-list', 'ignore', $item['ID'] ),
-			'delete_report' => sprintf( '?page=%s&render=%s&action=%s&page_id=%s', $_REQUEST['page'], 'report-list', 'delete_report', $item['ID'] ),
+			'view_details'  => sprintf( '<a href="?page=%s&render=%s&page_id=%s">%s</a>', sanitize_text_field( $_REQUEST['page'] ), 'details', $item['ID'], __( 'Details', 'gpagespeedi' ) ),
+			'ignore'        => sprintf( '?page=%s&render=%s&action=%s&page_id=%s', sanitize_text_field( $_REQUEST['page'] ), 'report-list', 'ignore', $item['ID'] ),
+			'delete_report' => sprintf( '?page=%s&render=%s&action=%s&page_id=%s', sanitize_text_field( $_REQUEST['page'] ), 'report-list', 'delete_report', $item['ID'] ),
 			'visit'         => sprintf( '<a href="%s" target="_blank">%s</a>', $item['URL'], __( 'View URL', 'gpagespeedi' ) )
 		);
 
@@ -286,7 +286,7 @@ class GPI_List_Table extends WP_List_Table
 		return sprintf( '<a href="?page=%3$s&render=%4$s&page_id=%5$s">%1$s</a> %2$s',
 			$cleaned_url,
 			$this->row_actions( $actions ),
-			$_REQUEST['page'],
+			sanitize_text_field( $_REQUEST['page'] ),
 			'details',
 			$item['ID']
 		);
@@ -297,8 +297,8 @@ class GPI_List_Table extends WP_List_Table
 		$cleaned_url = $this->strip_domain( $item['URL'] );
 
 		$actions = array(
-			'reactivate'  => sprintf( '?page=%s&render=%s&action=%s&page_id=%s', $_REQUEST['page'], 'ignored-urls', 'reactivate', $item['ID'] ),
-			'delete_blacklist' => sprintf( '?page=%s&render=%s&action=%s&page_id=%s', $_REQUEST['page'], 'ignored-urls', 'delete_blacklist', $item['ID'] ),
+			'reactivate'  => sprintf( '?page=%s&render=%s&action=%s&page_id=%s', sanitize_text_field( $_REQUEST['page'] ), 'ignored-urls', 'reactivate', $item['ID'] ),
+			'delete_blacklist' => sprintf( '?page=%s&render=%s&action=%s&page_id=%s', sanitize_text_field( $_REQUEST['page'] ), 'ignored-urls', 'delete_blacklist', $item['ID'] ),
 			'visit'     => sprintf( '<a href="%s" target="_blank">%s</a>', $item['URL'], __( 'View URL', 'gpagespeedi' ) )
 		);
 
@@ -427,7 +427,7 @@ class GPI_List_Table extends WP_List_Table
 	
 	public function get_sortable_columns()
 	{
-		$filter = ( isset( $_GET['filter'] ) ) ? $_GET['filter'] : 'all';
+		$filter = ( isset( $_GET['filter'] ) ) ? sanitize_text_field( $_GET['filter'] ) : 'all';
 
 		switch ( $this->type ) {
 			case 'ignored-urls':
@@ -487,7 +487,7 @@ class GPI_List_Table extends WP_List_Table
 
 	public function get_bulk_actions()
 	{
-		$render = ( isset( $_GET['render'] ) ) ? $_GET['render'] : '';
+		$render = ( isset( $_GET['render'] ) ) ? sanitize_text_field( $_GET['render'] ) : '';
 
 		switch ( $render ) {
 			case 'ignored-urls':
@@ -540,19 +540,19 @@ class GPI_List_Table extends WP_List_Table
 	{
 		global $wpdb;
 
-		$post_per_page = ( isset( $_GET['post-per-page'] ) ) ? $_GET['post-per-page'] : 25;
+		$post_per_page = ( isset( $_GET['post-per-page'] ) ) ? intval( $_GET['post-per-page'] ) : 25;
 
 		if ( 'top' == $which ) {
 			?>
 			<div class="alignleft actions">
-				<?php if ( isset( $_GET['render'] ) && ( $_GET['render'] == 'report-list' || $_GET['render'] == 'summary' ) ) : ?>
+				<?php if ( isset( $_GET['render'] ) && ( 'report-list' == $_GET['render'] || 'summary' == $_GET['render'] ) ) : ?>
 				<select name="filter" id="filter">
 				<?php
 					$filter_options = apply_filters( 'gpi_filter_options', array(), false );
 
 					if ( $filter_options ) :
 						foreach ( $filter_options as $value => $label ) :
-							$current_filter = isset( $_GET['filter'] ) ? $_GET['filter'] : 'all';
+							$current_filter = isset( $_GET['filter'] ) ? sanitize_text_field( $_GET['filter'] ) : 'all';
 
 							if ( is_array( $label ) ) :
 								?>
@@ -576,7 +576,7 @@ class GPI_List_Table extends WP_List_Table
 				?>
 				</select>
 				<?php endif; ?>
-				<?php if ( isset( $_GET['render'] ) && $_GET['render'] != 'summary') : ?>
+				<?php if ( isset( $_GET['render'] ) && 'summary' != $_GET['render'] ) : ?>
 				<select name="post-per-page" id="post-per-page">
 					<option value="25" <?php selected( $post_per_page, 25 ); ?>><?php _e( '25 Results/Page', 'gpagespeedi' ); ?></option>
 					<option value="50" <?php selected( $post_per_page, 50 ); ?>><?php _e( '50 Results/Page', 'gpagespeedi' ); ?></option>
@@ -590,11 +590,11 @@ class GPI_List_Table extends WP_List_Table
 				?>
 
 				<?php if ( 'custom-urls' == $_GET['render'] ) : ?>
-					<a href="?page=<?php echo $_REQUEST['page']; ?>&amp;render=add-custom-urls" class="button-secondary"><?php _e( 'Add New URLs', 'gpagespeedi' ); ?></a>
-					<a href="?page=<?php echo $_REQUEST['page']; ?>&amp;render=add-custom-urls-bulk" class="button-secondary"><?php _e( 'Bulk Upload New URLs', 'gpagespeedi' ); ?></a>
+					<a href="?page=<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>&amp;render=add-custom-urls" class="button-secondary"><?php _e( 'Add New URLs', 'gpagespeedi' ); ?></a>
+					<a href="?page=<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>&amp;render=add-custom-urls-bulk" class="button-secondary"><?php _e( 'Bulk Upload New URLs', 'gpagespeedi' ); ?></a>
 				<?php endif; ?>
 
-				<?php do_action( 'gpi_after_tablenav', $_GET['render'] ); ?>
+				<?php do_action( 'gpi_after_tablenav', sanitize_text_field( $_GET['render'] ) ); ?>
 
 			</div>
 		<?php
@@ -612,7 +612,7 @@ class GPI_List_Table extends WP_List_Table
 		$all_types = apply_filters( 'gpi_filter_options', array(), true );
 
 		if ( 'default' == $this->type ) {
-			$filter	= isset( $_GET['filter'] ) ? $_GET['filter'] : 'all';
+			$filter	= isset( $_GET['filter'] ) ? sanitize_text_field( $_GET['filter'] ) : 'all';
 			$filter	= 'all' != $filter ? $filter : implode( '|', $all_types );
 			$filter	= 'gpi_custom_urls' != $filter ? $filter : apply_filters( 'gpi_custom_url_labels', $filter );
 

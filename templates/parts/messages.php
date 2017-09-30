@@ -7,6 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+$page = sanitize_text_field( $_REQUEST['page'] );
+
 ?>
 
 <?php if ( get_option( 'gpagespeedi_upgrade_recheck_required' ) ) : ?>
@@ -26,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php echo __( 'Version', 'gpagespeedi' ) . ' ' . GPI_VERSION . ' ' . __( 'requires some updates to the way Pagespeed reports are stored to take advantage of the latest plugin updates. You will notice some missing report functionality until all pages have been rechecked.', 'gpagespeedi' ); ?>
 				</p>
 				<p>
-					<a href="<?php echo admin_url( 'tools.php?page=google-pagespeed-insights&amp;render=' . $_GET['render'] . '&amp;action=reports_update' ); ?>" class="button button-primary"><?php _e( 'Recheck Pagespeed Reports Now', 'gpagespeedi' ); ?></a>
+					<a href="<?php echo admin_url( 'tools.php?page=google-pagespeed-insights&amp;render=' . sanitize_text_field( $_GET['render'] ) . '&amp;action=reports_update' ); ?>" class="button button-primary"><?php _e( 'Recheck Pagespeed Reports Now', 'gpagespeedi' ); ?></a>
 				</p>
 			</div>
 		</div>
@@ -34,12 +36,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php endif; ?>
 <?php if ( $this->gpi_options['google_developer_key'] == '' && 'options' != $admin_page ) : ?>
 	<div id="message" class="error">
-		<p><strong><?php _e( 'You must enter your Google API key to use this plugin! Enter your API key in the', 'gpagespeedi' ); ?> <a href="?page=<?php echo $_REQUEST['page'];?>&amp;render=options"><?php _e( 'Options', 'gpagespeedi' ); ?></a></strong>.</p>
+		<p><strong><?php _e( 'You must enter your Google API key to use this plugin! Enter your API key in the', 'gpagespeedi' ); ?> <a href="?page=<?php echo $page; ?>&amp;render=options"><?php _e( 'Options', 'gpagespeedi' ); ?></a></strong>.</p>
 	</div>
 <?php endif; ?>
 <?php if ( $this->gpi_options['bad_api_key'] && 'options' != $admin_page ) : ?>
 	<div id="message" class="error">
-		<p><strong><?php _e( 'The Google Pagespeed API Key you entered appears to be invalid. Please update your API key in the', 'gpagespeedi' ); ?> <a href="?page=<?php echo $_REQUEST['page'];?>&amp;render=options"><?php _e( 'Options', 'gpagespeedi' ); ?></a></strong>.</p>
+		<p><strong><?php _e( 'The Google Pagespeed API Key you entered appears to be invalid. Please update your API key in the', 'gpagespeedi' ); ?> <a href="?page=<?php echo $page; ?>&amp;render=options"><?php _e( 'Options', 'gpagespeedi' ); ?></a></strong>.</p>
 	</div>
 <?php endif; ?>
 <?php if ( $this->gpi_options['pagespeed_disabled'] && 'options' != $admin_page ) : ?>
@@ -70,17 +72,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php endif; ?>
 <?php if ( isset( $_GET['render'] ) && 'logs' == $_GET['render'] && ! $this->gpi_options['log_api_errors'] ) : ?>
 	<div id="message" class="error">
-		<p><strong><?php _e( 'API error logging is disabled. Enable "Log API Exceptions" to record new errors.', 'gpagespeedi' ); ?> <a href="?page=<?php echo $_REQUEST['page'];?>&amp;render=options"><?php _e( 'Options', 'gpagespeedi' ); ?></a></strong></p>
+		<p><strong><?php _e( 'API error logging is disabled. Enable "Log API Exceptions" to record new errors.', 'gpagespeedi' ); ?> <a href="?page=<?php echo $page; ?>&amp;render=options"><?php _e( 'Options', 'gpagespeedi' ); ?></a></strong></p>
 	</div>
 <?php endif; ?>
 <?php if ( $this->gpi_options['new_ignored_items'] ) : ?>
 	<div id="message" class="notice notice-error is-dismissible">
-		<p><strong><?php _e( 'One or more URLs could not be reached by Google Pagespeed Insights and have automatically been added to the', 'gpagespeedi' ); ?> <a href="?page=<?php echo $_REQUEST['page'];?>&amp;render=ignored-urls"><?php _e( 'Ignored URLs', 'gpagespeedi' ); ?></a></strong>.</p>
+		<p><strong><?php _e( 'One or more URLs could not be reached by Google Pagespeed Insights and have automatically been added to the', 'gpagespeedi' ); ?> <a href="?page=<?php echo $page; ?>&amp;render=ignored-urls"><?php _e( 'Ignored URLs', 'gpagespeedi' ); ?></a></strong>.</p>
 	</div>
 <?php endif; ?>
 <?php if ( $this->gpi_options['backend_error'] ) : ?>
 	<div id="message" class="error">
-		<p><strong><?php _e( 'An error has been encountered while checking one or more URLs. Possible causes: <br /><br />Daily API Limit Exceeded <a href="https://code.google.com/apis/console" target="_blank">Check API Usage</a> <br />API Key user limit exceeded <a href="https://code.google.com/apis/console" target="_blank">Check API Usage</a> <br />the URL is not publicly accessible or is bad. <br /><br />The URL(s) have been added to the', 'gpagespeedi' ); ?> <a href="?page=<?php echo $_REQUEST['page'];?>&amp;render=ignored-urls"><?php _e( 'Ignored URLs', 'gpagespeedi' ); ?></a></strong></p>
+		<p><strong><?php _e( 'An error has been encountered while checking one or more URLs. Possible causes: <br /><br />Daily API Limit Exceeded <a href="https://code.google.com/apis/console" target="_blank">Check API Usage</a> <br />API Key user limit exceeded <a href="https://code.google.com/apis/console" target="_blank">Check API Usage</a> <br />the URL is not publicly accessible or is bad. <br /><br />The URL(s) have been added to the', 'gpagespeedi' ); ?> <a href="?page=<?php echo $page; ?>&amp;render=ignored-urls"><?php _e( 'Ignored URLs', 'gpagespeedi' ); ?></a></strong></p>
 	</div>
 <?php endif; ?>
 <?php if ( $worker_status = apply_filters( 'gpi_check_status', false ) ) : ?>
@@ -88,7 +90,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php if ( 'disabled' != $this->gpi_options['heartbeat'] ) : ?>
 			<span>
 				<p id="gpi_status_abort" style="font-size: 13px; display: none;"><?php _e( 'Google Pagespeed has successfully stopped checking pages due to a user requested abort.', 'gpagespeedi' ); ?></p>
-				<p id="gpi_status_finished" style="font-size: 13px; display: none;"><?php _e( 'Google Pagespeed has finished checking pagespeed scores.', 'gpagespeedi' );?> <a href="?page=<?php echo $_REQUEST['page'];?>&amp;render=report-list"><?php _e( 'See new results', 'gpagespeedi' ); ?>.</a></p>
+				<p id="gpi_status_finished" style="font-size: 13px; display: none;"><?php _e( 'Google Pagespeed has finished checking pagespeed scores.', 'gpagespeedi' );?> <a href="?page=<?php echo $page; ?>&amp;render=report-list"><?php _e( 'See new results', 'gpagespeedi' ); ?>.</a></p>
 				<p id="gpi_status_ajax" class="ellipsis" style="font-size: 13px;"><?php _e( 'Google Pagespeed is running in the background ', 'gpagespeedi' ); ?></p>
 			</span>
 		<?php else : ?>
@@ -105,9 +107,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php if ( ! $worker_status && ! $this->gpi_options['last_run_finished'] ) : ?>
 	<div id="message" class="error">
 		<?php if ( apply_filters( 'gpi_set_time_limit_disabled', false ) ) : ?>
-			<p><strong><?php _e( 'The last pagespeed report scan failed to finish successfully. We have detected that your server may not allow the maximum execution time to be overridden by this plugin. If you continue to experience problems with pagespeed report scans failing to complete, try setting the Maximum Script Run Time in the Advanced Configuration section on the', 'gpagespeedi' ); ?>  <a href="?page=<?php echo $_REQUEST['page'];?>&amp;render=options"><?php _e( 'Options Page', 'gpagespeedi' ); ?></a></strong>.</p>
+			<p><strong><?php _e( 'The last pagespeed report scan failed to finish successfully. We have detected that your server may not allow the maximum execution time to be overridden by this plugin. If you continue to experience problems with pagespeed report scans failing to complete, try setting the Maximum Script Run Time in the Advanced Configuration section on the', 'gpagespeedi' ); ?>  <a href="?page=<?php echo $page;?>&amp;render=options"><?php _e( 'Options Page', 'gpagespeedi' ); ?></a></strong>.</p>
 		<?php else : ?>
-			<p><strong><?php _e( 'The last pagespeed report scan failed to finish successfully. If you continue to experience problems with pagespeed report scans failing to complete, try increasing the Maximum Execution Time, or setting the Maximum Script Run Time in the Advanced Configuration section on the', 'gpagespeedi' ); ?>  <a href="?page=<?php echo $_REQUEST['page'];?>&amp;render=options"><?php _e( 'Options Page', 'gpagespeedi' ); ?></a></strong>.</p>
+			<p><strong><?php _e( 'The last pagespeed report scan failed to finish successfully. If you continue to experience problems with pagespeed report scans failing to complete, try increasing the Maximum Execution Time, or setting the Maximum Script Run Time in the Advanced Configuration section on the', 'gpagespeedi' ); ?>  <a href="?page=<?php echo $page; ?>&amp;render=options"><?php _e( 'Options Page', 'gpagespeedi' ); ?></a></strong>.</p>
 		<?php endif; ?>
 	</div>
 <?php endif; ?>

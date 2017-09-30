@@ -12,15 +12,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="tablenav top">
 	<div class="alignleft actions">
 		<form method="get" action="" id="filter" name="filter">
-			<input type="hidden" name="page" value="<?php echo $_REQUEST['page']; ?>" />
+			<input type="hidden" name="page" value="<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>" />
 			<input type="hidden" name="render" value="summary" />
 			<select name="filter" id="filter">
 			<?php
 				$filter_options = apply_filters( 'gpi_filter_options', array(), false );
+				$current_filter = isset( $_GET['filter'] ) ? sanitize_text_field( $_GET['filter'] ) : 'all';
 
 				if ( $filter_options ) :
 					foreach ( $filter_options as $value => $label ) :
-						$current_filter = isset( $_GET['filter'] ) ? $_GET['filter'] : 'all';
 
 						if ( is_array( $label ) ) :
 							?>
@@ -50,7 +50,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 	<div class="alignleft actions">
 		<form method="post" action="" id="savesnapshot" name="savesnapshot">
-			<input type="hidden" name="page" value="<?php echo $_REQUEST['page']; ?>" />
+			<input type="hidden" name="page" value="<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>" />
 			<input type="hidden" name="render" value="summary" />
 			<input type="hidden" name="action" value="save-snapshot" />
 			<input type="text" name="comment" placeholder="<?php _e( 'Report Description', 'gpagespeedi' ); ?>" value="" />
@@ -116,13 +116,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php _e( 'No Pagespeed Reports Found. Google Pagespeed may still be checking your pages. If problems persist, see the following possible solutions:', 'gpagespeedi' ); ?>
 	</p>
 	<ol class="no-items">
-		<?php if ( isset( $_GET['filter'] ) && $_GET['filter'] != 'all' ) : ?>
-			<li><?php _e( 'There may not be any results for the "' . $_GET['filter'] . '" filter. Try another filter.', 'gpagespeedi' ); ?></li>
+		<?php if ( isset( $current_filter ) && $current_filter != 'all' ) : ?>
+			<li><?php _e( 'There may not be any results for the "' . $current_filter . '" filter. Try another filter.', 'gpagespeedi' ); ?></li>
 		<?php endif; ?>
 		<?php if ( $this->gpi_options['strategy'] == 'both' ) : ?>
 			<li><?php echo __( 'There may not be any', 'gpagespeedi' ) . ' ' . $this->gpi_ui_options['view_preference'] . ' ' . __( 'reports completed yet.', 'gpagespeedi' )  . ' ' . __( 'Try switching the report mode.', 'gpagespeedi' ); ?></li>
 		<?php endif; ?>
-		<li><?php _e( 'Make sure that you have entered your Google API key on the ', 'gpagespeedi' );?><a href="?page=<?php echo $_REQUEST['page']; ?>&render=options">Options</a> page.</li>
+		<li><?php _e( 'Make sure that you have entered your Google API key on the ', 'gpagespeedi' );?><a href="?page=<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>&render=options">Options</a> page.</li>
 		<li><?php _e( 'Make sure that you have enabled "PageSpeed Insights API" from the Services page of the ', 'gpagespeedi' );?><a href="https://code.google.com/apis/console/">Google Console</a>.</li>
 		<li><?php _e( 'Make sure that your URLs are publicly accessible', 'gpagespeedi' ); ?>.</li>
 	</ol>

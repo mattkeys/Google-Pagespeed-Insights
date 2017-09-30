@@ -10,6 +10,12 @@
 
 
 	$( document ).ready( function() {
+		if ( GPI_View_Snapshot.comments.snapshot ) {
+			$('.comment[data-selector="snapshot"]').html( '<strong>' + GPI_View_Snapshot.strings.comment + ':</strong>' + GPI_View_Snapshot.comments.snapshot );
+		}
+		if ( GPI_View_Snapshot.comments.compare ) {
+			$('.comment[data-selector="compare"]').html( '<strong>' + GPI_View_Snapshot.strings.comment + ':</strong>' + GPI_View_Snapshot.comments.compare );
+		}
 
 		$('.pagespeed_needle').each( function( index ) {
 			var selector = $(this).data('selector');

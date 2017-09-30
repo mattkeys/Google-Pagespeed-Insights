@@ -23,7 +23,7 @@ class GPI_Admin
 	{
 		$this->gpi_options		= get_option( 'gpagespeedi_options' );
 		$this->gpi_ui_options	= get_option( 'gpagespeedi_ui_options' );
-		$this->strategy			= ( isset( $_GET['strategy'] ) ) ? $_GET['strategy'] : $this->gpi_ui_options['view_preference'];
+		$this->strategy			= ( isset( $_GET['strategy'] ) ) ? sanitize_text_field( $_GET['strategy'] ) : $this->gpi_ui_options['view_preference'];
 
 		add_action( 'admin_init', array( $this, 'upgrade_check' ), 10 );
 		add_action( 'pre_uninstall_plugin', array( $this, 'backup_addon_tables' ), 10, 1 );
@@ -125,26 +125,26 @@ class GPI_Admin
 
 	public function render_admin_page()
 	{
-		$admin_page = ( isset( $_GET['render'] ) ) ? $_GET['render'] : 'report-list';
+		$admin_page = ( isset( $_GET['render'] ) ) ? sanitize_text_field( $_GET['render'] ) : 'report-list';
 		?>
 		<div class="wrap">
 			<div id="icon-gpi" class="icon32"><br/></div>
 			<h2>
-				Google Pagespeed Insights
+				<?php _e( 'Google Pagespeed Insights', 'gpagespeedi' ); ?>
 				<?php
 					if ( $worker_status = apply_filters( 'gpi_check_status', false ) ) :
 						if ( ! get_option( 'gpi_abort_scan' ) ) :
 							?>
-							<a href="?page=<?php echo $_REQUEST['page'];?>&amp;render=<?php echo $_REQUEST['render'];?>&amp;action=abort-scan" class="button-gpi abort"><?php _e( 'Abort Current Scan', 'gpagespeedi' ); ?></a>
+							<a href="?page=<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>&amp;render=<?php echo $admin_page; ?>&amp;action=abort-scan" class="button-gpi abort"><?php _e( 'Abort Current Scan', 'gpagespeedi' ); ?></a>
 							<?php
 						else :
 							?>
-							<a href="?page=<?php echo $_REQUEST['page'];?>&amp;render=<?php echo $_REQUEST['render'];?>" class="button-gpi abort" disabled><?php _e( 'Abort Current Scan', 'gpagespeedi' ); ?></a>
+							<a href="?page=<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>&amp;render=<?php echo $admin_page; ?>" class="button-gpi abort" disabled><?php _e( 'Abort Current Scan', 'gpagespeedi' ); ?></a>
 							<?php
 						endif;
 					elseif ( $this->gpi_options['google_developer_key'] ) :
 						?>
-							<a id="start_scan" href="?page=<?php echo $_REQUEST['page'];?>&amp;render=<?php echo $_REQUEST['render'];?>&amp;action=start-scan" class="button-gpi run"><?php _e( 'Start Reporting', 'gpagespeedi' ); ?></a>
+							<a id="start_scan" href="?page=<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>&amp;render=<?php echo $admin_page; ?>&amp;action=start-scan" class="button-gpi run"><?php _e( 'Start Reporting', 'gpagespeedi' ); ?></a>
 							<input type="checkbox" name="recheck_all_pages" id="recheck_all_pages" />
 							<label for="recheck_all_pages"><?php _e( 'Recheck All', 'gpagespeedi' ); ?> <span class="tooltip" title="<?php _e( 'Ignore last checked date to generate new reports for all pages', 'gpagespeedi' ); ?>">(?)</span></label>
 						<?php
@@ -191,7 +191,7 @@ class GPI_Admin
 			return;
 		}
 
-		wp_enqueue_style( 'gpagespeedi_css', plugins_url( '/assets/css/gpagespeedi_styles.css', GPI_PLUGIN_FILE ), false, '2.0.0' );
+		wp_enqueue_style( 'gpagespeedi_css', plugins_url( '/assets/css/gpagespeedi_styles.css', GPI_PLUGIN_FILE ), false, '3.0.0' );
 
 		wp_register_script( 'gpagespeedi_google_charts', 'https://www.gstatic.com/charts/loader.js' );
 	}
@@ -206,12 +206,12 @@ class GPI_Admin
 			return;
 		}
 
-		$recheck_url = admin_url( '/tools.php?page=google-pagespeed-insights&render=details&page_id=' . $_GET['page_id'] . '&action=single-recheck' );
+		$recheck_url = admin_url( '/tools.php?page=google-pagespeed-insights&render=details&page_id=' . intval( $_GET['page_id'] ) . '&action=single-recheck' );
 
 		wp_enqueue_script( 'gpagespeedi_details_js', plugins_url( '/assets/js/details.js', GPI_PLUGIN_FILE ), array( 'jquery', 'gpagespeedi_google_charts', 'wp-util' ), '2.0.2' );
 		wp_localize_script( 'gpagespeedi_details_js', 'GPI_Details', array(
-				'page_stats'	=> $this->get_page_stats( $_GET['page_id'] ),
-				'page_reports'	=> $this->get_page_reports( $_GET['page_id'] ),
+				'page_stats'	=> $this->get_page_stats( intval( $_GET['page_id'] ) ),
+				'page_reports'	=> $this->get_page_reports( intval( $_GET['page_id'] ) ),
 				'recheck_url'	=> wp_nonce_url( $recheck_url, 'gpi-single-recheck' ),
 				'strings'		=> array(
 					'hosts'				=> __( 'Number of Hosts', 'gpagespeedi' ),
@@ -266,12 +266,16 @@ class GPI_Admin
 		$strings = array(
 			'strings' => array(
 				'comment'	=> __('Comment', 'gpagespeedi')
+			),
+			'comments'	=> array(
+				'snapshot'	=> isset( $snapshot_data['snapshot']['comment'] ) ? sanitize_text_field( $snapshot_data['snapshot']['comment'] ) : false,
+				'compare'	=> isset( $snapshot_data['compare']['comment'] ) ? sanitize_text_field( $snapshot_data['compare']['comment'] ) : false
 			)
 		);
 
 		$localize_data = array_merge( $snapshot_data, $strings );
 
-		wp_enqueue_script( 'gpagespeedi_view_snapshot_js', plugins_url( '/assets/js/view-snapshot.js', GPI_PLUGIN_FILE ), array( 'jquery', 'gpagespeedi_google_charts', 'wp-util' ), '2.0.0' );
+		wp_enqueue_script( 'gpagespeedi_view_snapshot_js', plugins_url( '/assets/js/view-snapshot.js', GPI_PLUGIN_FILE ), array( 'jquery', 'gpagespeedi_google_charts', 'wp-util' ), '3.0.0' );
 		wp_localize_script( 'gpagespeedi_view_snapshot_js', 'GPI_View_Snapshot', $localize_data );
 	}
 
@@ -291,7 +295,7 @@ class GPI_Admin
 
 	public function js_templates()
 	{
-		if ( ! isset( $_GET['page'] ) || $_GET['page'] != 'google-pagespeed-insights' ) {
+		if ( ! isset( $_GET['page'] ) || 'google-pagespeed-insights' != $_GET['page'] ) {
 			return;
 		}
 
@@ -299,7 +303,9 @@ class GPI_Admin
 			return;
 		}
 
-		switch ( $_GET['render'] ) {
+		$render = sanitize_text_field( $_GET['render'] );
+
+		switch ( $render ) {
 			case 'details':
 				include_once GPI_DIRECTORY . '/assets/js/templates/details/statistics.php';
 				include_once GPI_DIRECTORY . '/assets/js/templates/details/legend.php';
@@ -317,23 +323,23 @@ class GPI_Admin
 				include_once GPI_DIRECTORY . '/assets/js/templates/view-snapshot/comment.php';
 				break;
 
-			case apply_filters( 'gpi_custom_js_templates', $_GET['render'] ):
-				do_action( 'gpi_load_custom_js_template', $_GET['render'] );
+			case apply_filters( 'gpi_custom_js_templates', $render ):
+				do_action( 'gpi_load_custom_js_template', $render );
 				break;
 		}
 	}
 
 	public function redirect()
 	{
-		if ( ! isset( $_GET['page'] ) || $_GET['page'] != 'google-pagespeed-insights' ) {
+		if ( ! isset( $_GET['page'] ) || 'google-pagespeed-insights' != $_GET['page'] ) {
 			return;
 		}
 
 		if ( ! isset( $_GET['render'] ) ) {
 			if ( empty( $this->gpi_options['google_developer_key'] ) ) {
-				wp_redirect( '?page=' . $_REQUEST['page'] . '&render=options' );
+				wp_redirect( '?page=google-pagespeed-insights&render=options' );
 			} else {
-				wp_redirect( '?page=' . $_REQUEST['page'] . '&render=report-list' );
+				wp_redirect( '?page=google-pagespeed-insights&render=report-list' );
 			}
 			exit;
 		}
@@ -516,7 +522,7 @@ class GPI_Admin
 		$all_types = $this->get_filter_options( array(), true );
 
 		$gpi_page_stats = $wpdb->prefix . 'gpi_page_stats';
-		$filter			= isset( $_GET['filter'] ) ? $_GET['filter'] : 'all';
+		$filter			= isset( $_GET['filter'] ) ? sanitize_text_field( $_GET['filter'] ) : 'all';
 		$filter			= 'all' != $filter ? $filter : implode( '|', $all_types );
 
 		if ( 'gpi_custom_urls' == $filter ) {
@@ -612,7 +618,7 @@ class GPI_Admin
 
 		$gpi_page_stats		= $wpdb->prefix . 'gpi_page_stats';
 		$gpi_page_reports	= $wpdb->prefix . 'gpi_page_reports';
-		$filter				= isset( $_GET['filter'] ) ? $_GET['filter'] : 'all';
+		$filter				= isset( $_GET['filter'] ) ? sanitize_text_field( $_GET['filter'] ) : 'all';
 		$filter				= 'all' != $filter ? $filter : implode( '|', $all_types );
 
 		if ( 'gpi_custom_urls' == $filter ) {

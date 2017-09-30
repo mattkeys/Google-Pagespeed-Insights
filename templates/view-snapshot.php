@@ -12,16 +12,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="toolbar">
 	<div class="left">
 		<form method="get" action="" name="filter">
-			<input type="hidden" name="page" value="<?php echo $_REQUEST['page'];?>" />
+			<input type="hidden" name="page" value="<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>" />
 			<input type="hidden" name="render" value="view-snapshot" />
-			<div class="tablenav top">
+			<div class="tablenav top snapshots">
 				<select name="snapshot_id">
 					<?php
-						$similar_snapshots = apply_filters( 'gpi_similar_snapshots', array(), $_GET['snapshot_id'] );
+						$similar_snapshots = apply_filters( 'gpi_similar_snapshots', array(), intval( $_GET['snapshot_id'] ) );
 
 						foreach( $similar_snapshots as $snapshot ) :
 							?>
-							<option value="<?php echo $snapshot['ID']; ?>" <?php selected( $snapshot['ID'], $_GET['snapshot_id'] ); ?>><?php echo date_i18n( 'M d Y g:ia', $snapshot['snaptime'] ); ?></option>
+							<option value="<?php echo $snapshot['ID']; ?>" <?php selected( $snapshot['ID'], intval( $_GET['snapshot_id'] ) ); ?>><?php echo date_i18n( 'M d Y g:ia', $snapshot['snaptime'] ); ?></option>
 							<?php
 						endforeach;
 					?>
@@ -36,17 +36,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php if ( count( $similar_snapshots ) >= 2 ) : ?>
 		<div class="right">
 			<form method="get" action="" name="filter">
-				<input type="hidden" name="page" value="<?php echo $_REQUEST['page'];?>" />
+				<input type="hidden" name="page" value="<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>" />
 				<input type="hidden" name="render" value="view-snapshot" />
-				<input type="hidden" name="snapshot_id" value="<?php echo $_GET['snapshot_id']; ?>" />
-				<div class="tablenav top">
+				<input type="hidden" name="snapshot_id" value="<?php echo intval( $_GET['snapshot_id'] ); ?>" />
+				<div class="tablenav top snapshots">
 					<select name="compare_id">
 						<?php
 							foreach( $similar_snapshots as $snapshot ) :
 								if ( $_GET['snapshot_id'] == $snapshot['ID'] ) :
 									continue;
 								endif;
-								$current_compare_id = isset( $_GET['compare_id'] ) ? $_GET['compare_id'] : false
+								$current_compare_id = isset( $_GET['compare_id'] ) ? intval( $_GET['compare_id'] ) : false
 								?>
 								<option value="<?php echo $snapshot['ID']; ?>" <?php selected( $snapshot['ID'], $current_compare_id ); ?>><?php echo date_i18n( 'M d Y g:ia', $snapshot['snaptime'] ); ?></option>
 								<?php

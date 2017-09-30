@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <form method="post" action="">
-	<input type="hidden" name="page" value="<?php echo $_REQUEST['page'];?>" />
+	<input type="hidden" name="page" value="<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>" />
 	<input type="hidden" name="render" value="add-custom-urls" />
 	<input type="hidden" name="action" value="add-custom-urls" />
 
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 		<div class="padded">
 
-			<p><?php _e( 'Add any valid URL, even from sites outside of WordPress. Enter up to 10 URLs below. If you need to enter a lot of URLs check out the', 'gpagespeedi' ); ?> <a href="?page=<?php echo $_REQUEST['page'];?>&amp;render=add-custom-urls-bulk"><?php _e( 'Bulk URL uploader', 'gpagespeedi' ); ?></a>.</p>
+			<p><?php _e( 'Add any valid URL, even from sites outside of WordPress. Enter up to 10 URLs below. If you need to enter a lot of URLs check out the', 'gpagespeedi' ); ?> <a href="?page=<?php echo sanitize_text_field( $_REQUEST['page'] ) ;?>&amp;render=add-custom-urls-bulk"><?php _e( 'Bulk URL uploader', 'gpagespeedi' ); ?></a>.</p>
 
 			<table class="form-table">
 				<tbody>

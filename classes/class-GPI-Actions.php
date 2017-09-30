@@ -31,11 +31,11 @@ class GPI_Actions
 	{
 		global $wpdb;
 
-		$this->action				= $_REQUEST['action'];
+		$this->action				= sanitize_text_field( $_REQUEST['action'] );
 		$this->gpi_options			= get_option( 'gpagespeedi_options' );
 		$this->gpi_ui_options		= get_option( 'gpagespeedi_ui_options' );
 		$this->page_id				= isset( $_GET['page_id'] ) ? intval( $_GET['page_id'] ) : false;
-		$this->bulk_pages			= isset( $_GET['gpi_page_report'] ) ? $_GET['gpi_page_report'] : false;
+		$this->bulk_pages			= isset( $_GET['gpi_page_report'] ) ? array_map( 'intval', $_GET['gpi_page_report'] ) : false;
 		$this->bulk_pages_count		= count( $this->bulk_pages );
 
 		$this->gpi_page_stats			= $wpdb->prefix . 'gpi_page_stats';
@@ -166,7 +166,7 @@ class GPI_Actions
 			if ( 'purge_reports' == $_POST['purge_all_data'] ) {
 				$wpdb->query( "TRUNCATE TABLE $this->gpi_page_stats" );
 				$wpdb->query( "TRUNCATE TABLE $this->gpi_page_reports" );
-			} else if ( $_POST['purge_all_data'] == 'purge_everything' ) {
+			} else if ( 'purge_everything' == $_POST['purge_all_data'] ) {
 				$wpdb->query( "TRUNCATE TABLE $this->gpi_page_stats" );
 				$wpdb->query( "TRUNCATE TABLE $this->gpi_page_reports" );
 				$wpdb->query( "TRUNCATE TABLE $this->gpi_page_blacklist" );
@@ -181,19 +181,19 @@ class GPI_Actions
 		$old_options = $this->gpi_options;
 
 		$gpagespeedi_options = array(
-			'google_developer_key'		=> ! empty( $_POST['google_developer_key'] )	? $_POST['google_developer_key']		: $this->gpi_options['google_developer_key'],
-			'response_language'			=> ! empty( $_POST['response_language'] )		? $_POST['response_language']			: $this->gpi_options['response_language'],
-			'strategy'					=> ! empty( $_POST['strategy'] )				? $_POST['strategy']					: $this->gpi_options['strategy'],
-			'max_execution_time'		=> ! empty( $_POST['max_execution_time'] )		? $_POST['max_execution_time']			: $this->gpi_options['max_execution_time'],
-			'max_run_time'				=> ! empty( $_POST['max_run_time'] )			? $_POST['max_run_time']				: $this->gpi_options['max_run_time'],
-			'sleep_time'				=> isset( $_POST['sleep_time'] )				? $_POST['sleep_time']					: $this->gpi_options['sleep_time'],
-			'recheck_interval'			=> ! empty( $_POST['recheck_interval'] )		? $_POST['recheck_interval']			: $this->gpi_options['recheck_interval'],
-			'use_schedule'				=> isset( $_POST['use_schedule'] )				? true									: false,
-			'check_pages'				=> isset( $_POST['check_pages'] )				? true									: false,
-			'check_posts'				=> isset( $_POST['check_posts'] )				? true									: false,
-			'cpt_whitelist'				=> isset( $_POST['cpt_whitelist'] )				? serialize( $_POST['cpt_whitelist'] )	: false,
-			'check_categories'			=> isset( $_POST['check_categories'] )			? true									: false,
-			'check_custom_urls'			=> isset( $_POST['check_custom_urls'] )			? true									: false,
+			'google_developer_key'		=> ! empty( $_POST['google_developer_key'] )	? sanitize_text_field( $_POST['google_developer_key'] )						: $this->gpi_options['google_developer_key'],
+			'response_language'			=> ! empty( $_POST['response_language'] )		? sanitize_text_field( $_POST['response_language'] )						: $this->gpi_options['response_language'],
+			'strategy'					=> ! empty( $_POST['strategy'] )				? sanitize_text_field( $_POST['strategy'] )									: $this->gpi_options['strategy'],
+			'max_execution_time'		=> ! empty( $_POST['max_execution_time'] )		? intval( $_POST['max_execution_time'] )									: $this->gpi_options['max_execution_time'],
+			'max_run_time'				=> ! empty( $_POST['max_run_time'] )			? intval( $_POST['max_run_time'] )											: $this->gpi_options['max_run_time'],
+			'sleep_time'				=> isset( $_POST['sleep_time'] )				? intval( $_POST['sleep_time'] )											: $this->gpi_options['sleep_time'],
+			'recheck_interval'			=> ! empty( $_POST['recheck_interval'] )		? intval( $_POST['recheck_interval'] )										: $this->gpi_options['recheck_interval'],
+			'use_schedule'				=> isset( $_POST['use_schedule'] )				? true																		: false,
+			'check_pages'				=> isset( $_POST['check_pages'] )				? true																		: false,
+			'check_posts'				=> isset( $_POST['check_posts'] )				? true																		: false,
+			'cpt_whitelist'				=> isset( $_POST['cpt_whitelist'] )				? serialize( array_map( 'sanitize_text_field', $_POST['cpt_whitelist'] ) )	: false,
+			'check_categories'			=> isset( $_POST['check_categories'] )			? true																		: false,
+			'check_custom_urls'			=> isset( $_POST['check_custom_urls'] )			? true																		: false,
 			'first_run_complete'		=> $this->gpi_options['first_run_complete'],
 			'last_run_finished'			=> $this->gpi_options['last_run_finished'],
 			'bad_api_key'				=> false,
@@ -201,9 +201,9 @@ class GPI_Actions
 			'api_restriction'			=> false,
 			'new_ignored_items'			=> false,
 			'backend_error'				=> false,
-			'log_api_errors'			=> isset( $_POST['log_api_errors'] )			? true									: false,
+			'log_api_errors'			=> isset( $_POST['log_api_errors'] )			? true																		: false,
 			'new_activation_message'	=> false,
-			'heartbeat'					=> isset( $_POST['heartbeat'] )					? $_POST['heartbeat']					: 'standard',
+			'heartbeat'					=> isset( $_POST['heartbeat'] )					? sanitize_text_field( $_POST['heartbeat'] )								: 'standard',
 			'version'					=> GPI_VERSION
 		);
 		update_option( 'gpagespeedi_options', $gpagespeedi_options );
@@ -211,7 +211,7 @@ class GPI_Actions
 
 		$gpagespeedi_ui_options = array(
 			'action_message'			=> false,
-			'view_preference'			=> 'both' != $_POST['strategy'] ? $_POST['strategy'] : $this->gpi_ui_options['view_preference']
+			'view_preference'			=> 'both' != $_POST['strategy'] ? sanitize_text_field( $_POST['strategy'] ) : $this->gpi_ui_options['view_preference']
 		);
 
 		update_option( 'gpagespeedi_ui_options', $gpagespeedi_ui_options );
@@ -456,10 +456,10 @@ class GPI_Actions
 		global $wpdb;
 
 		$snapshot_data = array(
-			'strategy'			=> $this->gpi_options['strategy'],
-			'type'				=> isset( $_GET['filter'] ) ? $_GET['filter'] : 'all',
+			'strategy'			=> $this->gpi_ui_options['view_preference'],
+			'type'				=> isset( $_GET['filter'] ) ? sanitize_text_field( $_GET['filter'] ) : 'all',
 			'snaptime'			=> current_time( 'timestamp' ),
-			'comment'			=> isset( $_POST['comment'] ) ? $_POST['comment'] : false,
+			'comment'			=> isset( $_POST['comment'] ) ? sanitize_text_field( $_POST['comment'] ) : false,
 			'summary_stats'		=> json_encode( apply_filters( 'gpi_summary_stats', array() ) ),
 			'summary_reports'	=> json_encode( apply_filters( 'gpi_summary_reports', array() ) )
 		);
@@ -491,8 +491,8 @@ class GPI_Actions
 			);
 		}
 
-		if ( empty( $this->bulk_pages ) && ( isset( $_GET['snapshot_id'] ) && ! empty( $_GET['snapshot_id'] ) ) ) {
-			$this->bulk_pages = array( $_GET['snapshot_id'] );
+		if ( empty( $this->bulk_pages ) && ( isset( $_GET['snapshot_id'] ) && ! empty( intval( $_GET['snapshot_id'] ) ) ) ) {
+			$this->bulk_pages = array( intval( $_GET['snapshot_id'] ) );
 		}
 
 		if ( empty( $this->bulk_pages ) ) {
@@ -531,7 +531,7 @@ class GPI_Actions
 			$custom_url_label = 'custom';
 		} else {
 			$custom_url_label = preg_replace( '/[^a-zA-Z0-9\s]/', '', $custom_url_label );
-			$custom_url_label = str_replace(' ', '_', $custom_url_label);
+			$custom_url_label = str_replace( ' ', '_', $custom_url_label );
 			$custom_url_label = substr( $custom_url_label, 0, 20 );
 		}
 
@@ -642,8 +642,8 @@ class GPI_Actions
 			if ( ! $custom_url_label ) {
 				$custom_url_label = 'custom';
 			} else {
+				$custom_url_label = preg_replace( '/[^a-zA-Z0-9\s]/', '', $custom_url_label );
 				$custom_url_label = str_replace( ' ', '_', $custom_url_label );
-				$custom_url_label = preg_replace( '/[^\w\d ]/ui', '', $custom_url_label );
 				$custom_url_label = substr( $custom_url_label, 0, 20 );
 			}
 

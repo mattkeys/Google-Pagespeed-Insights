@@ -131,6 +131,9 @@ input[type="submit"] + input[type="submit"] {
 	display: inline-block;
 	margin: 1px 8px 0 0;
 }
+.tablenav.top.snapshots {
+	height: auto;
+}
 .row {
 	width: 100%;
 	overflow: auto;
@@ -487,6 +490,7 @@ div#no_results {
 	vertical-align: top;
 	width: 21px;
 	display: inline-block;
+	word-wrap: normal;
 }
 .impact_chart_div {
 	width: 463px;

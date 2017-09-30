@@ -136,6 +136,14 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 == Changelog ==
 
+= 3.0.1 =
+* Added snapshot comments to the view snapshot / compare snapshot templates
+* Fixed bug with snapshot report type label reading 'both' when it should read either desktop or mobile
+* Fixed bug with snapshot report description label not loading translatable string
+* Fixed bug preventing snapshot comments from being displayed in snapshots list table
+* Improved hardening against authenticated XSS attacks
+* Improved adherence to WordPress coding standards and best practices
+
 = 3.0.0 =
 * Includes all previously "premium" functionality for free. This includes report snapshots, snapshot comparison tool, custom URL reporting, and scheduled report checks.
 * Added in URL hotlinking in report details for paths to assets (images/scripts/etc)
@@ -189,6 +197,14 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 * Initial Release
 
 == Upgrade Notice ==
+
+= 3.0.1 =
+* Added snapshot comments to the view snapshot / compare snapshot templates
+* Fixed bug with snapshot report type label reading 'both' when it should read either desktop or mobile
+* Fixed bug with snapshot report description label not loading translatable string
+* Fixed bug preventing snapshot comments from being displayed in snapshots list table
+* Improved hardening against authenticated XSS attacks
+* Improved adherence to WordPress coding standards and best practices
 
 = 3.0.0 =
 * Includes all previously "premium" functionality for free. This includes report snapshots, snapshot comparison tool, custom URL reporting, and scheduled report checks.
