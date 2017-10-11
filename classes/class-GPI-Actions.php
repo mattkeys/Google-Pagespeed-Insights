@@ -491,7 +491,9 @@ class GPI_Actions
 			);
 		}
 
-		if ( empty( $this->bulk_pages ) && ( isset( $_GET['snapshot_id'] ) && ! empty( intval( $_GET['snapshot_id'] ) ) ) ) {
+		$snapshot_id = isset( $_GET['snapshot_id'] ) ? intval( $_GET['snapshot_id'] ) : false;
+
+		if ( empty( $this->bulk_pages ) && ! empty( $snapshot_id ) ) {
 			$this->bulk_pages = array( intval( $_GET['snapshot_id'] ) );
 		}
 

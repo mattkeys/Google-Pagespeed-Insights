@@ -136,6 +136,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 == Changelog ==
 
+= 3.0.2 =
+* Fixed bug introduced in v3.0.1 effecting servers running PHP 5.4 where a PHP error is produced while trying to perform actions in the plugin like saving options
+
 = 3.0.1 =
 * Added snapshot comments to the view snapshot / compare snapshot templates
 * Fixed bug with snapshot report type label reading 'both' when it should read either desktop or mobile
@@ -197,6 +200,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 * Initial Release
 
 == Upgrade Notice ==
+
+= 3.0.2 =
+* Fixed bug introduced in v3.0.1 effecting servers running PHP 5.4 where a PHP error is produced while trying to perform actions in the plugin like saving options
 
 = 3.0.1 =
 * Added snapshot comments to the view snapshot / compare snapshot templates
