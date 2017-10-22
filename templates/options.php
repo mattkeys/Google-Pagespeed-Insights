@@ -218,7 +218,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<p class="description">
 				<?php _e( 'The default value of "Fast" is fine for most sites.', 'gpagespeedi' ); ?>
 				<br />
-				<?php _e( 'More frequent updates may impact Pagespeed reports on poorly performing servers, reduce to rate if you are experiencing issues.', 'gpagespeedi' ); ?>
+				<?php _e( 'More frequent updates may impact Pagespeed reports on poorly performing servers, reduce the rate if you are experiencing issues.', 'gpagespeedi' ); ?>
 			</p>
 
 			<p class="checkbx">

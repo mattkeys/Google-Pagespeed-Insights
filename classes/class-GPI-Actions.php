@@ -185,7 +185,7 @@ class GPI_Actions
 			'response_language'			=> ! empty( $_POST['response_language'] )		? sanitize_text_field( $_POST['response_language'] )						: $this->gpi_options['response_language'],
 			'strategy'					=> ! empty( $_POST['strategy'] )				? sanitize_text_field( $_POST['strategy'] )									: $this->gpi_options['strategy'],
 			'max_execution_time'		=> ! empty( $_POST['max_execution_time'] )		? intval( $_POST['max_execution_time'] )									: $this->gpi_options['max_execution_time'],
-			'max_run_time'				=> ! empty( $_POST['max_run_time'] )			? intval( $_POST['max_run_time'] )											: $this->gpi_options['max_run_time'],
+			'max_run_time'				=> isset( $_POST['max_run_time'] )				? intval( $_POST['max_run_time'] )											: $this->gpi_options['max_run_time'],
 			'sleep_time'				=> isset( $_POST['sleep_time'] )				? intval( $_POST['sleep_time'] )											: $this->gpi_options['sleep_time'],
 			'recheck_interval'			=> ! empty( $_POST['recheck_interval'] )		? intval( $_POST['recheck_interval'] )										: $this->gpi_options['recheck_interval'],
 			'use_schedule'				=> isset( $_POST['use_schedule'] )				? true																		: false,

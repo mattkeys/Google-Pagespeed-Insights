@@ -136,6 +136,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 == Changelog ==
 
+= 3.0.3 =
+* Fixed bug where Maximum Script Run Time option could not be set to "No Limit" after previously being set to a higher value
+
 = 3.0.2 =
 * Fixed bug introduced in v3.0.1 effecting servers running PHP 5.4 where a PHP error is produced while trying to perform actions in the plugin like saving options
 
@@ -200,6 +203,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 * Initial Release
 
 == Upgrade Notice ==
+
+= 3.0.3 =
+* Fixed bug where Maximum Script Run Time option could not be set to "No Limit" after previously being set to a higher value
 
 = 3.0.2 =
 * Fixed bug introduced in v3.0.1 effecting servers running PHP 5.4 where a PHP error is produced while trying to perform actions in the plugin like saving options
