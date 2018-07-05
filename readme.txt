@@ -136,6 +136,10 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 == Changelog ==
 
+= 3.0.4 =
+* Fixed bug where WordPress heartbeat API filter function failed to return properly
+* Added additional options for max runtime to support scenarios where even 60 seconds was over the server max run time
+
 = 3.0.3 =
 * Fixed bug where Maximum Script Run Time option could not be set to "No Limit" after previously being set to a higher value
 
@@ -203,6 +207,10 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 * Initial Release
 
 == Upgrade Notice ==
+
+= 3.0.4 =
+* Fixed bug where WordPress heartbeat API filter function failed to return properly
+* Added additional options for max runtime to support scenarios where even 60 seconds was over the server max run time
 
 = 3.0.3 =
 * Fixed bug where Maximum Script Run Time option could not be set to "No Limit" after previously being set to a higher value

@@ -181,6 +181,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<p><label for="max_run_time"><?php _e( 'Maximum Script Run Time', 'gpagespeedi' ); ?>:</label></p>
 			<select name="max_run_time" id="max_run_time">
 				<option value="0" <?php selected( $this->gpi_options['max_run_time'], 0 ); ?>><?php _e( 'No Limit', 'gpagespeedi' ); ?></option>
+				<option value="15" <?php selected( $this->gpi_options['max_run_time'], 15 ); ?>><?php _e( '15 Seconds', 'gpagespeedi' ); ?></option>
+				<option value="30" <?php selected( $this->gpi_options['max_run_time'], 30 ); ?>><?php _e( '30 Seconds', 'gpagespeedi' ); ?></option>
+				<option value="45" <?php selected( $this->gpi_options['max_run_time'], 45 ); ?>><?php _e( '45 Seconds', 'gpagespeedi' ); ?></option>
 				<option value="60" <?php selected( $this->gpi_options['max_run_time'], 60 ); ?>><?php _e( '60 Seconds', 'gpagespeedi' ); ?></option>
 				<option value="90" <?php selected( $this->gpi_options['max_run_time'], 90 ); ?>><?php _e( '90 Seconds', 'gpagespeedi' ); ?></option>
 				<option value="120" <?php selected( $this->gpi_options['max_run_time'], 120 ); ?>><?php _e( '120 Seconds', 'gpagespeedi' ); ?></option>
@@ -189,7 +192,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</select>
 			<p class="description">
 				<?php _e( 'Some web hosting providers have limits on script runtime that cannot be overridden. If your scans do not finish completely and changing the Maximum Execution Time does not resolve the problem, this setting may help. Once the specified run time is reached a new scan process will automatically start.', 'gpagespeedi' ); ?>
-				<?php _e( 'It is best to find the largest value that still allows the script to complete successfully. Test first at 60 seconds, then raise the value to 90 if your test is successful. Continue until you find the maximum runtime your host allows.', 'gpagespeedi' ); ?>
+				<?php _e( 'It is best to find the largest value that still allows the script to complete successfully. Test first at 30 seconds, then raise the value to 45 if your test is successful. Continue until you find the maximum runtime your host allows.', 'gpagespeedi' ); ?>
 			</p>
 
 			<p><label for="sleep_time"><?php _e( 'Report Throttling Delay Time', 'gpagespeedi' ); ?>:</label></p>

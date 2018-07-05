@@ -676,7 +676,7 @@ class GPI_Admin
 	public function progress_heartbeat( $response, $data )
 	{
 		if ( ! isset( $data['gpi_heartbeat'] ) || 'progress' != $data['gpi_heartbeat'] ) {
-			return;
+			return $response;
 		}
 
 		$progress = get_option( 'gpi_progress' );
