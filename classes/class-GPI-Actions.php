@@ -36,7 +36,7 @@ class GPI_Actions
 		$this->gpi_ui_options		= get_option( 'gpagespeedi_ui_options' );
 		$this->page_id				= isset( $_GET['page_id'] ) ? intval( $_GET['page_id'] ) : false;
 		$this->bulk_pages			= isset( $_GET['gpi_page_report'] ) ? array_map( 'intval', $_GET['gpi_page_report'] ) : false;
-		$this->bulk_pages_count		= count( $this->bulk_pages );
+		$this->bulk_pages_count		= ! empty( $this->bulk_pages ) ? count( $this->bulk_pages ) : 0;
 
 		$this->gpi_page_stats			= $wpdb->prefix . 'gpi_page_stats';
 		$this->gpi_page_reports			= $wpdb->prefix . 'gpi_page_reports';

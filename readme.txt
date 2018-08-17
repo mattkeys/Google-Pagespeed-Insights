@@ -136,6 +136,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 == Changelog ==
 
+= 3.0.5 =
+* Fixed PHP warning when saving settings
+
 = 3.0.4 =
 * Fixed bug where WordPress heartbeat API filter function failed to return properly
 * Added additional options for max runtime to support scenarios where even 60 seconds was over the server max run time
@@ -207,6 +210,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 * Initial Release
 
 == Upgrade Notice ==
+
+= 3.0.5 =
+* Fixed PHP warning when saving settings
 
 = 3.0.4 =
 * Fixed bug where WordPress heartbeat API filter function failed to return properly
