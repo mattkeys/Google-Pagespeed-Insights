@@ -179,7 +179,7 @@ class GPI_List_Table extends WP_List_Table
 				?>
 				<ol class="no-items">
 					<li><?php _e( 'Make sure that you have entered your Google API key on the ', 'gpagespeedi' );?><a href="?page=<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>&amp;render=options"><?php _e( 'Options', 'gpagespeedi' ); ?></a> <?php _e( 'page', 'gpagespeedi' ); ?>.</li>
-					<li><?php _e( 'Make sure that you have enabled "PageSpeed Insights API" from the Services page of the ', 'gpagespeedi' );?><a href="https://code.google.com/apis/console/">Google Console</a>.</li>
+					<li><?php _e( 'Make sure that you have enabled "PageSpeed Insights API" from the Services page of the ', 'gpagespeedi' );?><a href="https://code.google.com/apis/console/"> <?php _e( 'Google Console', 'gpagespeedi' ); ?></a>.</li>
 					<li><?php _e( 'Make sure that your URLs are publicly accessible', 'gpagespeedi' ); ?>.</li>
 				</ol>
 				<?php
@@ -611,20 +611,24 @@ class GPI_List_Table extends WP_List_Table
 
 		$all_types = apply_filters( 'gpi_filter_options', array(), true );
 
+		$data = array();
+
 		if ( 'default' == $this->type ) {
 			$filter	= isset( $_GET['filter'] ) ? sanitize_text_field( $_GET['filter'] ) : 'all';
 			$filter	= 'all' != $filter ? $filter : implode( '|', $all_types );
 			$filter	= 'gpi_custom_urls' != $filter ? $filter : apply_filters( 'gpi_custom_url_labels', $filter );
 
-			$data = $wpdb->get_results( $wpdb->prepare(
-				"
-					SELECT $db_columns
-					FROM $this->table
-					WHERE type REGEXP %s
-					ORDER BY $orderby $order
-				",
-				$filter
-			), ARRAY_A );
+			if ( $filter ) {
+				$data = $wpdb->get_results( $wpdb->prepare(
+					"
+						SELECT $db_columns
+						FROM $this->table
+						WHERE type REGEXP %s
+						ORDER BY $orderby $order
+					",
+					$filter
+				), ARRAY_A );
+			}
 		} else {
 			$data = $wpdb->get_results(
 				"

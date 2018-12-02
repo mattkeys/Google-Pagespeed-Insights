@@ -71,21 +71,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<div class="score_text"><span class="score" data-selector="snapshot"></span><span class="label"><?php _e( 'score', 'gpagespeedi' ); ?></span></div>
 			</div>
 		</div>
-		<div class="top-row boxsizing framed pagespeed_avg_sizes_wrapper">
+		<div class="top-row boxsizing framed pagespeed_avg_lab_data_wrapper">
 			<div class="boxheader">
-				<span class="left"><?php _e( 'Size of Resources (in kB)', 'gpagespeedi' ); ?></span>
-				<span class="right light"><span class="legend low"></span><?php _e( 'Lowest', 'gpagespeedi' ); ?></span>
-				<span class="right light"><span class="legend avg"></span><?php _e( 'Average', 'gpagespeedi' ); ?></span>
-				<span class="right light"><span class="legend"></span><?php _e( 'Highest', 'gpagespeedi' ); ?></span>
+				<span class="left">
+					<?php _e('Average Lab Data Scores', 'gpagespeedi'); ?>
+					<span class="light">(<?php _e('Click for detailed report', 'gpagespeedi'); ?>)</span>
+				</span>
 			</div>
-			<div class="sizes_chart_div" data-selector="snapshot"></div>
+			<div class="avg_lab_data" data-selector="snapshot"></div>
 		</div>
 	</div>
 	<div class="row boxsizing framed largest_improvement">
 		<div class="boxheader">
 			<span class="left"><?php _e( 'Largest Areas for Improvement', 'gpagespeedi' ); ?></span>
-			<span class="right"><?php _e( 'Pages Effected', 'gpagespeedi' ); ?></span>
-			<span class="right"><?php _e( 'Average Impact', 'gpagespeedi' ); ?></span>
+			<span class="right"><?php _e( 'Pages Impacted', 'gpagespeedi' ); ?></span>
+			<span class="right"><?php _e( 'Average Score', 'gpagespeedi' ); ?></span>
 		</div>
 		<table class="stats" data-selector="snapshot"></table>
 	</div>
@@ -117,21 +117,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<div class="score_text"><span class="score" data-selector="compare"></span><span class="label"><?php _e( 'score', 'gpagespeedi' ); ?></span></div>
 				</div>
 			</div>
-			<div class="top-row boxsizing framed pagespeed_avg_sizes_wrapper">
+			<div class="top-row boxsizing framed pagespeed_avg_lab_data_wrapper">
 				<div class="boxheader">
-					<span class="left"><?php _e( 'Size of Resources (in kB)', 'gpagespeedi' ); ?></span>
-					<span class="right light"><span class="legend low"></span><?php _e( 'Lowest', 'gpagespeedi' ); ?></span>
-					<span class="right light"><span class="legend avg"></span><?php _e( 'Average', 'gpagespeedi' ); ?></span>
-					<span class="right light"><span class="legend"></span><?php _e( 'Highest', 'gpagespeedi' ); ?></span>
+					<span class="left">
+						<?php _e('Average Lab Data Scores', 'gpagespeedi'); ?>
+						<span class="light">(<?php _e('Click for detailed report', 'gpagespeedi'); ?>)</span>
+					</span>
 				</div>
-				<div class="sizes_chart_div" data-selector="compare"></div>
+				<div class="avg_lab_data" data-selector="compare"></div>
 			</div>
 		</div>
 		<div class="row boxsizing framed largest_improvement">
 			<div class="boxheader">
 				<span class="left"><?php _e( 'Largest Areas for Improvement', 'gpagespeedi' ); ?></span>
-				<span class="right"><?php _e( 'Pages Effected', 'gpagespeedi' ); ?></span>
-				<span class="right"><?php _e( 'Average Impact', 'gpagespeedi' ); ?></span>
+				<span class="right"><?php _e( 'Pages Impacted', 'gpagespeedi' ); ?></span>
+				<span class="right"><?php _e( 'Average Score', 'gpagespeedi' ); ?></span>
 			</div>
 			<table class="stats" data-selector="compare"></table>
 		</div>

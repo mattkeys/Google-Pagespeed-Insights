@@ -17,17 +17,28 @@ class GPI_Activation
 
 	static function upgrade( $gpagespeedi_options, $gpagespeedi_ui_options, $update_options = true )
 	{
-		if ( $update_options ) {
-			
-			// In v2.0 data structure for page/summary stats changed dramaticly and needs to be updated to avoid errors
-			if ( ! isset( $gpagespeedi_options['version'] ) || version_compare( $gpagespeedi_options['version'], '2.0', '<' ) ) {
-				update_option( 'gpagespeedi_upgrade_recheck_required', true );
-			}
+		// In v4.0 data structure for page/summary stats changed dramaticly and existing reports/snapshots are now longer compatible and must be removed
+		if ( ! isset( $gpagespeedi_options['version'] ) || version_compare( $gpagespeedi_options['version'], '4.0', '<' ) ) {
+			global $wpdb;
+			$gpi_page_stats_table			= $wpdb->prefix . 'gpi_page_stats';
+			$gpi_page_reports_table			= $wpdb->prefix . 'gpi_page_reports';
+			$gpi_summary_snapshots_table	= $wpdb->prefix . 'gpi_summary_snapshots';
 
+			$wpdb->query( "ALTER TABLE $gpi_page_stats_table DROP COLUMN desktop_page_stats" );
+			$wpdb->query( "ALTER TABLE $gpi_page_stats_table DROP COLUMN mobile_page_stats" );
+			$wpdb->query( "ALTER TABLE $gpi_page_reports_table DROP COLUMN rule_impact" );
+
+			$wpdb->query( "TRUNCATE TABLE $gpi_page_stats_table" );
+			$wpdb->query( "TRUNCATE TABLE $gpi_page_reports_table" );
+			$wpdb->query( "TRUNCATE TABLE $gpi_page_reports_table" );
+		}
+
+		if ( $update_options ) {
 			$update_values = array(
 				'google_developer_key'		=> isset( $gpagespeedi_options['google_developer_key'] ) ? $gpagespeedi_options['google_developer_key'] : '',
 				'response_language' 		=> isset( $gpagespeedi_options['response_language'] ) ? $gpagespeedi_options['response_language'] : 'en_US',
 				'strategy'					=> isset( $gpagespeedi_options['strategy'] ) ? $gpagespeedi_options['strategy'] : 'desktop',
+				'store_screenshots'			=> isset( $gpagespeedi_options['store_screenshots'] ) ? $gpagespeedi_options['store_screenshots'] : 0,
 				'max_execution_time' 		=> isset( $gpagespeedi_options['max_execution_time'] ) ? $gpagespeedi_options['max_execution_time'] : 300,
 				'max_run_time' 				=> isset( $gpagespeedi_options['max_run_time'] ) ? $gpagespeedi_options['max_run_time'] : 0,
 				'sleep_time'		 		=> isset( $gpagespeedi_options['sleep_time'] ) ? $gpagespeedi_options['sleep_time'] : 0,
@@ -48,6 +59,7 @@ class GPI_Activation
 				'log_api_errors'			=> isset( $gpagespeedi_options['log_api_errors'] ) ? $gpagespeedi_options['log_api_errors'] : false,
 				'new_activation_message'	=> false,
 				'heartbeat'					=> isset( $gpagespeedi_options['heartbeat'] ) ? $gpagespeedi_options['heartbeat'] : 'fast',
+				'mutex_id'					=> isset( $gpagespeedi_options['mutex_id'] ) ? $gpagespeedi_options['mutex_id'] : time() . rand(),
 				'version'					=> GPI_VERSION
 			);
 			update_option( 'gpagespeedi_options', $update_values );
@@ -65,30 +77,32 @@ class GPI_Activation
 	static function activation()
 	{
 		$default_values = array(
-			'google_developer_key'		=> '', 			// Google API Developer Key
-			'response_language' 		=> 'en_US', 	// Language for report response
-			'strategy'					=> 'desktop',	// Generate reports for Desktop, Mobile, or Both
-			'max_execution_time' 		=> 300, 		// in seconds
-			'max_run_time' 				=> 0,			// in seconds, 0 = no limit
-			'sleep_time'		 		=> 0, 			// in seconds
-			'recheck_interval' 			=> 86400, 		// in seconds
-			'use_schedule' 				=> true,		// use wordpress wp_schedule_event
-			'check_pages' 				=> true,		// check pages
-			'check_posts' 				=> true,		// check the built in posts-type
-			'cpt_whitelist'				=> '',			// whitelist of Custom Post Types to check
-			'check_categories' 			=> true,		// check category indexes
-			'check_custom_urls' 		=> true,		// check user entered custom URLs
-			'first_run_complete' 		=> false,		// true if all pages have been checked once
-			'last_run_finished' 		=> true, 		// true if the last check finished before max execution time
-			'bad_api_key'		 		=> false, 		// true if API reports the API key is bad
-			'pagespeed_disabled' 		=> false, 		// true if API reports the Pagespeed API not enabled		
-			'api_restriction'			=> false,		// True if API reports that it cannot check pages from this IP/Hostname
-			'new_ignored_items'		 	=> false, 		// true if new pages have been added to 'ignore' due to a bad request
-			'backend_error'				=> false, 		// true if a 'backendErorr' is returned from the API
-			'log_api_errors'			=> false,		// log uncaught API exceptions to txt files in FTP root
-			'new_activation_message'	=> true, 		// display welcome messsage on first-time activation of plugin
-			'heartbeat'					=> 'standard',	// Heartbeat refresh interval: fast, slow, standard, or disabled
-			'version'					=> GPI_VERSION	// Internal version number used to trigger DB/Options updates in new releases
+			'google_developer_key'		=> '', 				// Google API Developer Key
+			'response_language' 		=> 'en_US', 		// Language for report response
+			'strategy'					=> 'desktop',		// Generate reports for Desktop, Mobile, or Both
+			'store_screenshots'			=> 0,				// Store loading screenshots in DB
+			'max_execution_time' 		=> 300, 			// in seconds
+			'max_run_time' 				=> 0,				// in seconds, 0 = no limit
+			'sleep_time'		 		=> 0, 				// in seconds
+			'recheck_interval' 			=> 86400, 			// in seconds
+			'use_schedule' 				=> true,			// use wordpress wp_schedule_event
+			'check_pages' 				=> true,			// check pages
+			'check_posts' 				=> true,			// check the built in posts-type
+			'cpt_whitelist'				=> '',				// whitelist of Custom Post Types to check
+			'check_categories' 			=> true,			// check category indexes
+			'check_custom_urls' 		=> true,			// check user entered custom URLs
+			'first_run_complete' 		=> false,			// true if all pages have been checked once
+			'last_run_finished' 		=> true, 			// true if the last check finished before max execution time
+			'bad_api_key'		 		=> false, 			// true if API reports the API key is bad
+			'pagespeed_disabled' 		=> false, 			// true if API reports the Pagespeed API not enabled		
+			'api_restriction'			=> false,			// True if API reports that it cannot check pages from this IP/Hostname
+			'new_ignored_items'		 	=> false, 			// true if new pages have been added to 'ignore' due to a bad request
+			'backend_error'				=> false, 			// true if a 'backendErorr' is returned from the API
+			'log_api_errors'			=> false,			// log uncaught API exceptions to txt files in FTP root
+			'new_activation_message'	=> true, 			// display welcome messsage on first-time activation of plugin
+			'heartbeat'					=> 'standard',		// Heartbeat refresh interval: fast, slow, standard, or disabled
+			'mutex_id'					=> time() . rand(),	// Unique ID to prevent DB lock collision with other installations on the same MySQL server
+			'version'					=> GPI_VERSION		// Internal version number used to trigger DB/Options updates in new releases
 		);
 		add_option( 'gpagespeedi_options', $default_values );
 
@@ -122,8 +136,10 @@ class GPI_Activation
 			response_code int(10) DEFAULT NULL,
 			desktop_score int(10) DEFAULT NULL,
 			mobile_score int(10) DEFAULT NULL,
-			desktop_page_stats longtext,
-			mobile_page_stats longtext,
+			desktop_lab_data longtext,
+			mobile_lab_data longtext,
+			desktop_field_data longtext,
+			mobile_field_data longtext,
 			type varchar(200) DEFAULT NULL,
 			object_id bigint(20) DEFAULT NULL,
 			term_id bigint(20) DEFAULT NULL,
@@ -143,7 +159,8 @@ class GPI_Activation
 			strategy varchar(20) NOT NULL,
 			rule_key varchar(200) NOT NULL,
 			rule_name varchar(200) DEFAULT NULL,
-			rule_impact decimal(5,2) DEFAULT NULL,
+			rule_type varchar(200) DEFAULT NULL,
+			rule_score decimal(5,2) DEFAULT NULL,
 			rule_blocks longtext,
 			PRIMARY KEY  (ID),
 			KEY page_id (page_id)

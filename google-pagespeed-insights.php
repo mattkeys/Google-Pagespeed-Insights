@@ -4,7 +4,7 @@ Plugin Name: Google Pagespeed Insights
 Plugin URI: http://mattkeys.me
 Description: Google Pagespeed Insights
 Author: Matt Keys
-Version: 3.0.5
+Version: 4.0.0
 Author URI: http://mattkeys.me
 */
 
@@ -38,9 +38,14 @@ if ( ! defined( 'GPI_PUBLIC_PATH' ) ) {
 	define( 'GPI_PUBLIC_PATH', plugin_dir_url( __FILE__ ) );
 }
 
+// Plugin basename
+if ( ! defined( 'GPI_BASENAME' ) ) {
+	define( 'GPI_BASENAME', plugin_basename( __FILE__ ) );
+}
+
 // Internal version number 
 if ( ! defined( 'GPI_VERSION' ) ) {
-	define( 'GPI_VERSION', '3.0.0' );
+	define( 'GPI_VERSION', '4.0.0' );
 }
 
 if ( is_admin() ) {

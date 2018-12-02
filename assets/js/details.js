@@ -23,171 +23,160 @@
 
 		$('#score_text .score').text( GPI_Details.page_stats.score );
 
-		$('#pagespeed_stats_wrapper .last_checked .rightcol').text( GPI_Details.page_stats.last_modified );
+		$('#pagespeed_lab_data_wrapper .last_checked .rightcol').text( GPI_Details.page_stats.last_modified );
 
 		if ( '1.0' != dataVersion ) {
 			var page_statistics = wp.template( 'statistics' );
-			$.each( GPI_Details.page_stats.resources, function ( index, value ) {
-				if ( 'resource_sizes' == index ) {
-					return;
-				}
+			$.each( GPI_Details.page_stats.labData, function ( index, stat ) {
 				var data = {
-					label : GPI_Details.strings[ index ],
-					value : value
+					label		: stat.title,
+					value		: stat.displayValue,
+					description	: stat.description
 				};
 
-				$('#pagespeed_stats_wrapper .stats').append( page_statistics( data ) );
+				$('#pagespeed_lab_data_wrapper .stats tbody').append( page_statistics( data ) );
 			});
 		}
 
-		var legend = wp.template( 'legend' );
-		var color_array = [ '#3366cc', '#dc3912', '#ff9900', '#109618', '#990099', '#0099c6', '#dd4477', '#66aa00', '#b82e2e', '#316395', '#994499', '#22aa99', '#aaaa11', '#6633cc', '#e67300', '#8b0707', '#651067', '#329262', '#5574a6', '#3b3eac', '#b77322', '#16d620', '#b91383', '#f4359e', '#9c5935', '#a9c413', '#2a778d', '#668d1c', '#bea413', '#0c5922', '#743411' ];
-		$.each( GPI_Details.page_reports, function ( index, values ) {
-			var data = {
-				rule_key	: values.rule_key,
-				rule_name	: values.rule_name,
-				color		: color_array[ index ],
-				index		: index
-			};
+		if ( '3.0' < dataVersion ) {
+			var passedAudits	= 0,
+				hasScreenshots	= false;
+			$.each( GPI_Details.page_reports, function ( index, audit ) {
+				var	type = audit.rule_blocks.details.type,
+					mode = audit.rule_blocks.score_display_mode,
+					data = {
+						key				: audit.rule_key,
+						name			: audit.rule_name,
+						description		: audit.rule_blocks.description,
+						details			: audit.rule_blocks.details,
+						displayValue	: audit.rule_blocks.display_value,
+						type			: type,
+						strings			: GPI_Details.strings,
+						publicPath		: GPI_Details.public_path
+					};
 
-			$('#impact_chart_legend tbody').append( legend( data ) );
-		});
+				var audits = wp.template( 'audits-' + type );
 
+				if ( 'screenshot-thumbnails' == audit.rule_key ) {
+					$('#screenshots').append( audits( data ) );
+					hasScreenshots = true;
+				} else if ( 'opportunity' == type && 0.9 > audit.rule_score ) {
+					$('#opportunities').append( audits( data ) );
+				} else if ( 'opportunity' != type && 0.9 > audit.rule_score ) {
+					$('#diagnostics').append( audits( data ) );
+				} else if ( 'informative' == mode || 'not_applicable' == mode ) {
+					$('#diagnostics').append( audits( data ) );
+				} else {
+					$('#passed_audits').append( audits( data ) );
+					passedAudits++;
+				}
+
+			});
+
+			if ( ! $('#opportunities').children().length ) {
+				$('.row.opportunities').hide();
+			}
+
+			if ( ! $('#diagnostics').children().length ) {
+				$('.row.diagnostics').hide();
+			}
+
+			if ( ! $('#passed_audits').children().length ) {
+				$('.row.passed-audits').hide();
+			}
+
+			$('#passed_audits_count').text( passedAudits );
+
+			if ( ! hasScreenshots ) {
+				$('.row.screenshots').hide();
+			}
+
+			$('.accordion').accordion({
+				'animate'		: 50,
+				'heightStyle'	: 'content',
+				'collapsible'	: true,
+				'active'		: false
+			});
+		}
 	});
 
-	google.charts.load('current', {'packages':['corechart']});
-	google.charts.setOnLoadCallback(drawCharts);
+	google.charts.load( 'current', {
+		packages: ['corechart']
+	} );
+	if ( 'undefined' !== typeof GPI_Details.page_stats.fieldData.FIRST_CONTENTFUL_PAINT_MS && 'undefined' !== typeof GPI_Details.page_stats.fieldData.FIRST_INPUT_DELAY_MS ) {
+		google.charts.setOnLoadCallback( fieldData );
+	} else {
+		$('#pagespeed_field_data_wrapper .chart_data').html('<p>' + GPI_Details.strings.insufficient_field_data + '</p>');
+	}
 
-	function drawCharts() {
+	function fieldData() {
+		drawBarChart( 'FCP', 'FIRST_CONTENTFUL_PAINT_MS' );
+		drawBarChart( 'FID', 'FIRST_INPUT_DELAY_MS' );
+	}
 
-		/***********************************************
-					Create resource size bar chart
-		************************************************/
+	function drawBarChart( type, key ) {
+		var data = [type];
+		$.each( GPI_Details.page_stats.fieldData[ key ].distributions, function( index, array ) {
+			var proportion			= array['proportion'] * 100,
+				proportion			= +(proportion.toFixed(2)),
+				prettyProportion	= proportion + '%',
+				min					= array['min'] / 1000,
+				max					= typeof array['max'] != 'undefined' ? array['max'] / 1000 : false,
+				minmax_label		= false;
 
-		if ( GPI_Details.page_stats.resources != null && '1.0' != dataVersion ) {
-			var sizes = new google.visualization.DataTable();
-			sizes.addColumn('string', 'Resource Type');
-			sizes.addColumn('number', 'kB');
+			if ( 0 == index ) {
+				minmax_label = ' (< ' + max + ' s) ';
+			} else if ( 1 == index ) {
+				minmax_label = ' (' + min + ' s ~ ' + max + ' s) ';
+			} else if ( 2 == index ) {
+				minmax_label = ' (> ' + min + ' s) ';
+			}
 
-			$.each( GPI_Details.page_stats.resources.resource_sizes, function ( index, value ) {
-				var data = [ index, Number( value ) ];
-				sizes.addRow( data );
-			});
+			data.push( array['proportion'] );
+			data.push( prettyProportion );
+			data.push( prettyProportion + ' ' + GPI_Details.strings.field_data_labels[ index ] + minmax_label + GPI_Details.strings[ type ] + ' ('+ type +')' );
+		} );
 
-			var sizes_options = {
-				'legend'			: 'none',
-				'backgroundColor'	: 'transparent',
-				'chartArea'			: { top: 10, width: '75%', height: '80%' }
-			};
+		var chartdata = google.visualization.arrayToDataTable([
+			[ 'category', 'Fast', { role: 'annotation' }, { type: 'string', role: 'tooltip' }, 'Average', { role: 'annotation' }, { type: 'string', role: 'tooltip' }, 'Slow', { role: 'annotation' }, { type: 'string', role: 'tooltip' } ],
+			data
+		]);
 
-			var sizes_chart = new google.visualization.BarChart(document.getElementById('sizes_chart_div'));
-			sizes_chart.draw(sizes, sizes_options);
-		}
 
-		/***********************************************
-					Create impact pie chart
-		************************************************/
-
-		var impact = new google.visualization.DataTable();
-		impact.addColumn( 'string', 'Rule' );
-		impact.addColumn( 'number', 'Impact' );
-		$.each( GPI_Details.page_reports, function ( index, values ) {
-			var data = [ values.rule_name, Number( values.rule_impact ) ];
-			impact.addRow( data );
-		});
-
-		var impact_options = {
-			'width'				: 463,
-			'height'			: 320,
-			'chartArea'			: { top: 15, width: '85%', height: '91%' },
-			'legend'			: 'none',
-			'tooltip'			: { trigger: 'none' },
-			'backgroundColor'	:'transparent',
-			'colors'			: [ '#3366cc', '#dc3912', '#ff9900', '#109618', '#990099', '#0099c6', '#dd4477', '#66aa00', '#b82e2e', '#316395', '#994499', '#22aa99', '#aaaa11', '#6633cc', '#e67300', '#8b0707', '#651067', '#329262', '#5574a6', '#3b3eac', '#b77322', '#16d620', '#b91383', '#f4359e', '#9c5935', '#a9c413', '#2a778d', '#668d1c', '#bea413', '#0c5922', '#743411' ],
-			'pieSliceTextStyle'	: { color: 'white', fontSize: 14 }
+		var view = new google.visualization.DataView( chartdata );
+		var options = {
+			title			: GPI_Details.strings[ type ] + ' (' + type + ')',
+			isStacked		: true,
+			height			: 112.5,
+			legend			: {position: 'none'},
+			colors			: ['#178239','#e67700','#c7221f'],
+			backgroundColor	: 'transparent',
+			chartArea		: {
+				top		: 30,
+				left	: 0,
+				width	: '100%',
+			},
+			vAxis			: {
+				textPosition	: 'none'
+			},
+			hAxis			: {
+				baselineColor	: 'transparent',
+				textPosition	: 'none'
+			}
 		};
+		var chart = new google.visualization.BarChart( document.getElementById( type ) );
+		chart.draw( view, options );
 
-		var impact_chart = new google.visualization.PieChart( document.getElementById('impact_chart_div') );
-		impact_chart.draw( impact, impact_options );
-
-		if ( '1.0' != dataVersion ) {
-			google.visualization.events.addListener( impact_chart, 'select', impactSelectHandler );
-			google.visualization.events.addListener( impact_chart, 'onmouseover', highlightHover );
-			google.visualization.events.addListener( impact_chart, 'onmouseout', clearHover );
-		}
-
-		function impactSelectHandler() {
-			var selected = impact_chart.getSelection();
-
-			if ( 'undefined' != typeof selected[0] ) {
-				var ruleindex	= selected[0].row;
-				var rule_object	= GPI_Details.page_reports[ ruleindex ];
-					rule_object.rule_blocks.impact = rule_object.rule_impact;
-					rule_object.rule_blocks.score_impact_string = GPI_Details.strings.score_impact;
-
-				var rule_blocks = wp.template( 'rule_blocks' );
-				var block_html	= rule_blocks( rule_object.rule_blocks );
-
-				$('.impact_chart_right tr').removeClass('active');
-				$('#optimize_images').hide();
-				$('.impact_chart_right tr a[data-pieslice=' + ruleindex + ']').closest('tr').addClass('active');
-				if ( "OptimizeImages" == $('.impact_chart_right tr a[data-pieslice=' + ruleindex + ']').data('rulekey') ) {
-					$('#optimize_images').show();
-				}
-
-				$('#impact_rule_report').css('display', 'block');
-				$('#impact_rule_report').html( block_html );
-				clearHover();
-			} else {
-				$('#impact_rule_report').css( 'display', 'none' );
-				$('#impact_rule_report').html('');
-				$('.impact_chart_right tr').removeClass('active');
-				$('#optimize_images').hide();
-			}
-		}
-
-		function highlightHover( e ) {
-			var current = $('.impact_chart_right tr a[data-pieslice=' + e.row + ']');
-
-			$('.impact_chart_right tr').removeClass('hover');
-
-			if ( ! current.closest('tr').hasClass('active') ) {
-				current.closest('tr').addClass('hover');
-			}
-		}
-
-		function clearHover() {
-			$('.impact_chart_right tr').removeClass('hover');
-		}
-
-		$('.legend-item').on( 'click', function() {
-			var tr = $( this ).closest('tr');
-
-			if ( tr.hasClass('active') ) {
-				impact_chart.setSelection( false );
-				$('#optimize_images').hide();
-			} else {
-				impact_chart.setSelection( [ { row: $( this ).data('pieslice') } ] );
-				$('#optimize_images').hide();
-				if ( "OptimizeImages" == $(this).data('rulekey') ) {
-					$('#optimize_images').show();
-				}
-			}
-			
-			impactSelectHandler();
+		$(window).on('resizeEnd', function() {
+			chart.draw( view, options );
 		});
 	}
 
-	$(document).on({
-		mouseenter: function () {
-			$( this ).stop().animate({
-				textIndent: '-' + ( $( this ).width() - $( this ).parent().width() ) + 'px'
-			}, 1000);
-		},
-		mouseleave: function () {
-			$( this ).stop().animate({
-				textIndent: '0'
-			}, 1000);		}
-	}, '.impact_chart_right a');
+	$( window ).resize(function() {
+		if ( this.resizeTO ) clearTimeout( this.resizeTO );
+		this.resizeTO = setTimeout( function() {
+			$(this).trigger('resizeEnd');
+		}, 500);
+	});
 
 })( jQuery );

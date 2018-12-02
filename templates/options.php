@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="padded">
 			<p><?php _e( 'Google API Key:', 'gpagespeedi' ); ?></p>
 			<input type="text" name="google_developer_key" id="google_developer_key" value="<?php echo $this->gpi_options['google_developer_key']; ?>" class="googleapi code" />
-			<p class="description"><span style="color:red;"><?php _e( 'This is required', 'gpagespeedi' ); ?></span>: <?php _e( 'if you do not have an API key you can create a new one for free from', 'gpagespeedi' ); ?>: <a href="https://console.developers.google.com" target="_blank">https://console.developers.google.com</a>. Read the documentation included with this plugin or <a href="http://mattkeys.me/documentation/google-pagespeed-insights/#required_configuration" target="_blank">online</a> for additional information about creating an API key.</p>
+			<p class="description"><span style="color:red;"><?php _e( 'This is required', 'gpagespeedi' ); ?></span>: <?php _e( 'if you do not have an API key you can create a new one for free from', 'gpagespeedi' ); ?>: <a href="https://console.developers.google.com" target="_blank">https://console.developers.google.com</a>. <?php _e( 'Read the documentation included with this plugin or <a href="http://mattkeys.me/documentation/google-pagespeed-insights/#required_configuration" target="_blank">online</a> for additional information about creating an API key.', 'gpagespeedi' ); ?></p>
 
 			<p><?php _e( 'Google Response Language:', 'gpagespeedi' ); ?></p>
 			<select name="response_language" id="response_language">
@@ -73,6 +73,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<option value="mobile" <?php selected( $this->gpi_options['strategy'], 'mobile' ); ?>><?php _e( 'Mobile', 'gpagespeedi' ); ?></option>
 				<option value="both" <?php selected( $this->gpi_options['strategy'], 'both' ); ?>><?php _e( 'Both', 'gpagespeedi' ); ?></option>
 			</select>
+
+			<p><?php _e( 'Store Page Load Screenshots:', 'gpagespeedi' ); ?></p>
+			<select name="store_screenshots" id="store_screenshots">
+				<option value="0" <?php selected( $this->gpi_options['store_screenshots'], 0 ); ?>><?php _e( 'No', 'gpagespeedi' ); ?></option>
+				<option value="1" <?php selected( $this->gpi_options['store_screenshots'], 1 ); ?>><?php _e( 'Yes', 'gpagespeedi' ); ?></option>
+			</select>
+			<p class="description"><span style="color:red;"><?php _e( 'Note', 'gpagespeedi' ); ?></span>: <?php _e( 'Screenshots stored in the database will usually take up around 50kb ~ 150kb per page report. If you have many pages to report on this may consume an unreasonable amount of space. Changes to this value will take effect on future report scans.', 'gpagespeedi' ); ?></p>
 		</div>
 	</div>
 

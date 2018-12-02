@@ -66,7 +66,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<br class="clear">
 </div>
 
-<!--Div's to hold output from google charts-->
 <div id="results">
 	<div class="row">
 		<div class="top-row boxsizing pagespeed_gauge_wrapper" id="pagespeed_gauge_wrapper">
@@ -75,21 +74,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<div class="score_text" id="score_text"><span class="score"></span><span class="label"><?php _e( 'score', 'gpagespeedi' ); ?></span></div>
 			</div>
 		</div>
-		<div class="top-row boxsizing framed pagespeed_avg_sizes_wrapper" id="pagespeed_avg_sizes_wrapper">
+		<div class="top-row boxsizing framed pagespeed_avg_lab_data_wrapper" id="pagespeed_avg_lab_data_wrapper">
 			<div class="boxheader">
-				<span class="left"><?php _e( 'Size of Resources (in kB)', 'gpagespeedi' ); ?></span>
-				<span class="right light"><span class="legend low"></span><?php _e( 'Lowest', 'gpagespeedi' ); ?></span>
-				<span class="right light"><span class="legend avg"></span><?php _e( 'Average', 'gpagespeedi' ); ?></span>
-				<span class="right light"><span class="legend"></span><?php _e( 'Highest', 'gpagespeedi' ); ?></span>
+				<span class="left">
+					<?php _e('Average Lab Data Scores', 'gpagespeedi'); ?>
+					<span class="light">(<?php _e('Click for detailed report', 'gpagespeedi'); ?>)</span>
+				</span>
 			</div>
-			<div class="sizes_chart_div" id="sizes_chart_div"></div>
+			<div id="avg_lab_data"></div>
 		</div>
 	</div>
 	<div class="row boxsizing framed largest_improvement" id="largest_improvement">
 		<div class="boxheader">
 			<span class="left"><?php _e( 'Largest Areas for Improvement', 'gpagespeedi' ); ?></span>
 			<span class="right"><?php _e( 'Pages Impacted', 'gpagespeedi' ); ?></span>
-			<span class="right"><?php _e( 'Average Impact', 'gpagespeedi' ); ?></span>
+			<span class="right"><?php _e( 'Average Score', 'gpagespeedi' ); ?></span>
 		</div>
 		<table class="stats"></table>
 	</div>
@@ -122,8 +121,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php if ( $this->gpi_options['strategy'] == 'both' ) : ?>
 			<li><?php echo __( 'There may not be any', 'gpagespeedi' ) . ' ' . $this->gpi_ui_options['view_preference'] . ' ' . __( 'reports completed yet.', 'gpagespeedi' )  . ' ' . __( 'Try switching the report mode.', 'gpagespeedi' ); ?></li>
 		<?php endif; ?>
-		<li><?php _e( 'Make sure that you have entered your Google API key on the ', 'gpagespeedi' );?><a href="?page=<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>&render=options">Options</a> page.</li>
-		<li><?php _e( 'Make sure that you have enabled "PageSpeed Insights API" from the Services page of the ', 'gpagespeedi' );?><a href="https://code.google.com/apis/console/">Google Console</a>.</li>
+		<li><?php _e( 'Make sure that you have entered your Google API key on the ', 'gpagespeedi' );?><a href="?page=<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>&render=options"><?php _e( 'Options', 'gpagespeedi' ); ?></a> <?php _e( 'page', 'gpagespeedi' ); ?>.</li>
+		<li><?php _e( 'Make sure that you have enabled "PageSpeed Insights API" from the Services page of the ', 'gpagespeedi' );?><a href="https://code.google.com/apis/console/"><?php _e( 'Google Console', 'gpagespeedi' ); ?></a>.</li>
 		<li><?php _e( 'Make sure that your URLs are publicly accessible', 'gpagespeedi' ); ?>.</li>
 	</ol>
 </div>
