@@ -1,5 +1,5 @@
 <script type="text/html" id="tmpl-statistics">
-	<tr>
+	<tr title="{{data.description}}">
 		<td class="leftcol">{{data.label}}</td>
 		<td class="rightcol">
 			<# if ( data.value ) { #>

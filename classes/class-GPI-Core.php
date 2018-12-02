@@ -35,7 +35,7 @@ class GPI_Core
 		add_action( 'googlepagespeedinsightsworker', array( $this, 'googlepagespeedinsightsworker'), 10, 2 );
 		add_action( 'gpi_update_option', array( $this, 'update_option' ), 10, 3 );
 		add_filter( 'gpi_check_status', array( $this, 'check_status' ), 10, 1 );
-		add_action( 'run_gpi', array( $this, 'run_gpi' ), 10, 2 );
+		add_action( 'run_gpi', array( $this, 'run_gpi' ), 10, 3 );
 
 		if ( ! wp_next_scheduled( 'gpi_prune_logs' ) ) {
 			wp_schedule_event( time(), 'daily', 'gpi_prune_logs' );
@@ -56,8 +56,15 @@ class GPI_Core
 
 		$force_recheck_all_urls = isset( $_GET['recheck'] ) ? true : false;
 		$timeout_respawn = isset( $_GET['timeout'] ) ? true : false;
+		$urls_provided = isset( $_GET['urls_provided'] ) ? true : false;
 
-		$this->googlepagespeedinsightsworker( array(), $force_recheck_all_urls, $timeout_respawn );
+		if ( $urls_provided ) {
+			$urls_to_check = get_option( 'gpi_recheck_urls', array() );
+		} else {
+			$urls_to_check = array();
+		}
+
+		$this->googlepagespeedinsightsworker( $urls_to_check, $force_recheck_all_urls, $timeout_respawn );
 	}
 
 	public function cron_schedules( $schedules )
@@ -92,7 +99,7 @@ class GPI_Core
 	{
 		global $wpdb;
 
-		$lock = $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, %d)', 'gpi_lock_a1b2c3', 0 ) );
+		$lock = $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, %d)', 'gpi_lock_' . $this->gpi_options['mutex_id'], 0 ) );
 	
 		return $lock == 1;
 	}
@@ -101,7 +108,7 @@ class GPI_Core
 	{
 		global $wpdb;
 
-		$wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', 'gpi_lock_a1b2c3' ) );
+		$wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', 'gpi_lock_' . $this->gpi_options['mutex_id'] ) );
 	}
 
 	public function check_status( $busy )
@@ -117,15 +124,23 @@ class GPI_Core
 		return $busy;
 	}
 
-	public function run_gpi( $recheck = false, $timeout = false )
+	public function run_gpi( $recheck = false, $timeout = false, $urls_provided = false )
 	{
 		add_option( 'gpi_check_now', true );
 
-		if ( ! $timeout ) {
-			$cron_url = $recheck ? site_url( '?gpi_check_now&recheck' ) : site_url( '?gpi_check_now' );
-		} else {
-			$cron_url = $recheck ? site_url( '?gpi_check_now&recheck&timeout' ) : site_url( '?gpi_check_now&timeout' );
+		$query_args = array( 'gpi_check_now' => true );
+
+		if ( $recheck ) {
+			$query_args['recheck'] = true;
 		}
+		if ( $timeout ) {
+			$query_args['timeout'] = true;
+		}
+		if ( $urls_provided ) {
+			$query_args['urls_provided'] = true;
+		}
+
+		$cron_url = add_query_arg( $query_args, site_url() );
 
 		wp_remote_post( $cron_url, array( 'timeout' => 0.01, 'blocking' => false, 'sslverify' => apply_filters( 'https_local_ssl_verify', true ) ) );
 	}
@@ -156,15 +171,13 @@ class GPI_Core
 			$start_runtime = time();
 		}
 
-		// Include Google API + Start new Instance. Check first to make sure they arent already included by another plugin!
-		if ( ! class_exists('Google_Client') ) {
-			require_once GPI_DIRECTORY . '/lib/google-api-php-client/vendor/autoload.php';
+		// Include our Google API
+		if ( ! class_exists('GPI_Pagespeed_API') ) {
+			require_once GPI_DIRECTORY . '/classes/class-GPI-Pagespeed-API.php';
 		}
 
-		$client = new Google_Client();
-		$client->setApplicationName('Google_Pagespeed_Insights');
-		$client->setDeveloperKey( $this->gpi_options['google_developer_key'] );
-		$service = new Google_Service_Pagespeedonline( $client );
+		$developer_key = $this->gpi_options['google_developer_key'];
+		$Pagespeed_API = new GPI_Pagespeed_API( $developer_key );
 
 		$recheck_interval = $this->gpi_options['recheck_interval'];
 
@@ -209,7 +222,7 @@ class GPI_Core
 
 				if ( 'both' == $strategy ) {
 					foreach ( array( 'desktop', 'mobile' ) as $new_strategy ) {
-						$result = $this->get_result( $service, $new_strategy, $group_type, $item, $recheck_interval, $force_recheck_all_urls );
+						$result = $this->get_result( $Pagespeed_API, $new_strategy, $group_type, $item, $recheck_interval, $force_recheck_all_urls );
 
 						if ( ! $result ) {
 							break 3;
@@ -226,7 +239,7 @@ class GPI_Core
 						}
 					}
 				} else {
-					$result = $this->get_result( $service, $strategy, $group_type, $item, $recheck_interval, $force_recheck_all_urls );
+					$result = $this->get_result( $Pagespeed_API, $strategy, $group_type, $item, $recheck_interval, $force_recheck_all_urls );
 
 					if ( ! $result ) {
 						break 2;
@@ -282,13 +295,13 @@ class GPI_Core
 	{
 		// If scan took longer than Maximum Script Run Time or Maximum Execution Time, start new scan.
 		if ( ! self::$last_scan_finished && self::$exceeded_runtime ) {
-			do_action( 'run_gpi', self::$force_recheck_urls, true );
+			do_action( 'run_gpi', self::$force_recheck_urls, true, false );
 		} else if ( ! self::$last_scan_finished ) {
-			do_action( 'run_gpi', false, true ); // If scan failed due to Maximum Execution Time, avoid trying again with force_recheck as it could cause infinite loop.
+			do_action( 'run_gpi', false, true, false ); // If scan failed due to Maximum Execution Time, avoid trying again with force_recheck as it could cause infinite loop.
 		}
 	}
 
-	private function get_result( $service, $strategy, $group_type, $item, $recheck_interval, $force_recheck_all_urls, $continue = true )
+	private function get_result( $Pagespeed_API, $strategy, $group_type, $item, $recheck_interval, $force_recheck_all_urls, $continue = true )
 	{
 		global $wpdb;
 
@@ -323,23 +336,18 @@ class GPI_Core
 
 		self::$skipped_all = false;
 
-		try {
-			$result = $service->pagespeedapi->runpagespeed( $object_url, array( 'locale' => $this->gpi_options['response_language'], 'strategy' => $strategy ) );
-			if ( ! empty( $result ) ) {
-				if ( isset( $result['responseCode'] ) && $result['responseCode'] == 404 ) {
-					$this->save_bad_request( $group_type, $where_column, $object_id, $object_url );
-				} else {
-					$result['type'] = $group_type;
-					$result[ $where_column ] = $object_id;
-					$result['last_modified'] = $time;
-					$this->save_values( $result, $where_column, $object_id, $object_url, $update, $strategy );
+		$result = $Pagespeed_API->run_pagespeed( $object_url, array( 'locale' => $this->gpi_options['response_language'], 'strategy' => $strategy ) );
+		if ( ! empty( $result ) ) {
+			if ( isset( $result['responseCode'] ) && $result['responseCode'] >= 200 && $result['responseCode'] < 300 ) {
+				$result['type'] = $group_type;
+				$result[ $where_column ] = $object_id;
+				$result['last_modified'] = $time;
+				$this->save_values( $Pagespeed_API, $result, $where_column, $object_id, $object_url, $update, $strategy );
+			} else {
+				$exception_type = $this->exception_handler( $result, $strategy, $update, $group_type, $where_column, $object_id, $object_url );
+				if ( 'fatal' == $exception_type ) {
+					$continue = false;
 				}
-			}
-		} catch ( Exception $e ) {
-			$exception_type = $this->exception_handler( $e, $strategy, $update, $group_type, $where_column, $object_id, $object_url );
-
-			if ( 'fatal' == $exception_type ) {
-				$continue = false;
 			}
 		}
 
@@ -554,11 +562,13 @@ class GPI_Core
 		return $urls_to_check;
 	}
 
-	public function save_values( $result, $where_column, $object_id, $object_url, $update, $strategy )
+	public function save_values( $Pagespeed_API, $result, $where_column, $object_id, $object_url, $update, $strategy )
 	{
 		global $wpdb;
 		$gpi_page_stats = $wpdb->prefix . 'gpi_page_stats';
 		$gpi_page_stats_values = array();
+
+		$score = $result['data']->lighthouseResult->categories->performance->score;
 
 		// Store identifying information
 		$gpi_page_stats_values['URL'] = $object_url;
@@ -566,18 +576,10 @@ class GPI_Core
 		$gpi_page_stats_values[ $where_column ] = $result[ $where_column ];
 		$gpi_page_stats_values[ $strategy . '_last_modified' ] = $result['last_modified'];
 		$gpi_page_stats_values['force_recheck'] = 0;
-		$gpi_page_stats_values['response_code'] = $result->getResponseCode();
-		$gpi_page_stats_values[ $strategy . '_page_stats' ] = $this->get_page_stats( $result->getPageStats() );
-
-		foreach ( $result->getRuleGroups() as $group_type => $group ) {
-			if ( 'SPEED' != $group_type ) {
-				continue;
-			}
-
-			$score_type = $strategy . '_score';
-
-			$gpi_page_stats_values[ $score_type ] = $group->getScore();
-		}
+		$gpi_page_stats_values['response_code'] = $result['responseCode'];
+		$gpi_page_stats_values[ $strategy . '_lab_data' ] = $Pagespeed_API->get_lab_data( $result['data'] );
+		$gpi_page_stats_values[ $strategy . '_field_data' ] = $Pagespeed_API->get_field_data( $result['data'] );
+		$gpi_page_stats_values[ $strategy . '_score' ] = $score * 100;
 
 		if ( $update ) {
 			$wpdb->update( $gpi_page_stats, $gpi_page_stats_values, array( $where_column => $object_id ) );
@@ -593,115 +595,13 @@ class GPI_Core
 			$wpdb->query( $sql );
 		}
 
-		$page_reports = $this->get_page_reports( $result->getFormattedResults(), $last_updated_id, $strategy );
+		$page_reports = $Pagespeed_API->get_page_reports( $result['data'], $last_updated_id, $strategy, $this->gpi_options );
 		if ( ! empty( $page_reports ) ) {
 			foreach ( $page_reports as $page_report ) {
-				if ( 0 == $page_report['rule_impact'] && empty( $page_report['rule_blocks'] ) ) {
-					continue;
-				}
-
 				$wpdb->insert( $gpi_page_reports, $page_report );
 			}
 		}
 
-	}
-
-	private function get_page_stats( $page_stats_obj )
-	{
-		$page_stats = array(
-			'resource_sizes'	=> array(
-				'HTML'			=> number_format( $page_stats_obj->getHtmlResponseBytes() / 1000, 2, '.', '' ),
-				'CSS'			=> number_format( $page_stats_obj->getCssResponseBytes() / 1000, 2, '.', '' ),
-				'IMAGES'		=> number_format( $page_stats_obj->getImageResponseBytes() / 1000, 2, '.', '' ),
-				'JS'			=> number_format( $page_stats_obj->getJavascriptResponseBytes() / 1000, 2, '.', '' ),
-				'OTHER'			=> number_format( $page_stats_obj->getOtherResponseBytes() / 1000, 2, '.', '' )
-			),
-			'total_bytes'		=> $page_stats_obj->getTotalRequestBytes(),
-			'js_resources'		=> $page_stats_obj->getNumberJsResources(),
-			'css_resources'		=> $page_stats_obj->getNumberCssResources(),
-			'total_resources'	=> $page_stats_obj->getNumberResources(),
-			'hosts'				=> $page_stats_obj->getNumberHosts()
-		);
-
-		return serialize( $page_stats );
-	}
-
-	private function get_page_reports( $formatted_results, $page_id, $strategy, $page_reports = array() )
-	{
-		$rule_results = $formatted_results->getRuleResults();
-
-		if ( ! empty( $rule_results ) ) {
-			foreach ( $rule_results as $rulename => $results_obj ) {
-				if ( ! in_array( 'SPEED', $results_obj->getGroups() ) ) {
-					continue;
-				}
-
-				$page_reports[] = array(
-					'page_id'		=> $page_id,
-					'strategy'		=> $strategy,
-					'rule_key'		=> $rulename,
-					'rule_name'		=> $results_obj->localizedRuleName,
-					'rule_impact'	=> $results_obj->ruleImpact,
-					'rule_blocks'	=> $this->get_rule_blocks( $results_obj->getUrlBlocks() )
-				);
-			}
-		}
-
-		return $page_reports;
-	}
-
-	private function get_rule_blocks( $url_blocks_arr, $formatted_url_blocks = array() )
-	{
-		if ( ! empty( $url_blocks_arr ) ) {
-			foreach ( $url_blocks_arr as $url_block_obj ) {
-				$header		= $this->format_string( $url_block_obj->getHeader() );
-				$urls_obj	= $url_block_obj->getUrls();
-				$urls		= array();
-
-				foreach ( $urls_obj as $url_obj ) {
-					$urls[] = $this->format_string( $url_obj->getResult() );
-				}
-				
-				$formatted_url_blocks[] = array(
-					'header'		=> $header,
-					'urls'			=> $urls
-				);
-			}
-		}
-
-		if ( empty( $formatted_url_blocks ) ) {
-			return false;
-		} else {
-			return serialize( $formatted_url_blocks );
-		}
-	}
-
-	private function format_string( $string_obj )
-	{
-		$format = $string_obj->getFormat();
-		$args	= $string_obj->getArgs();
-
-		foreach( $args as $arg ) {
-			$key	= $arg->getKey();
-			$value	= $arg->getValue();
-			$type	= $arg->getType();
-
-			switch ( $type ) {
-				case 'HYPERLINK':
-					$format = str_replace( '{{BEGIN_LINK}}', '<a href="' . $value . '" target="_blank">', $format );
-					$format = str_replace( '{{END_LINK}}', '</a>', $format );
-					break;
-
-				case 'URL':
-					$format = str_replace( '{{URL}}', '<a href="' . $value . '" target="_blank">' . $value . '</a>', $format );
-
-				default:
-					$format = str_replace( '{{' . $key . '}}', $value, $format );
-					break;
-			}
-		}
-
-		return $format;
 	}
 
 	public function save_bad_request( $type, $where_column, $object_id, $object_url, $message = true )
@@ -736,35 +636,35 @@ class GPI_Core
 		}
 	}
 
-	public function exception_handler( $e, $strategy, $update, $url_group_type, $where_column, $object_id, $object_url, $error_type = 'non_fatal' )
+	public function exception_handler( $result, $strategy, $update, $url_group_type, $where_column, $object_id, $object_url, $error_type = 'non_fatal' )
 	{
-		$errors = $e->getErrors();
+		$errors = isset( $result['data']->error->errors ) ? $result['data']->error->errors : false;
 
-		if ( isset( $errors[0]['reason'] ) && $errors[0]['reason'] == 'keyInvalid' ) {
+		if ( isset( $errors[0]->reason ) && $errors[0]->reason == 'keyInvalid' ) {
 
 			$this->update_option( 'bad_api_key', true, 'gpagespeedi_options' );
 			$error_type = 'fatal';
 
-		} else if ( isset( $errors[0]['reason'] ) && $errors[0]['reason'] == 'accessNotConfigured' ) {
+		} else if ( isset( $errors[0]->reason ) && $errors[0]->reason == 'accessNotConfigured' ) {
 
 			$this->update_option( 'pagespeed_disabled', true, 'gpagespeedi_options' );
 			$error_type = 'fatal';
 
-		} else if ( isset( $errors[0]['reason'] ) && $errors[0]['reason'] == 'ipRefererBlocked' ) {
+		} else if ( isset( $errors[0]->reason ) && $errors[0]->reason == 'ipRefererBlocked' ) {
 
 			$this->update_option( 'api_restriction', true, 'gpagespeedi_options' );
 			$error_type = 'fatal';
 
-		} else if ( isset( $errors[0]['reason'] ) && $errors[0]['reason'] == 'backendError' ) {
+		} else if ( isset( $errors[0]->reason ) && $errors[0]->reason == 'backendError' ) {
 
 			$this->save_bad_request( $url_group_type, $where_column, $object_id, $object_url, false );
 			$this->update_option( 'backend_error', true, 'gpagespeedi_options' );
 
-		} else if ( isset( $errors[0]['reason'] ) && $errors[0]['reason'] == 'mainResourceRequestFailed' ) {
+		} else if ( isset( $errors[0]->reason ) && $errors[0]->reason == 'mainResourceRequestFailed' ) {
 
 			$this->save_bad_request( $url_group_type, $where_column, $object_id, $object_url );
 
-		} else if ( $e->getCode() == '500' ) {
+		} else if ( $result['responseCode'] == '500' ) {
 
 			$this->save_bad_request( $url_group_type, $where_column, $object_id, $object_url );
 

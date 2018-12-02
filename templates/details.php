@@ -24,9 +24,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<div class="score_text" id="score_text"><span class="score"></span><span class="label"><?php _e( 'score', 'gpagespeedi' ); ?></span></div>
 		</div>
 	</div>
-	<div class="top-row boxsizing framed pagespeed_stats_wrapper" id="pagespeed_stats_wrapper">
+	<div class="top-row boxsizing framed pagespeed_lab_data_wrapper" id="pagespeed_lab_data_wrapper">
 		<div class="boxheader">
-			<span class="left"><?php _e('Page Statistics', 'gpagespeedi'); ?></span>
+			<span class="left"><?php _e('Lab Data', 'gpagespeedi'); ?></span>
 			<span class="right"><?php _e( 'Value', 'gpagespeedi' ); ?></span>
 		</div>
 		<table class="stats">
@@ -36,38 +36,41 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</tr>
 		</table>
 	</div>
-	<div class="top-row boxsizing framed pagespeed_sizes_wrapper" id="pagespeed_sizes_wrapper">
+	<div class="top-row boxsizing framed pagespeed_field_data_wrapper" id="pagespeed_field_data_wrapper">
 		<div class="boxheader">
-			<span class="left"><?php _e( 'Total Size of Resources', 'gpagespeedi' ); ?></span>
-			<span class="right light"><span class="legend"></span><?php _e( 'Size (kB)', 'gpagespeedi' ); ?></span>
+			<span class="left"><?php _e( 'Field Data', 'gpagespeedi' ); ?></span>
 		</div>
-		<div id="sizes_chart_div"></div>
+		<div class="chart_data">
+			<div id="FCP"></div>
+			<div id="FID"></div>
+		</div>
 	</div>
 </div>
-<div class="row boxsizing framed">
+
+<div class="row boxsizing framed screenshots">
+	<div class="boxheader">
+		<span class="left"><?php _e( 'Loading Screenshots', 'gpagespeedi' ); ?></span><span class="light"><?php _e( '(Hover for timestamp)', 'gpagespeedi' ); ?></span>
+	</div>
+	<div class="inner screenshots" id="screenshots"></div>
+</div>
+<div class="row boxsizing framed lighthouse opportunities">
 	<div class="boxheader">
 		<span class="left"><?php _e( 'Opportunities for improvement', 'gpagespeedi' ); ?></span><span class="light"><?php _e( '(Click for detailed report)', 'gpagespeedi' ); ?></span>
+		<span class="right"><?php _e( 'Estimated Savings', 'gpagespeedi' ); ?></span>
 	</div>
-	<div class="opportunities" id="opportunities">
-		<div class="impact_chart_left boxsizing">
-			<div class="impact_chart_div" id="impact_chart_div"></div>
-			<div class="impact_rule_report images" id="optimize_images">
-				<img class="shortpixel_robot" src="<?php echo GPI_PUBLIC_PATH; ?>/assets/images/shortpixel.png" alt="<?php _e( 'Short Pixel Image Optimization', 'gpagespeedi' ); ?>" />
-				<h2><?php _e( 'Auto-Optimize Images', 'gpagespeedi' ); ?></h2>
-				<p><?php _e( 'Unoptimized images are often one of the <strong>biggest</strong> negative factors in pagespeed scores. Google Pagespeed Insights for WordPress has partnered with ShortPixel to provide an easy and affordable solution to <em>automatically</em> optimize all images.', 'gpagespeedi' ); ?></p>
-				<p><?php _e( 'Sign up using the button below and receive <strong>150 free image optimization credits</strong>.', 'gpagespeedi' ); ?></p>
-				<a class="shortpixel_btn" href="https://shortpixel.com/h/af/PCFTWNN142247" target="_blank"><?php _e( 'Free Sign Up', 'gpagespeedi' ); ?></a>
-			</div>
-			<div class="impact_rule_report" id="impact_rule_report"></div>
-		</div>
-		<div id="impact_chart_legend" class="impact_chart_right">
-			<table>
-				<tbody>
-					<th>
-						<?php _e( 'Insights Key', 'gpagespeedi' ); ?>
-					</th>
-				</tbody>
-			</table>
-		</div>
+	<div class="inner opportunities accordion" id="opportunities"></div>
+</div>
+<div class="row boxsizing framed lighthouse diagnostics">
+	<div class="boxheader">
+		<span class="left"><?php _e( 'Diagnostics', 'gpagespeedi' ); ?></span><span class="light"><?php _e( '(Click for detailed report)', 'gpagespeedi' ); ?></span>
 	</div>
+	<div class="inner diagnostics accordion" id="diagnostics"></div>
+</div>
+<div class="row boxsizing framed lighthouse passed-audits">
+	<div class="boxheader">
+		<span class="left"><?php _e( 'Passed Audits', 'gpagespeedi' ); ?></span><span class="light"><?php _e( '(Click for detailed report)', 'gpagespeedi' ); ?></span>
+		<span class="right"><span id="passed_audits_count"></span> <?php _e( 'audits', 'gpagespeedi' ); ?></span>
+
+	</div>
+	<div class="inner passed-audits accordion" id="passed_audits"></div>
 </div>

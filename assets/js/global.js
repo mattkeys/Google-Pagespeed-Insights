@@ -20,7 +20,32 @@
 		wp.heartbeat.interval( 'fast' );
 	}
 
-	$(document).tooltip();
+	$(document).tooltip({
+		hide			: 500,
+		show			: 200,
+		position		: { my: "left+20px top", at: "left bottom", collision: "flipfit" },
+		tooltipClass	: 'pos-absolute',
+		content			: function () {
+			return $(this).prop('title');
+		},
+		open: function( event, ui ) {
+			if ( typeof( event.originalEvent ) === 'undefined') {
+				return false;
+			}
+
+			var $id = $(ui.tooltip).attr('id');
+			$('div.ui-tooltip').not('#' + $id).remove();
+		},
+		close: function( event, ui ) {
+			ui.tooltip.hover( function() {
+				$(this).stop(true).fadeTo(400, 1); 
+			}, function() {
+				$(this).fadeOut('400', function() {
+					$(this).remove();
+				});
+			});
+		}
+	});
 
 	$(document).ready( function() {
 		$('#recheck_all_pages').on( 'change', function() {
@@ -56,6 +81,7 @@
 			$('#gpi_status_ajax').hide();
 			$('#gpi_status_abort').show();
 		} else {
+			$('#gpi_status_ajax').prop( 'title', data['gpi_progress_tooltip'] );
 			$('#gpi_status_ajax').removeClass('ellipsis').html('<div class="loading_bar_shell"><div class="reportscore_outter_bar"><div class="reportscore_inner_bar" style="width:' + status + '%;"></div></div><span>' + status + '%</span></div>');
 		}
 	});

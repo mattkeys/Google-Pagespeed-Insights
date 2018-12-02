@@ -184,6 +184,7 @@ class GPI_Actions
 			'google_developer_key'		=> ! empty( $_POST['google_developer_key'] )	? sanitize_text_field( $_POST['google_developer_key'] )						: $this->gpi_options['google_developer_key'],
 			'response_language'			=> ! empty( $_POST['response_language'] )		? sanitize_text_field( $_POST['response_language'] )						: $this->gpi_options['response_language'],
 			'strategy'					=> ! empty( $_POST['strategy'] )				? sanitize_text_field( $_POST['strategy'] )									: $this->gpi_options['strategy'],
+			'store_screenshots'			=> ! empty( $_POST['store_screenshots'] )		? true																		: false,
 			'max_execution_time'		=> ! empty( $_POST['max_execution_time'] )		? intval( $_POST['max_execution_time'] )									: $this->gpi_options['max_execution_time'],
 			'max_run_time'				=> isset( $_POST['max_run_time'] )				? intval( $_POST['max_run_time'] )											: $this->gpi_options['max_run_time'],
 			'sleep_time'				=> isset( $_POST['sleep_time'] )				? intval( $_POST['sleep_time'] )											: $this->gpi_options['sleep_time'],
@@ -204,6 +205,7 @@ class GPI_Actions
 			'log_api_errors'			=> isset( $_POST['log_api_errors'] )			? true																		: false,
 			'new_activation_message'	=> false,
 			'heartbeat'					=> isset( $_POST['heartbeat'] )					? sanitize_text_field( $_POST['heartbeat'] )								: 'standard',
+			'mutex_id'					=> $this->gpi_options['mutex_id'],
 			'version'					=> GPI_VERSION
 		);
 		update_option( 'gpagespeedi_options', $gpagespeedi_options );
@@ -272,7 +274,9 @@ class GPI_Actions
 			if ( $checkstatus ) {
 				$message = __( 'The API is busy checking other pages, please try again later.', 'gpagespeedi' );
 			} else {
-				do_action( 'googlepagespeedinsightsworker', $urls_to_recheck, true );
+				update_option( 'gpi_recheck_urls', $urls_to_recheck, false );
+				do_action( 'run_gpi', true, false, $urls_to_recheck );
+
 				$message = __( 'Recheck Complete.', 'gpagespeedi' );
 			}
 

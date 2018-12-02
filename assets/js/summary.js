@@ -1,9 +1,9 @@
 ( function( $ ) {
 
-	if ( GPI_Summary.snapshot ) {
-		GPI_Summary.summary_stats = JSON.parse( GPI_Summary.summary_stats );
-		GPI_Summary.summary_reports = JSON.parse( GPI_Summary.summary_reports );
-	}
+	// if ( GPI_Summary.snapshot ) {
+	// 	GPI_Summary.summary_stats = JSON.parse( GPI_Summary.summary_stats );
+	// 	GPI_Summary.summary_reports = JSON.parse( GPI_Summary.summary_reports );
+	// }
 
 	var no_results = $.isEmptyObject( GPI_Summary.summary_stats );
 	var dataVersion;
@@ -31,7 +31,7 @@
 			$.each( GPI_Summary.summary_reports, function ( index, values ) {
 				var data = {
 					rule_name	: values.rule_name,
-					avg_impact	: values.avg_impact,
+					avg_score	: Math.round( values.avg_score ),
 					occurances	: values.occurances
 				};
 
@@ -58,80 +58,149 @@
 				$('#lowest_scores .stats').append( scores( data ) );
 			});
 		});
-
-		google.charts.load('current', {'packages':['corechart']});
-		google.charts.setOnLoadCallback(drawCharts);
-
-		function drawCharts() {
-
-			/***********************************************
-						Create resource size bar chart
-			************************************************/
-
-			if ( '1.0' != dataVersion ) {
-				var sizes = new google.visualization.DataTable();
-				sizes.addColumn('string', GPI_Summary.strings.resource_type);
-				sizes.addColumn('number', GPI_Summary.strings.high, 'highest');
-				sizes.addColumn('number', GPI_Summary.strings.average, 'average');
-				sizes.addColumn('number', GPI_Summary.strings.low, 'lowest');
-
-				$.each( GPI_Summary.summary_stats.resource_sizes, function ( index, values ) {
-					var data = [ index, Number( values.highest.value ), Number( values.average ), Number( values.lowest.value ) ];
-					sizes.addRow( data );
-				});
-
-				var sizes_options = {
-					legend			: 'none',
-					backgroundColor	: 'transparent',
-					width			: 615,
-					height			: 200,
-					tooltip			: { trigger: 'selection' },
-					chartArea		: { top: 10, width: '80%', height: '80%' }
-				};
-
-				var sizes_chart = new google.visualization.BarChart(document.getElementById('sizes_chart_div'));
-				sizes_chart.draw(sizes, sizes_options);
-
-				sizes_chart.setAction({
-					id		: 'view_report',
-					text	: GPI_Summary.strings.view_page_report,
-					action	: function() {
-						selection	= sizes_chart.getSelection();
-						column_id	= sizes.getColumnId( selection[0].column );
-
-						if ( 'average' == column_id ) {
-							return;
-						}
-
-						index		= sizes.getValue( selection[0].row, 0 );
-						report_url	= GPI_Summary.summary_stats.resource_sizes[ index ][ column_id ].url;
-
-						var win = window.open( report_url, '_self' );
-						win.focus();
-					},
-					visible: function () {
-						selection	= sizes_chart.getSelection();
-
-						if ( selection.length < 1 ) {
-							return false;
-						}
-
-						column_id = sizes.getColumnId( selection[0].column );
-
-						if ( 'average' == column_id ) {
-							return false;
-						} else {
-							return true;
-						}
-					},
-				});
-			}
-		}
 	} else {
 		$( document ).ready( function() {
 			$('#results').hide();
 			$('#no_results').show();
 		});
 	}
+
+	google.charts.load( 'current', {
+		packages: ['corechart']
+	} );
+	google.charts.setOnLoadCallback( avgLabData );
+
+	function avgLabData() {
+		var data = new google.visualization.DataTable();
+
+		data.addColumn({
+			type	: 'string',
+			label	: 'Category'
+		});
+		data.addColumn({
+			type	: 'number',
+			label	: GPI_Summary.strings.average_score
+		});
+		data.addColumn({
+			type	: 'string',
+			role	: 'annotation'
+		})
+
+		$.each( GPI_Summary.summary_stats.labData, function( index, array ) {
+			var score		= array['average'] * 100,
+				score		= +(score.toFixed(2)),
+				prettyScore	= score + '%',
+				row = [ index, { v: array['average'], f: prettyScore }, prettyScore ];
+
+			data.addRow( row );
+		} );
+
+		var view = new google.visualization.DataView( data );
+
+		view.setColumns( [0, 1, 2, {
+			calc	: function ( dt, row ) {
+				if ( ( dt.getValue( row, 1 ) >= 0 ) && ( dt.getValue( row, 1 ) <= 0.49 ) ) {
+					return '#c7221f';
+				} else if ( ( dt.getValue( row, 1 ) > 0.49 ) && ( dt.getValue( row, 1 ) <= 0.90 ) ) {
+					return '#e67700';
+				} else {
+					return '#178239';
+				}
+			},
+			type	: 'string',
+			role	: 'style'
+		}]);
+
+		var options = {
+			legend			: { position: 'none' },
+			colors			: ['#178239','#e67700','#c7221f'],
+			backgroundColor	: '#f1f1f1',
+			height			: '223',
+			tooltip			: { trigger: 'selection' },
+			annotations		: { alwaysOutside: false },
+			chartArea		: {
+				left	: 150,
+				top		: 0,
+				width	: '100%',
+				height	: '100%'
+			},
+			vAxis			: {
+				textPosition: 'out',
+				textStyle	: {
+					fontSize	: 11
+				}
+			},
+			hAxis			: {
+				format			: 'percent',
+				minValue		: 0,
+				maxValue		: 1,
+				ticks			: [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1],
+				textPosition	: 'none'
+			}
+		};
+		var chart = new google.visualization.BarChart( document.getElementById('avg_lab_data') );
+		chart.draw( view, options );
+
+		chart.setAction({
+			id		: 'view_highest',
+			text	: GPI_Summary.strings.best_performing,
+			action	: function() {
+				selection	= chart.getSelection();
+				index		= view.getValue( selection[0].row, 0 );
+
+				report_url	= GPI_Summary.summary_stats.labData[ index ].highest.url;
+
+				var win = window.open( report_url, '_self' );
+				win.focus();
+			}
+		});
+		chart.setAction({
+			id		: 'view_lowest',
+			text	: GPI_Summary.strings.worst_performing,
+			action	: function() {
+				selection	= chart.getSelection();
+				index		= view.getValue( selection[0].row, 0 );
+
+				report_url	= GPI_Summary.summary_stats.labData[ index ].lowest.url;
+
+				var win = window.open( report_url, '_self' );
+				win.focus();
+			}
+		});
+
+		google.visualization.events.addListener( chart, 'select', annotationSelectHandler );
+
+		lastSelection = false;
+		function annotationSelectHandler() {
+			if ( typeof chart.getSelection()[0] != 'undefined' ) {
+				var selectedItem = chart.getSelection()[0];
+
+				if ( 2 == selectedItem.column ) {
+					if ( lastSelection && lastSelection.row == selectedItem.row ) {
+						chart.setSelection([]);
+						lastSelection = false;
+					} else {
+						chart.setSelection([{row:selectedItem.row, column:1}]);
+						lastSelection = selectedItem;
+					}
+				} else {
+					lastSelection = selectedItem;
+				}
+			} else {
+				lastSelection = false;
+			}
+		}
+
+		$(window).on('gpiResizeEnd', function() {
+			chart.draw( view, options );
+		});
+	}
+
+	$( window ).resize(function() {
+		if ( this.resizeTO ) clearTimeout( this.resizeTO );
+		this.resizeTO = setTimeout( function() {
+			$(this).trigger('gpiResizeEnd');
+		}, 500);
+	});
 
 })( jQuery );

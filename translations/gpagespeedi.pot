@@ -1,24 +1,19 @@
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Google Pagespeed Insights v2.0\n"
-"POT-Creation-Date: 2017-08-27 19:42-0400\n"
-"PO-Revision-Date: 2017-07-07 23:56-0400\n"
+"Project-Id-Version: Google Pagespeed Insights v4\n"
+"POT-Creation-Date: 2018-12-02 13:03-0500\n"
+"PO-Revision-Date: 2018-12-02 13:03-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.3\n"
-"X-Poedit-Basepath: ..\n"
+"X-Generator: Poedit 2.2\n"
+"X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-KeywordsList: ;__;_e\n"
+"X-Poedit-KeywordsList: __;_e;esc_attr_e;_x\n"
 "X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: translations/lib\n"
-"X-Poedit-SearchPathExcluded-1: translations/assets\n"
-"X-Poedit-SearchPathExcluded-2: translations/documentation\n"
-"X-Poedit-SearchPathExcluded-3: translations/translations\n"
 
 #: classes/class-GPI-Actions.php:120
 msgid ""
@@ -42,75 +37,75 @@ msgid ""
 "report to complete before the abort request can take effect."
 msgstr ""
 
-#: classes/class-GPI-Actions.php:229
+#: classes/class-GPI-Actions.php:231
 msgid "Settings Saved."
 msgstr ""
 
-#: classes/class-GPI-Actions.php:273
+#: classes/class-GPI-Actions.php:275
 msgid "The API is busy checking other pages, please try again later."
 msgstr ""
 
-#: classes/class-GPI-Actions.php:276
+#: classes/class-GPI-Actions.php:278
 msgid "Recheck Complete."
 msgstr ""
 
-#: classes/class-GPI-Actions.php:326
+#: classes/class-GPI-Actions.php:328
 msgid ""
 "URLs have been scheduled for a recheck. Depending on the number of URLs to "
 "check, this may take a while to complete."
 msgstr ""
 
-#: classes/class-GPI-Actions.php:353
+#: classes/class-GPI-Actions.php:355
 msgid "URLs have been reactivated."
 msgstr ""
 
-#: classes/class-GPI-Actions.php:393
+#: classes/class-GPI-Actions.php:395
 msgid "Reports have been ignored."
 msgstr ""
 
-#: classes/class-GPI-Actions.php:419
+#: classes/class-GPI-Actions.php:421
 msgid "Reports have been deleted."
 msgstr ""
 
-#: classes/class-GPI-Actions.php:444 classes/class-GPI-Actions.php:772
-#: classes/class-GPI-Actions.php:798
+#: classes/class-GPI-Actions.php:446 classes/class-GPI-Actions.php:776
+#: classes/class-GPI-Actions.php:802
 msgid "URLs have been deleted."
 msgstr ""
 
-#: classes/class-GPI-Actions.php:452 classes/class-GPI-Actions.php:490
-#: classes/class-GPI-Actions.php:524
+#: classes/class-GPI-Actions.php:454 classes/class-GPI-Actions.php:492
+#: classes/class-GPI-Actions.php:528
 msgid "Invalid Nonce. Please refresh the page and try again."
 msgstr ""
 
-#: classes/class-GPI-Actions.php:481
+#: classes/class-GPI-Actions.php:483
 msgid "Snapshot Saved Successfully"
 msgstr ""
 
-#: classes/class-GPI-Actions.php:501
+#: classes/class-GPI-Actions.php:505
 msgid "No snapshot(s) selected."
 msgstr ""
 
-#: classes/class-GPI-Actions.php:513
+#: classes/class-GPI-Actions.php:517
 msgid "Snapshots have been deleted."
 msgstr ""
 
-#: classes/class-GPI-Actions.php:579 classes/class-GPI-Actions.php:688
+#: classes/class-GPI-Actions.php:583 classes/class-GPI-Actions.php:692
 msgid "URL(s) have been successfully added."
 msgstr ""
 
-#: classes/class-GPI-Actions.php:591 classes/class-GPI-Actions.php:618
+#: classes/class-GPI-Actions.php:595 classes/class-GPI-Actions.php:622
 msgid "There was a problem uploading the sitemap"
 msgstr ""
 
-#: classes/class-GPI-Actions.php:607
+#: classes/class-GPI-Actions.php:611
 msgid "File type must be \"Application/XML\""
 msgstr ""
 
-#: classes/class-GPI-Actions.php:688
+#: classes/class-GPI-Actions.php:692
 msgid "URL(s) already exist and have been skipped."
 msgstr ""
 
-#: classes/class-GPI-Admin.php:116
+#: classes/class-GPI-Admin.php:128
 msgid ""
 "The plugin \"Google Pagespeed Insights Addon\" has automatically been "
 "deactivated. As of v3.0 Google Pagespeed Insights now includes all \"addon\" "
@@ -118,81 +113,104 @@ msgid ""
 "uninstalled from the plugins page."
 msgstr ""
 
-#: classes/class-GPI-Admin.php:138 classes/class-GPI-Admin.php:142
+#: classes/class-GPI-Admin.php:145
+msgid "Google Pagespeed Insights"
+msgstr ""
+
+#: classes/class-GPI-Admin.php:151 classes/class-GPI-Admin.php:155
 msgid "Abort Current Scan"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:147
+#: classes/class-GPI-Admin.php:160
 msgid "Start Reporting"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:149
+#: classes/class-GPI-Admin.php:162
 msgid "Recheck All"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:149
+#: classes/class-GPI-Admin.php:162
 msgid "Ignore last checked date to generate new reports for all pages"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:174
+#: classes/class-GPI-Admin.php:188
 msgid ""
 "Google Pagespeed Insights for Wordpress has been activated. It can be "
 "accessed via Tools"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:217
-msgid "Number of Hosts"
-msgstr ""
-
-#: classes/class-GPI-Admin.php:218
-msgid "Total Request Bytes"
-msgstr ""
-
-#: classes/class-GPI-Admin.php:219
-msgid "Total Resources"
-msgstr ""
-
-#: classes/class-GPI-Admin.php:220
-msgid "JavaScript Resources"
-msgstr ""
-
-#: classes/class-GPI-Admin.php:221
-msgid "CSS Resources"
-msgstr ""
-
-#: classes/class-GPI-Admin.php:222
-msgid "Score Impact"
-msgstr ""
-
-#: classes/class-GPI-Admin.php:223
+#: classes/class-GPI-Admin.php:232
+#, php-format
 msgid ""
 "Google Pagespeed Insights for WordPress has detected an outdated format in "
-"this report due to an update in version 2.0 of this plugin. Some report "
+"this report due to an update in version %s of this plugin. Some report "
 "features are unavailable. Please recheck results to resolve this problem."
 msgstr ""
 
+#: classes/class-GPI-Admin.php:233
+msgid ""
+"The Chrome User Experience Report <a href=\"https://developers.google.com/"
+"speed/docs/insights/about#faq\" target=\"_blank\">does not have sufficient "
+"real-world speed data</a> for this page."
+msgstr ""
+
+#: classes/class-GPI-Admin.php:234
+msgid "First Contentful Paint"
+msgstr ""
+
+#: classes/class-GPI-Admin.php:235
+msgid "First Input Delay"
+msgstr ""
+
+#: classes/class-GPI-Admin.php:237
+msgid "of loads for this page have a fast"
+msgstr ""
+
+#: classes/class-GPI-Admin.php:238
+msgid "of loads for this page have an average"
+msgstr ""
+
+#: classes/class-GPI-Admin.php:239
+msgid "of loads for this page have a slow"
+msgstr ""
+
+#: classes/class-GPI-Admin.php:242
+msgid "Auto-Optimize Images"
+msgstr ""
+
+#: classes/class-GPI-Admin.php:243
+msgid ""
+"Unoptimized images are often one of the <strong>biggest</strong> negative "
+"factors in pagespeed scores. Google Pagespeed Insights for WordPress has "
+"partnered with ShortPixel to provide an easy and affordable solution to "
+"<em>automatically</em> optimize all images."
+msgstr ""
+
 #: classes/class-GPI-Admin.php:244
-msgid "Resource Type"
+msgid ""
+"Sign up using the button below and receive <strong>150 free image "
+"optimization credits</strong>."
 msgstr ""
 
 #: classes/class-GPI-Admin.php:245
-msgid "High"
+msgid "Free Sign Up"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:246 templates/summary.php:82
-#: templates/view-snapshot.php:78 templates/view-snapshot.php:124
-msgid "Average"
+#: classes/class-GPI-Admin.php:267 classes/class-GPI-Admin.php:290
+#: templates/summary.php:91 templates/view-snapshot.php:88
+#: templates/view-snapshot.php:134
+msgid "Average Score"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:247
-msgid "Low"
+#: classes/class-GPI-Admin.php:268 classes/class-GPI-Admin.php:291
+msgid "View Best Performing"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:248
-msgid "View Page Report"
+#: classes/class-GPI-Admin.php:269 classes/class-GPI-Admin.php:292
+msgid "View Worst Performing"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:249
+#: classes/class-GPI-Admin.php:270
 msgid ""
 "Google Pagespeed Insights for WordPress has detected an outdated format in "
 "one or more reports due to an update in version 2.0 of this plugin. Some "
@@ -200,48 +218,48 @@ msgid ""
 "options page to resolve this problem."
 msgstr ""
 
-#: classes/class-GPI-Admin.php:268 classes/class-GPI-List-Table.php:366
+#: classes/class-GPI-Admin.php:289 classes/class-GPI-List-Table.php:366
 msgid "Comment"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:378 classes/class-GPI-List-Table.php:259
+#: classes/class-GPI-Admin.php:411 classes/class-GPI-List-Table.php:259
 msgid "All Reports"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:382 classes/class-GPI-List-Table.php:259
+#: classes/class-GPI-Admin.php:415 classes/class-GPI-List-Table.php:259
 msgid "Pages"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:386 classes/class-GPI-List-Table.php:259
+#: classes/class-GPI-Admin.php:419 classes/class-GPI-List-Table.php:259
 msgid "Posts"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:390 classes/class-GPI-List-Table.php:259
+#: classes/class-GPI-Admin.php:423 classes/class-GPI-List-Table.php:259
 msgid "Categories"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:395 classes/class-GPI-List-Table.php:259
+#: classes/class-GPI-Admin.php:428 classes/class-GPI-List-Table.php:259
 msgid "All Custom Post Types"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:405 templates/options.php:139
+#: classes/class-GPI-Admin.php:438 templates/options.php:146
 msgid "Custom Post Types"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:426 classes/class-GPI-List-Table.php:259
+#: classes/class-GPI-Admin.php:459 classes/class-GPI-List-Table.php:259
 msgid "All Custom URLs"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:435 templates/add-custom-urls.php:40
-#: templates/parts/navigation.php:26
+#: classes/class-GPI-Admin.php:468 templates/add-custom-urls.php:40
+#: templates/parts/navigation.php:28
 msgid "Custom URLs"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:647
+#: classes/class-GPI-Admin.php:695
 msgid "Auto-Optimize images with ShortPixel. Sign up for 150 free credits!"
 msgstr ""
 
-#: classes/class-GPI-Admin.php:748
+#: classes/class-GPI-Admin.php:800
 msgid "N/A"
 msgstr ""
 
@@ -249,38 +267,38 @@ msgstr ""
 msgid "Interval set in GPI options"
 msgstr ""
 
-#: classes/class-GPI-Core.php:271
+#: classes/class-GPI-Core.php:269
 msgid ""
 "There are no new pages, or pages with expired pagespeed reports to recheck. "
 "To force a recheck of all pages, check the \"Recheck All\" box before "
 "starting reporting."
 msgstr ""
 
-#: classes/class-GPI-List-Table.php:124
+#: classes/class-GPI-List-Table.php:124 classes/class-GPI-Pagespeed-API.php:190
 msgid "year"
 msgstr ""
 
-#: classes/class-GPI-List-Table.php:125
+#: classes/class-GPI-List-Table.php:125 classes/class-GPI-Pagespeed-API.php:191
 msgid "month"
 msgstr ""
 
-#: classes/class-GPI-List-Table.php:126
+#: classes/class-GPI-List-Table.php:126 classes/class-GPI-Pagespeed-API.php:192
 msgid "week"
 msgstr ""
 
-#: classes/class-GPI-List-Table.php:127
+#: classes/class-GPI-List-Table.php:127 classes/class-GPI-Pagespeed-API.php:193
 msgid "day"
 msgstr ""
 
-#: classes/class-GPI-List-Table.php:128
+#: classes/class-GPI-List-Table.php:128 classes/class-GPI-Pagespeed-API.php:194
 msgid "hour"
 msgstr ""
 
-#: classes/class-GPI-List-Table.php:129
+#: classes/class-GPI-List-Table.php:129 classes/class-GPI-Pagespeed-API.php:195
 msgid "minute"
 msgstr ""
 
-#: classes/class-GPI-List-Table.php:130
+#: classes/class-GPI-List-Table.php:130 classes/class-GPI-Pagespeed-API.php:196
 msgid "second"
 msgstr ""
 
@@ -300,11 +318,12 @@ msgstr ""
 msgid "No Snapshots found. Snapshots can be created from the"
 msgstr ""
 
-#: classes/class-GPI-List-Table.php:154 templates/parts/navigation.php:17
+#: classes/class-GPI-List-Table.php:154 templates/parts/navigation.php:19
 msgid "Report Summary"
 msgstr ""
 
 #: classes/class-GPI-List-Table.php:154 classes/class-GPI-List-Table.php:181
+#: templates/summary.php:124
 msgid "page"
 msgstr ""
 
@@ -314,29 +333,33 @@ msgid ""
 "above to add custom URLs."
 msgstr ""
 
-#: classes/class-GPI-List-Table.php:178 templates/summary.php:116
+#: classes/class-GPI-List-Table.php:178 templates/summary.php:115
 msgid ""
 "No Pagespeed Reports Found. Google Pagespeed may still be checking your "
 "pages. If problems persist, see the following possible solutions:"
 msgstr ""
 
-#: classes/class-GPI-List-Table.php:181 templates/summary.php:125
+#: classes/class-GPI-List-Table.php:181 templates/summary.php:124
 msgid "Make sure that you have entered your Google API key on the "
 msgstr ""
 
-#: classes/class-GPI-List-Table.php:181 templates/parts/messages.php:37
-#: templates/parts/messages.php:42 templates/parts/messages.php:73
-#: templates/parts/navigation.php:35
+#: classes/class-GPI-List-Table.php:181 templates/parts/messages.php:39
+#: templates/parts/messages.php:44 templates/parts/messages.php:75
+#: templates/parts/navigation.php:37 templates/summary.php:124
 msgid "Options"
 msgstr ""
 
-#: classes/class-GPI-List-Table.php:182 templates/summary.php:126
+#: classes/class-GPI-List-Table.php:182 templates/summary.php:125
 msgid ""
 "Make sure that you have enabled \"PageSpeed Insights API\" from the Services "
 "page of the "
 msgstr ""
 
-#: classes/class-GPI-List-Table.php:183 templates/summary.php:127
+#: classes/class-GPI-List-Table.php:182 templates/summary.php:125
+msgid "Google Console"
+msgstr ""
+
+#: classes/class-GPI-List-Table.php:183 templates/summary.php:126
 msgid "Make sure that your URLs are publicly accessible"
 msgstr ""
 
@@ -355,7 +378,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: classes/class-GPI-List-Table.php:241 templates/parts/navigation.php:21
+#: classes/class-GPI-List-Table.php:241 templates/parts/navigation.php:23
 msgid "View Snapshot"
 msgstr ""
 
@@ -403,7 +426,7 @@ msgid "URL"
 msgstr ""
 
 #: classes/class-GPI-List-Table.php:399 classes/class-GPI-List-Table.php:407
-#: templates/summary.php:100 templates/summary.php:107
+#: templates/summary.php:99 templates/summary.php:106
 #: templates/view-snapshot.php:96 templates/view-snapshot.php:103
 #: templates/view-snapshot.php:142 templates/view-snapshot.php:149
 msgid "Score"
@@ -466,12 +489,16 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
-#: classes/class-GPI-List-Table.php:593 templates/parts/navigation.php:28
+#: classes/class-GPI-List-Table.php:593 templates/parts/navigation.php:30
 msgid "Add New URLs"
 msgstr ""
 
-#: classes/class-GPI-List-Table.php:594 templates/parts/navigation.php:31
+#: classes/class-GPI-List-Table.php:594 templates/parts/navigation.php:33
 msgid "Bulk Upload New URLs"
+msgstr ""
+
+#: classes/class-GPI-Pagespeed-API.php:205
+msgid "s"
 msgstr ""
 
 #: templates/add-custom-urls-bulk.php:21
@@ -541,13 +568,13 @@ msgstr ""
 msgid "Recheck Results"
 msgstr ""
 
-#: templates/details.php:24 templates/summary.php:75
+#: templates/details.php:24 templates/summary.php:74
 #: templates/view-snapshot.php:71 templates/view-snapshot.php:117
 msgid "score"
 msgstr ""
 
 #: templates/details.php:29
-msgid "Page Statistics"
+msgid "Lab Data"
 msgstr ""
 
 #: templates/details.php:30
@@ -555,49 +582,39 @@ msgid "Value"
 msgstr ""
 
 #: templates/details.php:41
-msgid "Total Size of Resources"
+msgid "Field Data"
 msgstr ""
 
-#: templates/details.php:42
-msgid "Size (kB)"
+#: templates/details.php:52
+msgid "Loading Screenshots"
 msgstr ""
 
-#: templates/details.php:49
-msgid "Opportunities for improvement"
-msgstr ""
-
-#: templates/details.php:49
-msgid "(Click for detailed report)"
-msgstr ""
-
-#: templates/details.php:55
-msgid "Short Pixel Image Optimization"
-msgstr ""
-
-#: templates/details.php:56
-msgid "Auto-Optimize Images"
-msgstr ""
-
-#: templates/details.php:57
-msgid ""
-"Unoptimized images are often one of the <strong>biggest</strong> negative "
-"factors in pagespeed scores. Google Pagespeed Insights for WordPress has "
-"partnered with ShortPixel to provide an easy and affordable solution to "
-"<em>automatically</em> optimize all images."
+#: templates/details.php:52
+msgid "(Hover for timestamp)"
 msgstr ""
 
 #: templates/details.php:58
-msgid ""
-"Sign up using the button below and receive <strong>150 free image "
-"optimization credits</strong>."
+msgid "Opportunities for improvement"
+msgstr ""
+
+#: templates/details.php:58 templates/details.php:65 templates/details.php:71
+msgid "(Click for detailed report)"
 msgstr ""
 
 #: templates/details.php:59
-msgid "Free Sign Up"
+msgid "Estimated Savings"
 msgstr ""
 
-#: templates/details.php:67
-msgid "Insights Key"
+#: templates/details.php:65
+msgid "Diagnostics"
+msgstr ""
+
+#: templates/details.php:71
+msgid "Passed Audits"
+msgstr ""
+
+#: templates/details.php:72
+msgid "audits"
 msgstr ""
 
 #: templates/logs.php:12
@@ -644,11 +661,19 @@ msgstr ""
 msgid "if you do not have an API key you can create a new one for free from"
 msgstr ""
 
+#: templates/options.php:21
+msgid ""
+"Read the documentation included with this plugin or <a href=\"http://"
+"mattkeys.me/documentation/google-pagespeed-insights/#required_configuration"
+"\" target=\"_blank\">online</a> for additional information about creating an "
+"API key."
+msgstr ""
+
 #: templates/options.php:23
 msgid "Google Response Language:"
 msgstr ""
 
-#: templates/options.php:67 templates/options.php:115
+#: templates/options.php:67 templates/options.php:82 templates/options.php:122
 msgid "Note"
 msgstr ""
 
@@ -675,25 +700,45 @@ msgstr ""
 msgid "Both"
 msgstr ""
 
-#: templates/options.php:81
+#: templates/options.php:77
+msgid "Store Page Load Screenshots:"
+msgstr ""
+
+#: templates/options.php:79
+msgid "No"
+msgstr ""
+
+#: templates/options.php:80
+msgid "Yes"
+msgstr ""
+
+#: templates/options.php:82
+msgid ""
+"Screenshots stored in the database will usually take up around 50kb ~ 150kb "
+"per page report. If you have many pages to report on this may consume an "
+"unreasonable amount of space. Changes to this value will take effect on "
+"future report scans."
+msgstr ""
+
+#: templates/options.php:88
 msgid "Scheduling and URL Configuration"
 msgstr ""
 
-#: templates/options.php:86
+#: templates/options.php:93
 msgid ""
 "Choose wether or not Google Pagespeed Insights should automatically re-check "
 "page scores, and if so, how often."
 msgstr ""
 
-#: templates/options.php:89
+#: templates/options.php:96
 msgid "Automatically re-check Pagespeed Insights scores using a schedule"
 msgstr ""
 
-#: templates/options.php:91 templates/options.php:178
+#: templates/options.php:98 templates/options.php:185
 msgid "Notice"
 msgstr ""
 
-#: templates/options.php:91
+#: templates/options.php:98
 msgid ""
 "The WP Cron service this plugin uses to check pages is disabled. Hosting "
 "providers often disable the WP Cron service and run their own manual Cron "
@@ -701,112 +746,112 @@ msgid ""
 "scheduled checks fail to run."
 msgstr ""
 
-#: templates/options.php:95
+#: templates/options.php:102
 msgid "Report Expiration / Recheck Interval"
 msgstr ""
 
-#: templates/options.php:97
+#: templates/options.php:104
 msgid "1 Day"
 msgstr ""
 
-#: templates/options.php:98
+#: templates/options.php:105
 msgid "7 Days"
 msgstr ""
 
-#: templates/options.php:99
+#: templates/options.php:106
 msgid "15 Days"
 msgstr ""
 
-#: templates/options.php:100
+#: templates/options.php:107
 msgid "30 Days"
 msgstr ""
 
-#: templates/options.php:102
+#: templates/options.php:109
 msgid ""
 "When page reporting is running, pages which are newer than the specified "
 "Report Expiration will be skipped."
 msgstr ""
 
-#: templates/options.php:102
+#: templates/options.php:109
 msgid ""
 "If \"Automatically re-check Pagespeed Insights scores\" is checked above, "
 "this option will control its frequency."
 msgstr ""
 
-#: templates/options.php:108
+#: templates/options.php:115
 msgid "Next Scheduled Check"
 msgstr ""
 
-#: templates/options.php:114
+#: templates/options.php:121
 msgid "Configure which types of URLs should be checked when running reports."
 msgstr ""
 
-#: templates/options.php:115
+#: templates/options.php:122
 msgid ""
 "Google Pagespeed will load each page to generate a report. The more pages "
 "you select, the longer it will take for the scan to complete."
 msgstr ""
 
-#: templates/options.php:118
+#: templates/options.php:125
 msgid "Check Wordpress Pages"
 msgstr ""
 
-#: templates/options.php:122
+#: templates/options.php:129
 msgid "Check Wordpress Posts"
 msgstr ""
 
-#: templates/options.php:126
+#: templates/options.php:133
 msgid "Check Category Indexes"
 msgstr ""
 
-#: templates/options.php:131
+#: templates/options.php:138
 msgid "Check Custom URLs"
 msgstr ""
 
-#: templates/options.php:162
+#: templates/options.php:169
 msgid "Advanced Configuration"
 msgstr ""
 
-#: templates/options.php:166
+#: templates/options.php:173
 msgid ""
 "For most users, the following settings can be left at their defaults unless "
 "otherwise instructed by support."
 msgstr ""
 
-#: templates/options.php:168
+#: templates/options.php:175
 msgid "Maximum Execution Time"
 msgstr ""
 
-#: templates/options.php:170
+#: templates/options.php:177
 msgid "1 Minute"
 msgstr ""
 
-#: templates/options.php:171
+#: templates/options.php:178
 msgid "5 Minutes"
 msgstr ""
 
-#: templates/options.php:172
+#: templates/options.php:179
 msgid "10 Minutes"
 msgstr ""
 
-#: templates/options.php:173
+#: templates/options.php:180
 msgid "15 Minutes"
 msgstr ""
 
-#: templates/options.php:174
+#: templates/options.php:181
 msgid "30 Minutes"
 msgstr ""
 
-#: templates/options.php:176
+#: templates/options.php:183
 msgid "The default value of 5 minutes is fine for most sites."
 msgstr ""
 
-#: templates/options.php:176
+#: templates/options.php:183
 msgid ""
 "Increasing this value may help if your page reports do not finish completely."
 msgstr ""
 
-#: templates/options.php:178
+#: templates/options.php:185
 msgid ""
 "We have detected that your server may not allow the maximum execution time "
 "to be overridden by this plugin. If you experience problems with pagespeed "
@@ -814,39 +859,51 @@ msgid ""
 "Maximum Execution Time: "
 msgstr ""
 
-#: templates/options.php:178
+#: templates/options.php:185
 msgid "seconds"
 msgstr ""
 
-#: templates/options.php:181
+#: templates/options.php:188
 msgid "Maximum Script Run Time"
 msgstr ""
 
-#: templates/options.php:183
+#: templates/options.php:190
 msgid "No Limit"
 msgstr ""
 
-#: templates/options.php:184
+#: templates/options.php:191
+msgid "15 Seconds"
+msgstr ""
+
+#: templates/options.php:192
+msgid "30 Seconds"
+msgstr ""
+
+#: templates/options.php:193
+msgid "45 Seconds"
+msgstr ""
+
+#: templates/options.php:194
 msgid "60 Seconds"
 msgstr ""
 
-#: templates/options.php:185
+#: templates/options.php:195
 msgid "90 Seconds"
 msgstr ""
 
-#: templates/options.php:186
+#: templates/options.php:196
 msgid "120 Seconds"
 msgstr ""
 
-#: templates/options.php:187
+#: templates/options.php:197
 msgid "150 Seconds"
 msgstr ""
 
-#: templates/options.php:188
+#: templates/options.php:198
 msgid "180 Seconds"
 msgstr ""
 
-#: templates/options.php:191
+#: templates/options.php:201
 msgid ""
 "Some web hosting providers have limits on script runtime that cannot be "
 "overridden. If your scans do not finish completely and changing the Maximum "
@@ -854,197 +911,197 @@ msgid ""
 "specified run time is reached a new scan process will automatically start."
 msgstr ""
 
-#: templates/options.php:192
+#: templates/options.php:202
 msgid ""
 "It is best to find the largest value that still allows the script to "
-"complete successfully. Test first at 60 seconds, then raise the value to 90 "
+"complete successfully. Test first at 30 seconds, then raise the value to 45 "
 "if your test is successful. Continue until you find the maximum runtime your "
 "host allows."
 msgstr ""
 
-#: templates/options.php:195
+#: templates/options.php:205
 msgid "Report Throttling Delay Time"
 msgstr ""
 
-#: templates/options.php:197
+#: templates/options.php:207
 msgid "0 Seconds"
 msgstr ""
 
-#: templates/options.php:198
+#: templates/options.php:208
 msgid "1 Seconds"
 msgstr ""
 
-#: templates/options.php:199
+#: templates/options.php:209
 msgid "2 Seconds"
 msgstr ""
 
-#: templates/options.php:200
+#: templates/options.php:210
 msgid "3 Seconds"
 msgstr ""
 
-#: templates/options.php:201
+#: templates/options.php:211
 msgid "4 Seconds"
 msgstr ""
 
-#: templates/options.php:202
+#: templates/options.php:212
 msgid "5 Seconds"
 msgstr ""
 
-#: templates/options.php:203
+#: templates/options.php:213
 msgid "10 Seconds"
 msgstr ""
 
-#: templates/options.php:206
+#: templates/options.php:216
 msgid "The default value of 0 seconds is fine for most sites."
 msgstr ""
 
-#: templates/options.php:208
+#: templates/options.php:218
 msgid ""
 "Raising this value will slow down page reporting, but may help provide more "
 "accurate reports on poorly performing web servers"
 msgstr ""
 
-#: templates/options.php:211
+#: templates/options.php:221
 msgid "Report Status Indicator Refresh Rate"
 msgstr ""
 
-#: templates/options.php:213
+#: templates/options.php:223
 msgid "Fast"
 msgstr ""
 
-#: templates/options.php:214
+#: templates/options.php:224
 msgid "Standard"
 msgstr ""
 
-#: templates/options.php:215
+#: templates/options.php:225
 msgid "Slow"
 msgstr ""
 
-#: templates/options.php:216
+#: templates/options.php:226
 msgid "Disabled - manually refresh pages to update status"
 msgstr ""
 
-#: templates/options.php:219
+#: templates/options.php:229
 msgid "The default value of \"Fast\" is fine for most sites."
 msgstr ""
 
-#: templates/options.php:221
+#: templates/options.php:231
 msgid ""
 "More frequent updates may impact Pagespeed reports on poorly performing "
-"servers, reduce to rate if you are experiencing issues."
+"servers, reduce the rate if you are experiencing issues."
 msgstr ""
 
-#: templates/options.php:226
+#: templates/options.php:236
 msgid "Log API Exceptions"
 msgstr ""
 
-#: templates/options.php:228
+#: templates/options.php:238
 msgid "API error logs will be stored for up to 7 days."
 msgstr ""
 
-#: templates/options.php:228
+#: templates/options.php:238
 msgid "View Logs"
 msgstr ""
 
-#: templates/options.php:230
+#: templates/options.php:240
 msgid "Delete Data"
 msgstr ""
 
-#: templates/options.php:232
+#: templates/options.php:242
 msgid "Do Nothing"
 msgstr ""
 
-#: templates/options.php:233
+#: templates/options.php:243
 msgid "Delete Reports Only"
 msgstr ""
 
-#: templates/options.php:234
+#: templates/options.php:244
 msgid "Delete EVERYTHING"
 msgstr ""
 
-#: templates/options.php:236
+#: templates/options.php:246
 msgid "Warning"
 msgstr ""
 
-#: templates/options.php:236
+#: templates/options.php:246
 msgid "This option can not be reversed."
 msgstr ""
 
-#: templates/options.php:245 templates/options.php:247
+#: templates/options.php:255 templates/options.php:257
 msgid "Save Options"
 msgstr ""
 
-#: templates/parts/messages.php:20
+#: templates/parts/messages.php:22
 msgid "Report Updates Required"
 msgstr ""
 
-#: templates/parts/messages.php:23
+#: templates/parts/messages.php:25
 msgid ""
 "Thank you for updating to the latest version of Google Pagespeed Insights "
 "for WordPress!"
 msgstr ""
 
-#: templates/parts/messages.php:26
+#: templates/parts/messages.php:28
 msgid "Version"
 msgstr ""
 
-#: templates/parts/messages.php:26
+#: templates/parts/messages.php:28
 msgid ""
 "requires some updates to the way Pagespeed reports are stored to take "
 "advantage of the latest plugin updates. You will notice some missing report "
 "functionality until all pages have been rechecked."
 msgstr ""
 
-#: templates/parts/messages.php:29
+#: templates/parts/messages.php:31
 msgid "Recheck Pagespeed Reports Now"
 msgstr ""
 
-#: templates/parts/messages.php:37
+#: templates/parts/messages.php:39
 msgid ""
 "You must enter your Google API key to use this plugin! Enter your API key in "
 "the"
 msgstr ""
 
-#: templates/parts/messages.php:42
+#: templates/parts/messages.php:44
 msgid ""
 "The Google Pagespeed API Key you entered appears to be invalid. Please "
 "update your API key in the"
 msgstr ""
 
-#: templates/parts/messages.php:47
+#: templates/parts/messages.php:49
 msgid ""
 "The \"PageSpeed Insights API\" service is not enabled. To enable it, please "
 "visit the"
 msgstr ""
 
-#: templates/parts/messages.php:47 templates/parts/messages.php:52
+#: templates/parts/messages.php:49 templates/parts/messages.php:54
 msgid "Google API Console"
 msgstr ""
 
-#: templates/parts/messages.php:52
+#: templates/parts/messages.php:54
 msgid ""
 "This referrer or IP address is restricted from using your API Key. To change "
 "your API Key restrictions, please visit the"
 msgstr ""
 
-#: templates/parts/messages.php:73
+#: templates/parts/messages.php:75
 msgid ""
 "API error logging is disabled. Enable \"Log API Exceptions\" to record new "
 "errors."
 msgstr ""
 
-#: templates/parts/messages.php:78
+#: templates/parts/messages.php:80
 msgid ""
 "One or more URLs could not be reached by Google Pagespeed Insights and have "
 "automatically been added to the"
 msgstr ""
 
-#: templates/parts/messages.php:78 templates/parts/messages.php:83
-#: templates/parts/navigation.php:34
+#: templates/parts/messages.php:80 templates/parts/messages.php:85
+#: templates/parts/navigation.php:36
 msgid "Ignored URLs"
 msgstr ""
 
-#: templates/parts/messages.php:83
+#: templates/parts/messages.php:85
 msgid ""
 "An error has been encountered while checking one or more URLs. Possible "
 "causes: <br /><br />Daily API Limit Exceeded <a href=\"https://code.google."
@@ -1054,43 +1111,43 @@ msgid ""
 "is bad. <br /><br />The URL(s) have been added to the"
 msgstr ""
 
-#: templates/parts/messages.php:90
+#: templates/parts/messages.php:92
 msgid ""
 "Google Pagespeed has successfully stopped checking pages due to a user "
 "requested abort."
 msgstr ""
 
-#: templates/parts/messages.php:91
+#: templates/parts/messages.php:93
 msgid "Google Pagespeed has finished checking pagespeed scores."
 msgstr ""
 
-#: templates/parts/messages.php:91
+#: templates/parts/messages.php:93
 msgid "See new results"
 msgstr ""
 
-#: templates/parts/messages.php:92
+#: templates/parts/messages.php:94
 msgid "Google Pagespeed is running in the background "
 msgstr ""
 
-#: templates/parts/messages.php:95
+#: templates/parts/messages.php:97
 msgid "Google Pagespeed is running in the background. Progress... "
 msgstr ""
 
-#: templates/parts/messages.php:95
+#: templates/parts/messages.php:97
 msgid "URL(s) checked"
 msgstr ""
 
-#: templates/parts/messages.php:95
+#: templates/parts/messages.php:97
 msgid "Refresh to update progress or see new results."
 msgstr ""
 
-#: templates/parts/messages.php:101
+#: templates/parts/messages.php:103
 msgid ""
 "Google Pagespeed Options cannot be changed while Pagespeed is running. "
 "Please wait until it has finished to make any changes."
 msgstr ""
 
-#: templates/parts/messages.php:108
+#: templates/parts/messages.php:110
 msgid ""
 "The last pagespeed report scan failed to finish successfully. We have "
 "detected that your server may not allow the maximum execution time to be "
@@ -1099,11 +1156,11 @@ msgid ""
 "Run Time in the Advanced Configuration section on the"
 msgstr ""
 
-#: templates/parts/messages.php:108 templates/parts/messages.php:110
+#: templates/parts/messages.php:110 templates/parts/messages.php:112
 msgid "Options Page"
 msgstr ""
 
-#: templates/parts/messages.php:110
+#: templates/parts/messages.php:112
 msgid ""
 "The last pagespeed report scan failed to finish successfully. If you "
 "continue to experience problems with pagespeed report scans failing to "
@@ -1119,23 +1176,23 @@ msgstr ""
 msgid "Mobile Mode"
 msgstr ""
 
-#: templates/parts/navigation.php:13
+#: templates/parts/navigation.php:15
 msgid "Report List"
 msgstr ""
 
-#: templates/parts/navigation.php:15
+#: templates/parts/navigation.php:17
 msgid "Report Details"
 msgstr ""
 
-#: templates/parts/navigation.php:19
+#: templates/parts/navigation.php:21
 msgid "Snapshots"
 msgstr ""
 
-#: templates/parts/navigation.php:24
+#: templates/parts/navigation.php:26
 msgid "Compare Snapshots"
 msgstr ""
 
-#: templates/parts/navigation.php:37
+#: templates/parts/navigation.php:39
 msgid "Logs"
 msgstr ""
 
@@ -1143,58 +1200,49 @@ msgstr ""
 msgid "Save Report Snapshot"
 msgstr ""
 
-#: templates/summary.php:80 templates/view-snapshot.php:76
-#: templates/view-snapshot.php:122
-msgid "Size of Resources (in kB)"
-msgstr ""
-
-#: templates/summary.php:81 templates/view-snapshot.php:77
+#: templates/summary.php:80 templates/view-snapshot.php:77
 #: templates/view-snapshot.php:123
-msgid "Lowest"
+msgid "Average Lab Data Scores"
 msgstr ""
 
-#: templates/summary.php:83 templates/view-snapshot.php:79
-#: templates/view-snapshot.php:125
-msgid "Highest"
+#: templates/summary.php:81 templates/view-snapshot.php:78
+#: templates/view-snapshot.php:124
+msgid "Click for detailed report"
 msgstr ""
 
-#: templates/summary.php:90 templates/view-snapshot.php:86
+#: templates/summary.php:89 templates/view-snapshot.php:86
 #: templates/view-snapshot.php:132
 msgid "Largest Areas for Improvement"
 msgstr ""
 
-#: templates/summary.php:91
+#: templates/summary.php:90 templates/view-snapshot.php:87
+#: templates/view-snapshot.php:133
 msgid "Pages Impacted"
 msgstr ""
 
-#: templates/summary.php:92 templates/view-snapshot.php:88
-#: templates/view-snapshot.php:134
-msgid "Average Impact"
-msgstr ""
-
-#: templates/summary.php:99 templates/view-snapshot.php:95
+#: templates/summary.php:98 templates/view-snapshot.php:95
 #: templates/view-snapshot.php:141
 msgid "Highest Scoring Pages"
 msgstr ""
 
-#: templates/summary.php:106 templates/view-snapshot.php:102
+#: templates/summary.php:105 templates/view-snapshot.php:102
 #: templates/view-snapshot.php:148
 msgid "Lowest Scoring Pages"
 msgstr ""
 
-#: templates/summary.php:120
+#: templates/summary.php:119
 msgid "There may not be any results for the \""
 msgstr ""
 
-#: templates/summary.php:123
+#: templates/summary.php:122
 msgid "There may not be any"
 msgstr ""
 
-#: templates/summary.php:123
+#: templates/summary.php:122
 msgid "reports completed yet."
 msgstr ""
 
-#: templates/summary.php:123
+#: templates/summary.php:122
 msgid "Try switching the report mode."
 msgstr ""
 
@@ -1204,8 +1252,4 @@ msgstr ""
 
 #: templates/view-snapshot.php:57
 msgid "Compare"
-msgstr ""
-
-#: templates/view-snapshot.php:87 templates/view-snapshot.php:133
-msgid "Pages Effected"
 msgstr ""

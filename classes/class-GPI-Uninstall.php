@@ -37,6 +37,11 @@ class GPI_Uninstall
 		delete_option('gpagespeedi_ui_options');
 		delete_option('gpagespeedi_upgrade_recheck_required');
 		delete_option('gpi_progress');
+		delete_option('gpi_recheck_urls');
+		delete_option('gpi_missed_url_groups');
+		delete_option('gpi_error_message');
+		delete_option('gpi_abort_scan');
+		delete_option('gpi_check_now');
 
 		wp_clear_scheduled_hook( 'gpi_prune_logs' );
 		wp_clear_scheduled_hook( 'googlepagespeedinsightsworker' );
