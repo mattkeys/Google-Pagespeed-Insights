@@ -277,7 +277,7 @@ class GPI_Actions
 				update_option( 'gpi_recheck_urls', $urls_to_recheck, false );
 				do_action( 'run_gpi', true, false, $urls_to_recheck );
 
-				$message = __( 'Recheck Complete.', 'gpagespeedi' );
+				$message = __( 'This URL has been scheduled for a recheck.', 'gpagespeedi' );
 			}
 
 			return $message;
