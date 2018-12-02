@@ -205,7 +205,7 @@ class GPI_Admin
 			return;
 		}
 
-		wp_enqueue_style( 'gpagespeedi_css', plugins_url( '/assets/css/gpagespeedi_styles.css', GPI_PLUGIN_FILE ), false, '3.0.0' );
+		wp_enqueue_style( 'gpagespeedi_css', plugins_url( '/assets/css/gpagespeedi_styles.css', GPI_PLUGIN_FILE ), false, GPI_VERSION );
 
 		wp_register_script( 'gpagespeedi_google_charts', 'https://www.gstatic.com/charts/loader.js' );
 	}
@@ -222,7 +222,7 @@ class GPI_Admin
 
 		$recheck_url = admin_url( '/tools.php?page=google-pagespeed-insights&render=details&page_id=' . intval( $_GET['page_id'] ) . '&action=single-recheck' );
 
-		wp_enqueue_script( 'gpagespeedi_details_js', plugins_url( '/assets/js/details.js', GPI_PLUGIN_FILE ), array( 'jquery', 'jquery-ui-accordion', 'gpagespeedi_google_charts', 'wp-util' ), '2.0.2', true );
+		wp_enqueue_script( 'gpagespeedi_details_js', plugins_url( '/assets/js/details.js', GPI_PLUGIN_FILE ), array( 'jquery', 'jquery-ui-accordion', 'gpagespeedi_google_charts', 'wp-util' ), GPI_VERSION, true );
 		wp_localize_script( 'gpagespeedi_details_js', 'GPI_Details', array(
 				'page_stats'	=> $this->get_page_stats( intval( $_GET['page_id'] ) ),
 				'page_reports'	=> $this->get_page_reports( intval( $_GET['page_id'] ) ),
@@ -259,7 +259,7 @@ class GPI_Admin
 			return;
 		}
 
-		wp_enqueue_script( 'gpagespeedi_summary_js', plugins_url( '/assets/js/summary.js', GPI_PLUGIN_FILE ), array( 'jquery', 'gpagespeedi_google_charts', 'wp-util' ), '2.0.2' );
+		wp_enqueue_script( 'gpagespeedi_summary_js', plugins_url( '/assets/js/summary.js', GPI_PLUGIN_FILE ), array( 'jquery', 'gpagespeedi_google_charts', 'wp-util' ), GPI_VERSION );
 		wp_localize_script( 'gpagespeedi_summary_js', 'GPI_Summary', array(
 				'summary_stats'		=> $this->get_summary_stats(),
 				'summary_reports'	=> $this->get_summary_reports(),
@@ -299,7 +299,7 @@ class GPI_Admin
 
 		$localize_data = array_merge( $snapshot_data, $strings );
 
-		wp_enqueue_script( 'gpagespeedi_view_snapshot_js', plugins_url( '/assets/js/view-snapshot.js', GPI_PLUGIN_FILE ), array( 'jquery', 'gpagespeedi_google_charts', 'wp-util' ), '3.0.0' );
+		wp_enqueue_script( 'gpagespeedi_view_snapshot_js', plugins_url( '/assets/js/view-snapshot.js', GPI_PLUGIN_FILE ), array( 'jquery', 'gpagespeedi_google_charts', 'wp-util' ), GPI_VERSION );
 		wp_localize_script( 'gpagespeedi_view_snapshot_js', 'GPI_View_Snapshot', $localize_data );
 	}
 
@@ -309,7 +309,7 @@ class GPI_Admin
 			return;
 		}
 
-		wp_enqueue_script( 'gpagespeedi_global_js', plugins_url( '/assets/js/global.js', GPI_PLUGIN_FILE ), array( 'jquery', 'heartbeat', 'jquery-ui-tooltip' ), '2.0.2' );
+		wp_enqueue_script( 'gpagespeedi_global_js', plugins_url( '/assets/js/global.js', GPI_PLUGIN_FILE ), array( 'jquery', 'heartbeat', 'jquery-ui-tooltip' ), GPI_VERSION );
 		wp_localize_script( 'gpagespeedi_global_js', 'GPI_Global', array(
 				'heartbeat' => $this->gpi_options['heartbeat'],
 				'progress'	=> get_option( 'gpi_progress' )
