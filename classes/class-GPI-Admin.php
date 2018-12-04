@@ -68,9 +68,9 @@ class GPI_Admin
 
 	public function upgrade_check()
 	{
-		// if ( ! isset( $this->gpi_options['version'] ) || version_compare( $this->gpi_options['version'], GPI_VERSION, '<' ) ) {
+		if ( ! isset( $this->gpi_options['version'] ) || version_compare( $this->gpi_options['version'], GPI_VERSION, '<' ) ) {
 			GPI_Activation::upgrade( $this->gpi_options, $this->gpi_ui_options );
-		// }
+		}
 
 		if ( defined( 'GPIA_PLUGIN_FILE' ) ) {
 			deactivate_plugins( GPIA_PLUGIN_FILE );

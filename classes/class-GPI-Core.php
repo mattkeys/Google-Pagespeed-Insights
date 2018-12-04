@@ -128,7 +128,7 @@ class GPI_Core
 	{
 		add_option( 'gpi_check_now', true );
 
-		$query_args = array( 'gpi_check_now' => true );
+		$query_args = array( 'gpi_check_now' => true, 'cb' => time() );
 
 		if ( $recheck ) {
 			$query_args['recheck'] = true;
@@ -140,7 +140,7 @@ class GPI_Core
 			$query_args['urls_provided'] = true;
 		}
 
-		$cron_url = add_query_arg( $query_args, site_url() );
+		$cron_url = add_query_arg( $query_args, home_url() );
 
 		wp_remote_post( $cron_url, array( 'timeout' => 0.01, 'blocking' => false, 'sslverify' => apply_filters( 'https_local_ssl_verify', true ) ) );
 	}
