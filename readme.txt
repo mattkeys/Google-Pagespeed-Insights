@@ -2,7 +2,7 @@
 Contributors: mattkeys
 Tags: SEO, performance, speed, page speed, search engine optimization, pagespeed, google page speed, pagespeed insights, google pagespeed insights
 Requires at least: 3.6
-Tested up to: 4.9
+Tested up to: 5.0
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -137,6 +137,7 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 == Changelog ==
 
 = 4.0.0 =
+* NOTICE: This upgrade will remove any existing reports or snapshots created by older versions of this plugin as they are not compatible with the newest version of the pagespeed API (v5)
 * Migrating to the latest version of the Google Pagespeed Insights API (v5). This comes with pretty big changes to reporting and is incompatible with reports generated from previous versions of the API (and this plugin)
 * Replaced the Google API PHP library previously used by this plugin in favor of a much smaller and simpler class
 * Bugfix SQL Mutex lock key not unique per installation causing issues when trying to run this plugin on multiple sites sharing the same SQL server
