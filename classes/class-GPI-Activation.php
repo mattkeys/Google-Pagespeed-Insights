@@ -30,7 +30,7 @@ class GPI_Activation
 
 			$wpdb->query( "TRUNCATE TABLE $gpi_page_stats_table" );
 			$wpdb->query( "TRUNCATE TABLE $gpi_page_reports_table" );
-			$wpdb->query( "TRUNCATE TABLE $gpi_page_reports_table" );
+			$wpdb->query( "TRUNCATE TABLE $gpi_summary_snapshots_table" );
 		}
 
 		if ( $update_options ) {
