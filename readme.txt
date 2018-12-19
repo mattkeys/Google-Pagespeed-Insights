@@ -130,15 +130,15 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 == Screenshots ==
 
 1. Filter reports by Pages, Posts, Category Indexes, or Custom Post Types. Sort Report Lists by Page Score to see your highest and lowest performing pages.
-2. Seperate reports for Desktop and Mobile page reports. Check each report to receive platform specific recommendations to increase your sites performance.
+2. Separate reports for Desktop and Mobile page reports. Check each report to receive platform specific recommendations to increase your sites performance.
 3. Configure Google Report Language, Report Types, and choose which WordPress URLs to run reports on.
 4. View in-depth report details for recommendations on increasing your sites performance.
 
 == Changelog ==
 
-= 4.0.0-beta1 =
-* Migrating to the latest version of the Google Pagespeed Insights API (v5). This comes with pretty big changes to reporting and is incompatible with previous API versions
-* Removed Google PHP API library to work with the latest version of Google Pagespeed Insights, and also to shed the bulk of the library from this plugin
+= 4.0.0 =
+* Migrating to the latest version of the Google Pagespeed Insights API (v5). This comes with pretty big changes to reporting and is incompatible with reports generated from previous versions of the API (and this plugin)
+* Replaced the Google API PHP library previously used by this plugin in favor of a much smaller and simpler class
 * Bugfix SQL Mutex lock key not unique per installation causing issues when trying to run this plugin on multiple sites sharing the same SQL server
 
 = 3.0.5 =
@@ -216,11 +216,8 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 == Upgrade Notice ==
 
-= 4.0.0-beta1 =
-* This upgrade will remove any existing reports or snapshots created by older versions of this plugin as they are not compatible with the newest version of the pagespeed API (v5)
-* Migrating to the latest version of the Google Pagespeed Insights API (v5). This comes with pretty big changes to reporting and is incompatible with previous API versions
-* Removed Google PHP API library to work with the latest version of Google Pagespeed Insights, and also to shed the bulk of the library from this plugin
-* Bugfix SQL Mutex lock key not unique per installation causing issues when trying to run this plugin on multiple sites sharing the same SQL server
+= 4.0.0 =
+* NOTICE: This upgrade will remove any existing reports or snapshots created by older versions of this plugin as they are not compatible with the newest version of the pagespeed API (v5)
 
 = 3.0.5 =
 * Fixed PHP warning when saving settings

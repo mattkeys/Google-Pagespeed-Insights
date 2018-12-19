@@ -162,6 +162,10 @@
 			hAxis			: {
 				baselineColor	: 'transparent',
 				textPosition	: 'none'
+			},
+			titleTextStyle: {
+				fontSize	: 13,
+				bold		: false,
 			}
 		};
 		var chart = new google.visualization.BarChart( document.getElementById( type ) );

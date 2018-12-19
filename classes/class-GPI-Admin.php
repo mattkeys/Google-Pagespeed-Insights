@@ -26,6 +26,7 @@ class GPI_Admin
 		$this->strategy			= ( isset( $_GET['strategy'] ) ) ? sanitize_text_field( $_GET['strategy'] ) : $this->gpi_ui_options['view_preference'];
 
 		add_filter( 'plugin_action_links', array( $this, 'add_settings_link' ), 10, 2 );
+		add_action( 'in_plugin_update_message-google-pagespeed-insights/google-pagespeed-insights.php', array( $this, 'plugin_update_message' ), 10, 2 );
 		add_action( 'admin_init', array( $this, 'upgrade_check' ), 10 );
 		add_action( 'pre_uninstall_plugin', array( $this, 'backup_addon_tables' ), 10, 1 );
 		add_action( 'deleted_plugin', array( $this, 'restore_addon_tables' ), 10, 2 );
@@ -64,6 +65,18 @@ class GPI_Admin
 		array_unshift( $links, '<a href="' . esc_url( admin_url( '/tools.php?page=google-pagespeed-insights&render=options' ) ) . '">' . esc_html__( 'Settings', 'acf-font-awesome' ) . '</a>' );
 
 		return $links;
+	}
+
+	public function plugin_update_message( $plugin_data, $response )
+	{
+		if ( empty( $plugin_data['update'] ) ) {
+			return;
+		}
+
+		if ( version_compare( $plugin_data['new_version'], '4.0.0', '>=' ) && version_compare( $plugin_data['Version'], '4.0.0', '<' ) ) {
+			$message = __( 'IMPORTANT: This is a major update. Reports run with previous versions of this plugin are incompatible with the latest version of the Pagespeed API, and will be removed during this update.', 'gpagespeedi' );
+			echo '<p style="background-color: #d54e21; padding: 10px; color: #f9f9f9; margin-top: 10px"><strong>' . $message . '</strong> ';
+		}
 	}
 
 	public function upgrade_check()
@@ -140,7 +153,6 @@ class GPI_Admin
 		$admin_page = ( isset( $_GET['render'] ) ) ? sanitize_text_field( $_GET['render'] ) : 'report-list';
 		?>
 		<div class="wrap">
-			<div id="icon-gpi" class="icon32"><br/></div>
 			<h2>
 				<?php _e( 'Google Pagespeed Insights', 'gpagespeedi' ); ?>
 				<div class="global-actions">

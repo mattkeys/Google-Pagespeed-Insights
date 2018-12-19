@@ -317,9 +317,14 @@ class GPI_List_Table extends WP_List_Table
 			return 'N/A';
 		}
 
-		$gradient = array( '', 'FF0000', 'FE0500', 'FE0A00', 'FE0F00', 'FE1400', 'FE1900', 'FE1E00', 'FE2300', 'FE2800', 'FE2D00', 'FE3300', 'FE3800', 'FE3D00', 'FE4200', 'FE4700', 'FE4C00', 'FE5100', 'FD5600', 'FD5B00', 'FD6000', 'FD6600', 'FD6B00', 'FD7000', 'FD7500', 'FD7A00', 'FD7F00', 'FD8400', 'FD8900', 'FD8E00', 'FD9300', 'FD9900', 'FD9E00', 'FDA300', 'FDA800', 'FCAD00', 'FCB200', 'FCB700', 'FCBC00', 'FCC100', 'FCC600', 'FCCC00', 'FCD100', 'FCD600', 'FCDB00', 'FCE000', 'FCE500', 'FCEA00', 'FCEF00', 'FCF400', 'FCF900', 'FCFF00', 'F7FF00', 'F2FF00', 'EEFF00', 'E9FF00', 'E4FF00', 'E0FF00', 'DBFF00', 'D6FF00', 'D2FF00', 'CDFF00', 'C8FF00', 'C4FF00', 'BFFF00', 'BAFF00', 'B6FF00', 'B1FF00', 'ACFF00', 'A8FF00', 'A3FF00', '9EFF00', '9AFF00', '95FF00', '90FF00', '8CFF00', '87FF00', '83FF00', '7EFF00', '79FF00', '75FF00', '70FF00', '6BFF00', '67FF00', '62FF00', '5DFF00', '59FF00', '54FF00', '4FFF00', '4BFF00', '46FF00', '41FF00', '3DFF00', '38FF00', '33FF00', '2FFF00', '2AFF00', '25FF00', '21FF00', '1CFF00', '18FF00' );
-		$barcolor = $gradient[ $item['mobile_score'] ];
-		$innerdiv_css = 'background-color:#' . $barcolor . ';width:' . $item['mobile_score'] . '%';
+		if ( $item['mobile_score'] < 50 ) {
+			$barcolor = '#c7221f';
+		} else if ( $item['mobile_score'] < 90 ) {
+			$barcolor = '#e67700';
+		} else {
+			$barcolor = '#178239';
+		}
+		$innerdiv_css = 'background-color:' . $barcolor . ';width:' . $item['mobile_score'] . '%';
 
 		return sprintf( '<span class="scorenum">%1$s</span><div class="reportscore_outter_bar"><div class="reportscore_inner_bar" style="%2$s"></div></div>', $item['mobile_score'], $innerdiv_css );
 	}
@@ -330,9 +335,14 @@ class GPI_List_Table extends WP_List_Table
 			return 'N/A';
 		}
 
-		$gradient = array( '', 'FF0000', 'FE0500', 'FE0A00', 'FE0F00', 'FE1400', 'FE1900', 'FE1E00', 'FE2300', 'FE2800', 'FE2D00', 'FE3300', 'FE3800', 'FE3D00', 'FE4200', 'FE4700', 'FE4C00', 'FE5100', 'FD5600', 'FD5B00', 'FD6000', 'FD6600', 'FD6B00', 'FD7000', 'FD7500', 'FD7A00', 'FD7F00', 'FD8400', 'FD8900', 'FD8E00', 'FD9300', 'FD9900', 'FD9E00', 'FDA300', 'FDA800', 'FCAD00', 'FCB200', 'FCB700', 'FCBC00', 'FCC100', 'FCC600', 'FCCC00', 'FCD100', 'FCD600', 'FCDB00', 'FCE000', 'FCE500', 'FCEA00', 'FCEF00', 'FCF400', 'FCF900', 'FCFF00', 'F7FF00', 'F2FF00', 'EEFF00', 'E9FF00', 'E4FF00', 'E0FF00', 'DBFF00', 'D6FF00', 'D2FF00', 'CDFF00', 'C8FF00', 'C4FF00', 'BFFF00', 'BAFF00', 'B6FF00', 'B1FF00', 'ACFF00', 'A8FF00', 'A3FF00', '9EFF00', '9AFF00', '95FF00', '90FF00', '8CFF00', '87FF00', '83FF00', '7EFF00', '79FF00', '75FF00', '70FF00', '6BFF00', '67FF00', '62FF00', '5DFF00', '59FF00', '54FF00', '4FFF00', '4BFF00', '46FF00', '41FF00', '3DFF00', '38FF00', '33FF00', '2FFF00', '2AFF00', '25FF00', '21FF00', '1CFF00', '18FF00' );
-		$barcolor = $gradient[ $item['desktop_score'] ];
-		$innerdiv_css = 'background-color:#' . $barcolor . ';width:' . $item['desktop_score'] . '%';
+		if ( $item['desktop_score'] < 50 ) {
+			$barcolor = '#c7221f';
+		} else if ( $item['desktop_score'] < 90 ) {
+			$barcolor = '#e67700';
+		} else {
+			$barcolor = '#178239';
+		}
+		$innerdiv_css = 'background-color:' . $barcolor . ';width:' . $item['desktop_score'] . '%';
 
 		return sprintf( '<span class="scorenum">%1$s</span><div class="reportscore_outter_bar"><div class="reportscore_inner_bar" style="%2$s"></div></div>', $item['desktop_score'], $innerdiv_css );
 	}

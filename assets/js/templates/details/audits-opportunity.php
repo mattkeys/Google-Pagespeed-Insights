@@ -1,11 +1,11 @@
 <script type="text/html" id="tmpl-audits-opportunity">
-	<h3>{{data.name}} <span class="right">{{data.displayValue}}</span></h3>
+	<h3>{{data.name}} <span class="toggle"></span><span class="right">{{data.displayValue}}</span></h3>
 	<div class="details">
 		<p class="description">
 			{{{data.description}}}
 		</p>
 		<# if ( 'uses-optimized-images' == data.key ) { #>
-			<div class="impact_rule_report images" id="optimize_images">
+			<div class="shortpixel_box" id="optimize_images">
 				<img class="shortpixel_robot" src="{{data.publicPath}}/assets/images/shortpixel.png" alt="{{data.strings.shortpixel.title}}" />
 				<h2>{{data.strings.shortpixel.title}}</h2>
 				<p>{{{data.strings.shortpixel.description}}}</p>

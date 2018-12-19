@@ -1,5 +1,5 @@
 <script type="text/html" id="tmpl-audits-criticalrequestchain">
-	<h3>{{data.name}} <span class="right">{{data.displayValue}}</span></h3>
+	<h3>{{data.name}} <span class="toggle"></span><span class="right">{{data.displayValue}}</span></h3>
 	<div class="details">
 		<p class="description">
 			{{{data.description}}}
