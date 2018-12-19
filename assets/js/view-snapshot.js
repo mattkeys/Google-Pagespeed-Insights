@@ -134,7 +134,7 @@
 			var options = {
 				legend			: { position: 'none' },
 				colors			: ['#178239','#e67700','#c7221f'],
-				backgroundColor	: '#f1f1f1',
+				backgroundColor	: 'white',
 				height			: '213',
 				tooltip			: { trigger: 'selection' },
 				annotations		: { alwaysOutside: false },
@@ -223,95 +223,5 @@
 			$(this).trigger('gpiResizeEnd');
 		}, 500);
 	});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	// google.charts.load('current', {'packages':['corechart']});
-	// google.charts.setOnLoadCallback(drawCharts);
-
-	// function drawCharts() {
-
-	// 	/***********************************************
-	// 				Create resource size bar chart
-	// 	************************************************/
-
-	// 	$('.avg_lab_data').each( function() {
-	// 		var selector = $(this).data('selector');
-	// 		var sizes = new google.visualization.DataTable();
-	// 		sizes.addColumn('string', 'Resource Type');
-	// 		sizes.addColumn('number', 'High', 'highest');
-	// 		sizes.addColumn('number', 'Average', 'average');
-	// 		sizes.addColumn('number', 'Low', 'lowest');
-
-	// 		$.each( GPI_View_Snapshot[ selector ].summary_stats.resource_sizes, function ( index, values ) {
-	// 			var data = [ index, Number( values.highest.value ), Number( values.average ), Number( values.lowest.value ) ];
-	// 			sizes.addRow( data );
-	// 		});
-
-	// 		var sizes_options = {
-	// 			legend			: 'none',
-	// 			backgroundColor	: 'transparent',
-	// 			width			: 615,
-	// 			height			: 200,
-	// 			tooltip			: { trigger: 'selection' },
-	// 			chartArea		: { top: 10, width: '80%', height: '80%' }
-	// 		};
-
-	// 		var sizes_chart = new google.visualization.BarChart( $(this)[0] );
-	// 		sizes_chart.draw(sizes, sizes_options);
-
-	// 		sizes_chart.setAction({
-	// 			id		: 'view_report',
-	// 			text	: 'View Page Report',
-	// 			action	: function() {
-	// 				selection	= sizes_chart.getSelection();
-	// 				column_id	= sizes.getColumnId( selection[0].column );
-
-	// 				if ( 'average' == column_id ) {
-	// 					return;
-	// 				}
-
-	// 				index		= sizes.getValue( selection[0].row, 0 );
-	// 				report_url	= GPI_View_Snapshot[ selector ].summary_stats.resource_sizes[ index ][ column_id ].url;
-
-	// 				var win = window.open( report_url, '_blank' );
-	// 				win.focus();
-	// 			},
-	// 			visible: function () {
-	// 				selection	= sizes_chart.getSelection();
-
-	// 				if ( selection.length < 1 ) {
-	// 					return false;
-	// 				}
-
-	// 				column_id = sizes.getColumnId( selection[0].column );
-
-	// 				if ( 'average' == column_id ) {
-	// 					return false;
-	// 				} else {
-	// 					return true;
-	// 				}
-	// 			},
-	// 		});
-	// 	});
-
-	// }
 
 })( jQuery );

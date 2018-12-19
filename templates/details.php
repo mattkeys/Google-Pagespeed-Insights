@@ -11,10 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <h3 id="url" class="subTitle"></h3>
 <div class="toolbar">
-	<div class="left">
-		<a id="view_url" class="button-gpi view" target="_blank"><?php _e( 'View Page', 'gpagespeedi' ); ?></a>
-		<a id="recheck_url" class="button-gpi recheck"><?php _e( 'Recheck Results', 'gpagespeedi' ); ?></a>
-	</div>
+	<a id="view_url" class="button-gpi view" target="_blank"><?php _e( 'View Page', 'gpagespeedi' ); ?></a>
+	<a id="recheck_url" class="button-gpi recheck"><?php _e( 'Recheck Results', 'gpagespeedi' ); ?></a>
 </div>
 
 <div class="row">

@@ -114,7 +114,7 @@
 		var options = {
 			legend			: { position: 'none' },
 			colors			: ['#178239','#e67700','#c7221f'],
-			backgroundColor	: '#f1f1f1',
+			backgroundColor	: 'white',
 			height			: '223',
 			tooltip			: { trigger: 'selection' },
 			annotations		: { alwaysOutside: false },
