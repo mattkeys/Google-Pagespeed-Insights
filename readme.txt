@@ -136,6 +136,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 == Changelog ==
 
+= 4.0.1 =
+* Bugfix removed reference to 'legend' template file that was deleted in v4.0.0 and was causing PHP warnings
+
 = 4.0.0 =
 * NOTICE: This upgrade will remove any existing reports or snapshots created by older versions of this plugin as they are not compatible with the newest version of the pagespeed API (v5)
 * Migrating to the latest version of the Google Pagespeed Insights API (v5). This comes with pretty big changes to reporting and is incompatible with reports generated from previous versions of the API (and this plugin)
