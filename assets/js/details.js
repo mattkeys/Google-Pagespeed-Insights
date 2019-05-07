@@ -42,35 +42,46 @@
 			var passedAudits	= 0,
 				hasScreenshots	= false;
 			$.each( GPI_Details.page_reports, function ( index, audit ) {
-				var	type = audit.rule_blocks.details.type,
-					mode = audit.rule_blocks.score_display_mode,
-					data = {
-						key				: audit.rule_key,
-						name			: audit.rule_name,
-						description		: audit.rule_blocks.description,
-						details			: audit.rule_blocks.details,
-						displayValue	: audit.rule_blocks.display_value,
-						type			: type,
-						strings			: GPI_Details.strings,
-						publicPath		: GPI_Details.public_path
-					};
+				if ( 'undefined' !== typeof audit.rule_blocks.details ) {
+					var	type = audit.rule_blocks.details.type,
+						mode = audit.rule_blocks.score_display_mode,
+						data = {
+							key				: audit.rule_key,
+							name			: audit.rule_name,
+							description		: audit.rule_blocks.description,
+							details			: audit.rule_blocks.details,
+							displayValue	: audit.rule_blocks.display_value,
+							type			: type,
+							strings			: GPI_Details.strings,
+							publicPath		: GPI_Details.public_path
+						};
 
-				var audits = wp.template( 'audits-' + type );
+					allowedTypes = [ 'criticalrequestchain', 'filmstrip', 'opportunity', 'table', 'statistics', 'diagnostic' ];
 
-				if ( 'screenshot-thumbnails' == audit.rule_key ) {
-					$('#screenshots').append( audits( data ) );
-					hasScreenshots = true;
-				} else if ( 'opportunity' == type && 0.9 > audit.rule_score ) {
-					$('#opportunities').append( audits( data ) );
-				} else if ( 'opportunity' != type && 0.9 > audit.rule_score ) {
-					$('#diagnostics').append( audits( data ) );
-				} else if ( 'informative' == mode || 'not_applicable' == mode ) {
-					$('#diagnostics').append( audits( data ) );
+					if ( -1 !== $.inArray( type, allowedTypes ) ) {
+						var audits = wp.template( 'audits-' + type );
+
+						if ( 'screenshot-thumbnails' == audit.rule_key ) {
+							$('#screenshots').append( audits( data ) );
+							hasScreenshots = true;
+						} else if ( 'diagnostic' == type ) {
+							$('#diagnostics').append( audits( data ) );
+						} else if ( 'opportunity' == type && 0.9 > audit.rule_score ) {
+							$('#opportunities').append( audits( data ) );
+						} else if ( 'opportunity' != type && 0.9 > audit.rule_score ) {
+							$('#diagnostics').append( audits( data ) );
+						} else if ( 'informative' == mode || 'not_applicable' == mode ) {
+							$('#diagnostics').append( audits( data ) );
+						} else {
+							$('#passed_audits').append( audits( data ) );
+							passedAudits++;
+						}
+					} else {
+						console.log( 'No template for report type: ' + type );
+					}
 				} else {
-					$('#passed_audits').append( audits( data ) );
-					passedAudits++;
+					console.log( 'Rule Key: "' + audit.rule_key + '" has insuffient information for display' );
 				}
-
 			});
 
 			if ( ! $('#opportunities').children().length ) {
