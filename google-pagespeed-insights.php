@@ -45,7 +45,7 @@ if ( ! defined( 'GPI_BASENAME' ) ) {
 
 // Internal version number 
 if ( ! defined( 'GPI_VERSION' ) ) {
-	define( 'GPI_VERSION', '4.0.1' );
+	define( 'GPI_VERSION', '4.0.2' );
 }
 
 if ( is_admin() ) {
