@@ -136,6 +136,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 == Changelog ==
 
+= 4.0.2 =
+* Bugfix google has introduced a couple new report types that were not handled by JS templating in this plugin. Added support for the new type and also tried to more gracefully handle this issue if/when this happens again in the future.
+
 = 4.0.1 =
 * Bugfix removed reference to 'legend' template file that was deleted in v4.0.0 and was causing PHP warnings
 
@@ -219,6 +222,12 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 * Initial Release
 
 == Upgrade Notice ==
+
+= 4.0.2 =
+* Bugfix google has introduced a couple new report types that were not handled by JS templating in this plugin. Added support for the new type and also tried to more gracefully handle this issue if/when this happens again in the future.
+
+= 4.0.1 =
+* Bugfix removed reference to 'legend' template file that was deleted in v4.0.0 and was causing PHP warnings
 
 = 4.0.0 =
 * NOTICE: This upgrade will remove any existing reports or snapshots created by older versions of this plugin as they are not compatible with the newest version of the pagespeed API (v5)

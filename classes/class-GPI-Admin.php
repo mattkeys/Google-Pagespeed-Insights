@@ -332,6 +332,7 @@ class GPI_Admin
 			case 'details':
 				include_once GPI_DIRECTORY . '/assets/js/templates/details/statistics.php';
 				include_once GPI_DIRECTORY . '/assets/js/templates/details/audits-opportunity.php';
+				include_once GPI_DIRECTORY . '/assets/js/templates/details/audits-diagnostic.php';
 				include_once GPI_DIRECTORY . '/assets/js/templates/details/audits-table.php';
 				include_once GPI_DIRECTORY . '/assets/js/templates/details/audits-criticalrequestchain.php';
 				include_once GPI_DIRECTORY . '/assets/js/templates/details/audits-filmstrip.php';
