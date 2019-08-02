@@ -4,7 +4,7 @@
 		<p class="description">
 			{{{data.description}}}
 		</p>
-		<# if ( 'uses-optimized-images' == data.key ) { #>
+		<# if ( 'uses-webp-images' == data.key || 'uses-optimized-images' == data.key ) { #>
 			<div class="shortpixel_box" id="optimize_images">
 				<img class="shortpixel_robot" src="{{data.publicPath}}/assets/images/shortpixel.png" alt="{{data.strings.shortpixel.title}}" />
 				<h2>{{data.strings.shortpixel.title}}</h2>
