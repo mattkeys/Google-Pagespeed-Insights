@@ -2,7 +2,7 @@
 Contributors: mattkeys
 Tags: SEO, performance, speed, page speed, search engine optimization, pagespeed, google page speed, pagespeed insights, google pagespeed insights
 Requires at least: 3.6
-Tested up to: 5.1
+Tested up to: 5.2
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -136,6 +136,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 == Changelog ==
 
+= 4.0.3 =
+* Bugfix loading screenshots 'filmstrip' images broken
+
 = 4.0.2 =
 * Bugfix google has introduced a couple new report types that were not handled by JS templating in this plugin. Added support for the new type and also tried to more gracefully handle this issue if/when this happens again in the future.
 
@@ -223,6 +226,9 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 == Upgrade Notice ==
 
+= 4.0.3 =
+* Bugfix loading screenshots 'filmstrip' images broken
+
 = 4.0.2 =
 * Bugfix google has introduced a couple new report types that were not handled by JS templating in this plugin. Added support for the new type and also tried to more gracefully handle this issue if/when this happens again in the future.
 
@@ -231,48 +237,3 @@ Google Pagespeed Insights requires a Google API Key. Keys are free and can be ob
 
 = 4.0.0 =
 * NOTICE: This upgrade will remove any existing reports or snapshots created by older versions of this plugin as they are not compatible with the newest version of the pagespeed API (v5)
-
-= 3.0.5 =
-* Fixed PHP warning when saving settings
-
-= 3.0.4 =
-* Fixed bug where WordPress heartbeat API filter function failed to return properly
-* Added additional options for max runtime to support scenarios where even 60 seconds was over the server max run time
-
-= 3.0.3 =
-* Fixed bug where Maximum Script Run Time option could not be set to "No Limit" after previously being set to a higher value
-
-= 3.0.2 =
-* Fixed bug introduced in v3.0.1 effecting servers running PHP 5.4 where a PHP error is produced while trying to perform actions in the plugin like saving options
-
-= 3.0.1 =
-* Added snapshot comments to the view snapshot / compare snapshot templates
-* Fixed bug with snapshot report type label reading 'both' when it should read either desktop or mobile
-* Fixed bug with snapshot report description label not loading translatable string
-* Fixed bug preventing snapshot comments from being displayed in snapshots list table
-* Improved hardening against authenticated XSS attacks
-* Improved adherence to WordPress coding standards and best practices
-
-= 3.0.0 =
-* Includes all previously "premium" functionality for free. This includes report snapshots, snapshot comparison tool, custom URL reporting, and scheduled report checks.
-* Added in URL hotlinking in report details for paths to assets (images/scripts/etc)
-
-= 2.0.3 =
-* Updating to latest google api php library 2.2.0 to resolve issues with PHP 7.1
-
-= 2.0.2 =
-* Fixed bug which improperly returned WP Cron schedules on cron_schedules filter
-
-= 2.0.1 =
-* Removed phpseclib unit tests from Google PHP API library to avoid false-positive with WordFence
-
-= 2.0.0 =
-* Major rewrite for better compatibility and performance
-* Updated to the latest Google Pagespeed Insights API verison and library
-* Fixed issues with bulk installers not generating DB tables
-* Consolidated scan methods to a single more reliable method inspired by WP cron
-* Better identify, communicate, and resolve issues with environments that have difficulties with scanning pages or API errors
-* Improved API error logging
-* Added 'abort scan' functionality to cancel an in-progress scan
-* Added 'Maximum Script Run Time' option to advanced configuration to allow scans to run in shorter intervals for web hosts which have script timeouts that cannot be overridden
-* Update the codebase to adhere better to WordPress coding standards and best practices
